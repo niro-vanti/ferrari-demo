@@ -133,7 +133,7 @@ with st.expander('data visualization'):
         Y = pd.concat([Y, y], axis=1, ignore_index=True)
         L.append(i)
 
-    fig = px.scatter(X, Y)
+    fig = px.scatter(q, x=col0, y=col, color='KM_pred')
     st.write(fig)
 
 
