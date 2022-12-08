@@ -121,18 +121,19 @@ with st.expander('data visualization'):
          '#00FF00', '#FF0000', '#ABCDEF', '#0F0F0F',
          '#BADBAD', '#C9C9C9', '#FF0000']
 
-    X = pd.DataFrame()
-    Y = pd.DataFrame()
-    L = []
+    # X = pd.DataFrame()
+    # Y = pd.DataFrame()
+    # L = []
     col0 = df_pca.columns[0]
     col1 = df_pca.columns[1]
-    for i in u_labels:
-        x = df_pca[q['KM_pred'] == i][col0]
-        y = df_pca[q['KM_pred'] == i][col1]
-        X = pd.concat([X, x], axis=1, ignore_index=True)
-        Y = pd.concat([Y, y], axis=1, ignore_index=True)
-        L.append(i)
+    # for i in u_labels:
+    #     x = df_pca[q['KM_pred'] == i][col0]
+    #     y = df_pca[q['KM_pred'] == i][col1]
+    #     X = pd.concat([X, x], axis=1, ignore_index=True)
+    #     Y = pd.concat([Y, y], axis=1, ignore_index=True)
+    #     L.append(i)
 
+    st.write(q)
     fig = px.scatter(q, x=col0, y=col, color='KM_pred')
     st.write(fig)
 
