@@ -124,51 +124,18 @@ with st.expander('data visualization'):
     X = pd.DataFrame()
     Y = pd.DataFrame()
     L = []
+    col0 = df_pca.columns[0]
+    col1 = df_pca.columns[1]
     for i in u_labels:
-        x = df_pca[q['KM_pred'] == i]['col_0']
-        y = df_pca[q['KM_pred'] == i]['col_1']
+        x = df_pca[q['KM_pred'] == i][col0]
+        y = df_pca[q['KM_pred'] == i][col1]
         X = pd.concat([X, x], axis=1, ignore_index=True)
         Y = pd.concat([Y, y], axis=1, ignore_index=True)
         L.append(i)
 
-    fig = px.scatter(X, Y, label=L)
+    fig = px.scatter(X, Y)
     st.write(fig)
 
-
-
-    # mesh_size = .02
-    # margin = 0.25
-    #
-    # # Load and split data
-    # X = df.copy()
-    # # X, y = make_moons(noise=0.3, random_state=0)
-    # # X_train, X_test, y_train, y_test = train_test_split(
-    # #     X, y.astype(str), test_size=0.25, random_state=0)
-    #
-    # # Create a mesh grid on which we will run our model
-    # x_min, x_max = X[:, 0].min() - margin, X[:, 0].max() + margin
-    # y_min, y_max = X[:, 1].min() - margin, X[:, 1].max() + margin
-    # xrange = np.arange(x_min, x_max, mesh_size)
-    # yrange = np.arange(y_min, y_max, mesh_size)
-    # xx, yy = np.meshgrid(xrange, yrange)
-    #
-    # # Create classifier, run predictions on grid
-    # clf = KNeighborsClassifier(15, weights='uniform')
-    # clf.fit(X, y)
-    # Z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
-    # Z = Z.reshape(xx.shape)
-    #
-    # # Plot the figure
-    # fig = go.Figure(data=[
-    #     go.Contour(
-    #         x=xrange,
-    #         y=yrange,
-    #         z=Z,
-    #         colorscale='RdBu'
-    #     )
-    # ])
-    # fig.show()
-    # st.write(fig)
 
 
 
