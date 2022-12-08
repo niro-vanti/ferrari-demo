@@ -6,11 +6,14 @@ import plotly.express as px
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+from sklearn.cluster  import KMeans
+
 
 
 from sklearn.datasets import make_moons
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.decomposition import PCA
 
 
 page_title = "GearBox Anomaly Detection App"
@@ -19,6 +22,39 @@ layout = "wide"
 
 
 # --------------------------------------
+def my_pcs(df, n_comp):
+    pca = PCA(n_components=n_comp, random_state=22)
+    pca.fit(df)
+    x = pca.transform(df)
+    x = pd.DataFrame(x)
+    x.index = df.index
+    return x
+
+def my_km_score(label, n, d_vec):
+    nom = (1 / d_vec[label]) ** (n - 1)
+    denom = np.sum((1 / d_vec) ** (n - 1))
+    score = nom / denom
+    return score
+
+
+def my_kmeans(df, n_clusters):
+    k = KMeans(n_clusters=n_clusters, random_state=0).fit(df)
+    y = pd.DataFrame(k.labels_)
+    y.index = df.index
+    y.columns = ['KM_pred']
+
+    DF = pd.DataFrame(k.transform(df))
+    names = []
+    [names.append('dist_to_centroid_' + str(i)) for i in range(DF.shape[1])]
+    DF.columns = names
+    DF.index = df.index
+
+    q = []
+    [q.append(my_km_score(k.labels_[i], n_clusters, DF.iloc[i, :])) for i in range(df.shape[0])]
+    y['score'] = q
+    y = pd.concat([y, DF], axis=1)
+    return y
+
 def get_reason(type):
     ind = np.random.randint(0, 2, 1)[0]
     sensor_reasons = [
@@ -76,41 +112,57 @@ st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title(page_title)
 st.text(' ')
 
+with st.expander():
+    df_pca = my_pcs(df, 6)
+    y = my_kmeans(df_pca, 3)
+    q = pd.concat([y, df_pca], axis=1)
+    u_labels = np.unique(q['KM_pred'])
+    C = ['#52DE97', '#00818A', '#394253', '#0000FF',
+         '#00FF00', '#FF0000', '#ABCDEF', '#0F0F0F',
+         '#BADBAD', '#C9C9C9', '#FF0000']
+
+    for i in u_labels:
+        x = df[q['KM_pred'] == i]['col_0']
+        y = df_pca[q['KM_pred'] == i]['col_1']
+
+        fig = px.scatter(x, y, label=i, c=C[i], s=3)
+    st.wiret(fig)
 
 
-mesh_size = .02
-margin = 0.25
 
-# Load and split data
-X, y = make_moons(noise=0.3, random_state=0)
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y.astype(str), test_size=0.25, random_state=0)
-
-# Create a mesh grid on which we will run our model
-x_min, x_max = X[:, 0].min() - margin, X[:, 0].max() + margin
-y_min, y_max = X[:, 1].min() - margin, X[:, 1].max() + margin
-xrange = np.arange(x_min, x_max, mesh_size)
-yrange = np.arange(y_min, y_max, mesh_size)
-xx, yy = np.meshgrid(xrange, yrange)
-
-# Create classifier, run predictions on grid
-clf = KNeighborsClassifier(15, weights='uniform')
-clf.fit(X, y)
-Z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
-Z = Z.reshape(xx.shape)
-
-
-# Plot the figure
-fig = go.Figure(data=[
-    go.Contour(
-        x=xrange,
-        y=yrange,
-        z=Z,
-        colorscale='RdBu'
-    )
-])
-fig.show()
-st.write(fig)
+    # mesh_size = .02
+    # margin = 0.25
+    #
+    # # Load and split data
+    # X = df.copy()
+    # # X, y = make_moons(noise=0.3, random_state=0)
+    # # X_train, X_test, y_train, y_test = train_test_split(
+    # #     X, y.astype(str), test_size=0.25, random_state=0)
+    #
+    # # Create a mesh grid on which we will run our model
+    # x_min, x_max = X[:, 0].min() - margin, X[:, 0].max() + margin
+    # y_min, y_max = X[:, 1].min() - margin, X[:, 1].max() + margin
+    # xrange = np.arange(x_min, x_max, mesh_size)
+    # yrange = np.arange(y_min, y_max, mesh_size)
+    # xx, yy = np.meshgrid(xrange, yrange)
+    #
+    # # Create classifier, run predictions on grid
+    # clf = KNeighborsClassifier(15, weights='uniform')
+    # clf.fit(X, y)
+    # Z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
+    # Z = Z.reshape(xx.shape)
+    #
+    # # Plot the figure
+    # fig = go.Figure(data=[
+    #     go.Contour(
+    #         x=xrange,
+    #         y=yrange,
+    #         z=Z,
+    #         colorscale='RdBu'
+    #     )
+    # ])
+    # fig.show()
+    # st.write(fig)
 
 
 
