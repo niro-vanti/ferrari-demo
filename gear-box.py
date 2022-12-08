@@ -121,12 +121,18 @@ with st.expander('data visualization'):
          '#00FF00', '#FF0000', '#ABCDEF', '#0F0F0F',
          '#BADBAD', '#C9C9C9', '#FF0000']
 
+    X = pd.DataFrame()
+    Y = pd.DataFrame()
+    L = []
     for i in u_labels:
-        x = df[q['KM_pred'] == i]['col_0']
+        x = df_pca[q['KM_pred'] == i]['col_0']
         y = df_pca[q['KM_pred'] == i]['col_1']
+        X = pd.concat([X, x], axis=1, ignore_index=True)
+        Y = pd.concat([Y, y], axis=1, ignore_index=True)
+        L.append(i)
 
-        fig = px.scatter(x, y, label=i, c=C[i], s=3)
-    st.wiret(fig)
+    fig = px.scatter(X, Y, label=L)
+    st.write(fig)
 
 
 
