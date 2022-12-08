@@ -133,6 +133,7 @@ with st.expander('data visualization'):
     # st.write(q)
     fig = px.scatter(q, x=col0, y=col1, color='Group')
     fig.update_layout(plot_bgcolor="#ffffff")
+    fig.update_layout(title='units data distribution')
     st.write(fig)
 
 ms = {i: df[i].mean() for i in feats}
