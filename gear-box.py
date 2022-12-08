@@ -112,7 +112,7 @@ st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title(page_title)
 st.text(' ')
 
-with st.expander():
+with st.expander('data visualization'):
     df_pca = my_pcs(df, 6)
     y = my_kmeans(df_pca, 3)
     q = pd.concat([y, df_pca], axis=1)
