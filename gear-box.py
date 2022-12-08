@@ -47,6 +47,8 @@ st.set_page_config(page_title=page_title, page_icon=page_icon)  # , layout=layou
 
 df = pd.read_csv('parsed_with_prog.csv', index_col=None)
 df.drop(columns=['prog'], inplace=True)
+df = (df-df.mean())/df.std()
+
 df['sen_alert'] = 0
 df['sit_alert'] = 0
 
@@ -162,7 +164,13 @@ if stream:
                         eee = min(i, df.shape[0])
                         temp2 = df[f].iloc[sss:eee]
 
-                        fig3 = px.line(temp2)
+                        fig3 = px.line(temp2,  markers=True)
+                        fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10,l=10,b=10,r=10))
+                        # hide and lock down axes
+                        fig3.update_xaxes(visible=False, fixedrange=True)
+                        fig3.update_yaxes(visible=False, fixedrange=True)
+                        # remove facet/subplot labels
+                        fig3.update_layout(annotations=[], overwrite=True)
                     with st.expander('sensor-alert zoom-in @' + str(df.index[i])):
                         st.write(fig3, title=str(df.index[i]))
 
@@ -182,18 +190,27 @@ if stream:
                     sss = max(0, i - 10)
                     eee = min(i, df.shape[0])
                     temp2 = df[feats].iloc[sss:eee]
-                    fig3 = px.line(temp2)
+                    fig3 = px.line(temp2, markers=True)
+                    fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10,l=10,b=10,r=10))
+                    # hide and lock down axes
+                    fig3.update_xaxes(visible=False, fixedrange=True)
+                    fig3.update_yaxes(visible=False, fixedrange=True)
+                    # remove facet/subplot labels
+                    fig3.update_layout(annotations=[], overwrite=True)
+
                 with st.expander('situation-alert zoom-in @' + str(df.index[i])):
                     st.write(fig3, title=str(df.index[i]))
 
 
         with pl.container():
             # st.text(str(np.round(i / df.shape[0] * 100, 2)) + ' %')
-            fig = px.line(data_frame=temp)
+            fig = px.line(data_frame=temp, markers=True)
+            fig.update_layout(plot_bgcolor='#ffffff')
             st.write(fig)
             # time.sleep(0.1)
             st.dataframe(alerts.style.apply(highlight_survived, axis=1))
-            fig2 = px.line(temp[['sen_alert', 'sit_alert']].cumsum())
+            fig2 = px.line(temp[['sen_alert', 'sit_alert']].cumsum(), markers=True)
+            fig2.update_layout(plot_bgcolor='#ffffff')
             st.write(fig2)
 
 
