@@ -226,6 +226,7 @@ with st.expander('see training data'):
 hide_streamlit_style = """
             <style>
             footer {visibility: hidden;}
+            primaryColor:"#52DE97";
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
