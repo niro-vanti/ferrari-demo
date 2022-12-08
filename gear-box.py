@@ -6,14 +6,7 @@ import plotly.express as px
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-from sklearn.cluster  import KMeans
 
-
-
-from sklearn.datasets import make_moons
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.decomposition import PCA
 
 
 page_title = "GearBox Anomaly Detection App"
@@ -22,38 +15,7 @@ layout = "wide"
 
 
 # --------------------------------------
-def my_pcs(df, n_comp):
-    pca = PCA(n_components=n_comp, random_state=22)
-    pca.fit(df)
-    x = pca.transform(df)
-    x = pd.DataFrame(x)
-    x.index = df.index
-    return x
 
-def my_km_score(label, n, d_vec):
-    nom = (1 / d_vec[label]) ** (n - 1)
-    denom = np.sum((1 / d_vec) ** (n - 1))
-    score = nom / denom
-    return score
-
-
-def my_kmeans(df, n_clusters):
-    k = KMeans(n_clusters=n_clusters, random_state=0).fit(df)
-    y = pd.DataFrame(k.labels_)
-    y.index = df.index
-    y.columns = ['KM_pred']
-
-    DF = pd.DataFrame(k.transform(df))
-    names = []
-    [names.append('dist_to_centroid_' + str(i)) for i in range(DF.shape[1])]
-    DF.columns = names
-    DF.index = df.index
-
-    q = []
-    [q.append(my_km_score(k.labels_[i], n_clusters, DF.iloc[i, :])) for i in range(df.shape[0])]
-    y['score'] = q
-    y = pd.concat([y, DF], axis=1)
-    return y
 
 def get_reason(type):
     ind = np.random.randint(0, 2, 1)[0]
@@ -112,22 +74,7 @@ st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title(page_title)
 st.text(' ')
 
-with st.expander('data visualization'):
-    df_pca = my_pcs(df, 6)
-    # y = my_kmeans(df_pca, 3)
-    # q = pd.concat([y, df_pca], axis=1)
-    # # u_labels = np.unique(q['KM_pred'])
-    # # C = ['#52DE97', '#00818A', '#394253', '#0000FF',
-    # #      '#00FF00', '#FF0000', '#ABCDEF', '#0F0F0F',
-    # #      '#BADBAD', '#C9C9C9', '#FF0000']
-    #
-    # col0 = df_pca.columns[0]
-    # col1 = df_pca.columns[1]
-    #
-    #
-    # st.write(q)
-    # fig = px.scatter(q, x=col0, y=col, color='KM_pred')
-    # st.write(fig)
+
 
 
 
@@ -177,6 +124,16 @@ sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 50.0)
 with c2.expander("what is model sensitivity?"):
     st.write("_sensitivity 100 --> alert me on **everything**_")
     st.write("_sensitivity 0 --> alert me on **critical things only**_")
+
+with st.expander('data visualization'):
+    q = pd.read_csv('prog_km.csv', index_col=0)
+    col0 = 'x'
+    col1 = 'y'
+
+    # st.write(q)
+    fig = px.scatter(q, x=col0, y=col1, color='Group')
+    fig.update_layout(plot_bgcolor="#ffffff")
+    st.write(fig)
 
 ms = {i: df[i].mean() for i in feats}
 ss = {i: df[i].std() for i in feats}
