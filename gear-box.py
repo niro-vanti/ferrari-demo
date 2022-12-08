@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 
 page_title = "GearBox Anomaly Detection App"
 page_icon = ":money_with_wings:"  # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
-layout = "centered"
+layout = "wide"
 
 
 # --------------------------------------
@@ -42,7 +42,7 @@ def highlight_survived(s):
     return ['color: #52de97'] * len(s) if s['alert type'] == 'Situation' else ['color: #000000'] * len(s)
 
 
-st.set_page_config(page_title=page_title, page_icon=page_icon)  # , layout=layout)
+st.set_page_config(page_title=page_title, page_icon=page_icon, layout='wide')  # , layout=layout)
 # color_scale = alt.Scale(range=['#FAFA37', '#52de97', '#c9c9c9'])
 
 df = pd.read_csv('parsed_with_prog.csv', index_col=None)
@@ -222,5 +222,12 @@ if stream:
 with st.expander('see training data'):
     st.dataframe(df)
 
+
+hide_streamlit_style = """
+            <style>
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 

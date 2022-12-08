@@ -13,6 +13,8 @@ layout = "centered"
 st.set_page_config(page_title=page_title, page_icon=page_icon)  # , layout=layout)
 color_scale = alt.Scale(range=['#FAFA37', '#52de97', '#c9c9c9'])
 
+
+
 N = 146
 zoom_names = []
 defect_list = {}
@@ -101,3 +103,14 @@ if stream:
         if is_error:
             with st.expander(defect+'  ::  defect-alert zoom-in @ section' + str(i % N)):
                 st.write(err_fig)
+
+hide_streamlit_style = """
+            <style>
+            footer {visibility: hidden;}
+            primaryColor="#52de97"
+            backgroundColor = "#FFFFFF"
+            textColor = "#000000"
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
