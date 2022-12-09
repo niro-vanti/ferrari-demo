@@ -1,23 +1,26 @@
 import numpy as np
 import streamlit as st
-from PIL import Image
 import pandas as pd
-import altair as alt
 import altair as alt
 from sklearn.metrics import accuracy_score
 import streamlit.components.v1 as components
 import webbrowser
+import time
+import plotly.express as px
 
-vanti_app_url = 'https://app.vanti-analytics.com'
+vanti_app_url = 'https://app.vanti.ai'
 h2o_app_url = 'https://cloud.h2o.ai/apps/6ab8bf64-9bc5-4a68-9a7e-7251909c8d47'
 
-st.set_page_config(page_title='Vanti-Dynamic-Model-Demo')
+# st.set_page_config(page_title='Vanti-Dynamic-Model-Demo')
+page_title = "Adaptive AI DEMO App"
+page_icon = ":money_with_wings:"  # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
+layout = "centered"
 
-vanti_banner = Image.open('assets/Images/Vanti - Main Logo@4x copy.png')
-# vanti_banner = Image.open('assets/Images/Vanti - Logo White L Green Icon & Dark Blue B@4x.png')
+st.set_page_config(page_title=page_title, page_icon=page_icon)  # , layout=layout)
+# st.set_page_config(page_title='sdfsdf')
 run_en = False
 
-st.image(vanti_banner)
+st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title('Dynamic Model Playground')
 
 color_scale = alt.Scale(range=['#FAFA37', '#52de97', '#c9c9c9'])
@@ -29,7 +32,7 @@ VS = 0.01
 
 
 def highlight_survived(s):
-    return ['background-color: #52de97'] * len(s) if s['Ground Truth'] == s['Vanti'] else ['background-color: #008181A'] * len(s)
+    return ['color: #52de97'] * len(s) if s['Ground Truth'] == s['Vanti'] else ['background-color: #008181A'] * len(s)
 
 
 def color_survived(val):
@@ -39,50 +42,35 @@ def color_survived(val):
 
 def files():
     st.header("files")
-    t1, t2, t3 = st.beta_columns((2, 1, 1))
-    uploaded_file_int = t1.file_uploader("upload 'good' file", accept_multiple_files=False)
-    dontcare_int = t1.file_uploader("upload 'drift' file", accept_multiple_files=False)
-    # q1, q2 = st.beta_columns(2)
-    drift_image_en = t3.select_slider("What is Drift?", ["I already know", "Show me"])
-    w1, w2 = st.beta_columns((1, 1))
-    drift_image = w2.empty()
-    exp = w1.empty()
-    if drift_image_en is "Show me":
-        # drift_image.image("assets/Images/0_Pd95BnSdr0A7Ujqn.png")
-        drift_image.image("assets/Images/drift sketch black copy.png")
-        exp.markdown(
-            '> Data drift is unexpected and undocumented changes to data structure, semantics, and infrastructure '
-            'that is '
-            'a result of modern data architectures. Data drift breaks processes and corrupts data, but can also reveal '
-            'new opportunities for data use.')
-
-    else:
-        drift_image.empty()
-        exp.empty()
+    uploaded_file_int = st.file_uploader("upload 'good' file", accept_multiple_files=False)
+    dontcare_int = st.file_uploader("upload 'drift' file", accept_multiple_files=False)
     return uploaded_file_int, dontcare_int
 
 
 def models():
     st.header("models")
-    ap1, ap2 = st.beta_columns(2)
+    # ap1, ap2 = st.beta_columns(2)
 
-    cc1, cc2 = st.beta_columns((2, 2))
+    cc1, cc2 = st.columns((2, 2))
     if cc1.button('app.vanti'):
         webbrowser.open_new_tab(vanti_app_url)
     if cc2.button('app.h2o'):
         webbrowser.open_new_tab(h2o_app_url)
 
-    dc1 = cc1.text_input('Vanti Model id', "####-production")
-    cc1.write(' ')
-    cc1.write(' ')
-    cc1.write(' ')
-    dc1r = cc1.select_slider('Vanti error handling', ['flip coin', "auto"])
-
-    cc11, qwer, cc21 = st.beta_columns((2, 1, 1))
-    dc2 = cc2.file_uploader('H20-mojo', accept_multiple_files=False)
-    dc2r = cc2.select_slider('H20 error handling', ['flip coin', 'auto'])
-    # qwe.write(' ')
-    qwer.write(' ')
+    dc1 = st.text_input('Vanti Model id', "####-production")
+    b1 = st.button('connect to Vanti')
+    if b1:
+        for i in range(90000):
+            a = 1
+        st.success('connected')
+    dc2 = st.file_uploader('H20-mojo', accept_multiple_files=False)
+    z1, z2 = st.columns(2)
+    dc1r = z1.radio('Vanti error handling', ['flip coin', "auto"])
+    dc2r = z2.radio('H20 error handling', ['flip coin', 'auto'])
+    with st.expander('what does error handling mean?'):
+        st.write('traditional models throw an error when structrual drifts occure. ')
+        st.write('flip coin - instead of an error the model will return a random pass/fail')
+        st.write('auto - the model returns is default answer of error / respons')
 
 
 def get_pred(base_perf, beta, vs, thr1, gt, i):
@@ -144,31 +132,32 @@ def calc_perf(df, name, window=50):
 
 
 def run_exp(up_file, dc_file):
+    pl = st.empty()
+    pl2 = st.empty()
+    recovery = False
+    drop = False
     if up_file is not None:
 
         tar, tar_concat, df, df_concat, dc, kpi, thr1, thr2, b, dic, inv_dic = parse_files(up_file, dc_file)
 
-        st.title('Data snippet')
+        with st.expander('Data snippet'):
 
-        diff = get_cols_diff(df, dc)
-        # st.write(df.shape)
-        # st.write(dc.shape)
-        L = len(diff)
-        if L > 0:
-            q1, q2 = st.beta_columns(2)
-            q1.write(np.str(L) + ' missing features detected')
-            q2.write(diff)
-        # st.write(diff)
+            diff = get_cols_diff(df, dc)
+            diff_length = len(diff)
+            if diff_length > 0:
+                q1, q2 = st.columns(2)
+                q1.write(np.str(diff_length) + ' missing features detected')
+                q2.write(diff)
 
-        col1, col2 = st.beta_columns(2)
-        col1.write('good file has ' + np.str(thr1) + ' rows and ' + np.str(b[0]) + ' features')
-        col2.write('drift file has ' + np.str(thr2) + ' rows and ' + np.str(b[1]) + ' features')
-        col1.dataframe(df)
-        col2.dataframe(dc)
+            col1, col2 = st.columns(2)
+            col1.write('good file has ' + np.str(thr1) + ' rows and ' + np.str(b[0]) + ' features')
+            col2.write('drift file has ' + np.str(thr2) + ' rows and ' + np.str(b[1]) + ' features')
+            col1.dataframe(df)
+            col2.dataframe(dc)
 
         st.title('performance over time')
         pl = st.empty()
-        p2 = st.empty()
+        pl2 = st.empty()
 
         predictions = pd.DataFrame({'Vanti': [BASE_PERF[0]],
                                     'H20': [BASE_PERF[1]],
@@ -186,18 +175,10 @@ def run_exp(up_file, dc_file):
         v_score_w = 1
         h_score_w = 1
         alpha = 0.3
+        feed1, feed2 = st.columns([1,4])
         for i in range(1, thr1 + thr2):
-            # temp = pd.read_csv('assets/Data/early_fault_detection copy.csv')  # just to take up some time
+            # time.sleep(0.05)
 
-            c = alt.Chart(predictions).transform_fold(
-                ['Vanti', 'H20']
-            ).mark_line(point=True).encode(
-                x='x',
-                y='value:Q',
-                color=alt.Color('key:N', scale=color_scale)
-            )
-
-            pl.altair_chart(c, use_container_width=True)
 
             error_val = -1 if i >= thr1 else 0
 
@@ -218,7 +199,7 @@ def run_exp(up_file, dc_file):
             df_predictions = pd.concat([df_predictions, new_p], axis=0)
 
             # p2.dataframe(df_predictions)
-            p2.dataframe(df_predictions.style.apply(highlight_survived, axis=1))
+            # p2.write(df_predictions.style.apply(highlight_survived, axis=1))
 
             v_score_w = v_score_w * alpha + v_score * (1 - alpha)
             h_score_w = h_score_w * alpha + h_score * (1 - alpha)
@@ -228,6 +209,44 @@ def run_exp(up_file, dc_file):
                                             'x': [i]},
                                            index=[i])
             predictions = pd.concat([predictions, new_predictions], axis=0)
+
+            h20_val = h_score_w
+            vanti_val = v_score_w
+            vanti_val = predictions['Vanti'].iloc[i]
+            with pl.container():
+                fig = px.line(predictions[['Vanti', 'H20']], markers=True)
+                fig.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+                fig['data'][0]['line']['color'] = "#52de97"
+                # fig['data'][1]['line']['color'] = "#FAFA37"
+                fig['data'][1]['line']['color'] = "#ff3c78"
+                fig.update_xaxes(range=[1, 300])
+                fig.update_yaxes(range=[0.45, 1])
+
+                st.write(fig)
+            with pl2.container():
+                if i == 1:
+                    feed1.success('@index :: '+str(i))
+                    feed2.success('all is good!')
+                if not drop and h20_val < 0.7 and i > 100:
+                    feed1.success('@index :: '+str(i))
+                    feed1.error('alert')
+                    feed1.info('notice')
+                    feed2.error('drift detected! - 3 missing columns')
+                    feed2.error('H20 accuracy -->  50%')
+                    feed2.info('Vanti: analyzing affected nodes')
+                    # st.info('This is a purely informational message', icon="ℹ️")
+                    drop = True
+                    recovery = True
+
+                if vanti_val > 0.7 and recovery and np.random.rand() < 0.1:
+                    node = np.random.randint(0, 10, 1)
+                    layer = np.random.randint(0, 10, 1)
+                    feed1.success('@index :: '+str(i))
+                    feed1.info('notice')
+                    feed1.info('notice')
+                    feed2.success('updating Vanti')
+                    feed2.info('replacing node ' + str(node) + ' layer ' + str(layer) + ' with new node')
+                    feed2.info('Vanti: accuracy restored to ' + str(np.round(v_acc * 100)) + '%')
 
 
 def get_cols_diff(up_file, dc_file):
@@ -239,46 +258,52 @@ def get_cols_diff(up_file, dc_file):
     return diff
 
 
-# st.markdown('---')
+with st.sidebar:
+    models()
+    uploaded_file, dont_care = files()
+    # st.markdown("""---""")
 
-# st.markdown('---')
-
-uploaded_file, dont_care = files()
 st.markdown("""---""")
-models()
-st.markdown("""---""")
-st.title('RUN')
+st.title('Run Experiment')
 if st.button('Run!'):
     run_exp(uploaded_file, dont_care)
 else:
-    # st.write('sdf')
     a = 1
 
 st.text(" ")
 st.markdown("""---""")
+with st.expander('what is drift?'):
+    st.image("assets/Images/drift sketch black copy.png")
+    st.markdown(
+        '> Data drift is unexpected and undocumented changes to data structure, semantics, and infrastructure '
+        'that is '
+        'a result of modern data architectures. Data drift breaks processes and corrupts data, but can also reveal '
+        'new opportunities for data use.')
 
 # st.title("Useful")
+with st.expander('6 easy steps'):
+    st.title('6 easy steps')
+    st.image('6 easy step copy.png')
 
-us1, us2 = st.beta_columns(2)
+    # st.markdown("""---""")
 
-us1.title('6 easy steps')
-us1.image('assets/Images/6 easy step copy.png')
+with st.expander('reach out to our CTO'):
+    st.title('Reach out!')
+    st.text("sub: [AI-CONF] →")
+    st.text("niro@vanti.ai")
+    st.markdown("---")
+    # st.write('niro@vanti-analytics.com')
+    st.text('vanti.ai')
+    st.text('app.vanti.ai')
+    st.markdown("""---""")
 
-# st.markdown("""---""")
-us2.title('Reach out!')
-us2.header("sub: [AI-CONF] →")
-us2.header("niro@vanti-analytics.com")
-us2.markdown("---")
-# st.write('niro@vanti-analytics.com')
-us2.header('vanti-analytics.com')
-us2.header('app.vanti-analytics.com')
-st.markdown("""---""")
+with st.expander('How does adaptive AI work?'):
+    st.title('Self Wiring Networks')
+    st.image('assets/Images/ezgif.com-gif-maker (3).gif')
+    st.image('assets/Images/ezgif.com-gif-maker (2).gif')
 
-st.title('Self Wiring Networks')
-st.image('assets/Images/ezgif.com-gif-maker (3).gif')
-st.image('assets/Images/ezgif.com-gif-maker (2).gif')
-
-components.iframe('http://vanti-analytics.com', height=900)
+with st.expander('Visit Vanti.AI'):
+    components.iframe('http://vanti.ai', height=900)
 
 hide_menu_style = """
         <style>

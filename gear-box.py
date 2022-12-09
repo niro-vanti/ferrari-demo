@@ -76,14 +76,6 @@ st.text(' ')
 
 
 
-
-
-
-
-
-# st.image('assets/Images/car-pano-1.jpg')
-
-
 clist = ['All Sensors']
 
 for i in df.columns.to_list():
