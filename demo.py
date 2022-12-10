@@ -20,7 +20,7 @@ st.set_page_config(page_title=page_title, page_icon=page_icon)  # , layout=layou
 # st.set_page_config(page_title='sdfsdf')
 run_en = False
 
-st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
+# st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title('Dynamic Model Playground')
 
 color_scale = alt.Scale(range=['#FAFA37', '#52de97', '#c9c9c9'])
@@ -41,21 +41,23 @@ def color_survived(val):
 
 
 def files():
-    st.header("files")
-    uploaded_file_int = st.file_uploader("upload 'good' file", accept_multiple_files=False)
-    dontcare_int = st.file_uploader("upload 'drift' file", accept_multiple_files=False)
-    return uploaded_file_int, dontcare_int
+    with st.expander('files'):
+        # st.header("files")
+        uploaded_file_int = st.file_uploader("upload 'good' file", accept_multiple_files=False)
+        dontcare_int = st.file_uploader("upload 'drift' file", accept_multiple_files=False)
+        return uploaded_file_int, dontcare_int
 
 
 def models():
     st.header("models")
     # ap1, ap2 = st.beta_columns(2)
 
-    cc1, cc2 = st.columns((2, 2))
-    if cc1.button('app.vanti'):
-        webbrowser.open_new_tab(vanti_app_url)
-    if cc2.button('app.h2o'):
-        webbrowser.open_new_tab(h2o_app_url)
+    with st.expander('build models'):
+        cc1, cc2 = st.columns((2, 2))
+        if cc1.button('app.vanti'):
+            webbrowser.open_new_tab(vanti_app_url)
+        if cc2.button('app.h2o'):
+            webbrowser.open_new_tab(h2o_app_url)
 
     dc1 = st.text_input('Vanti Model id', "####-production")
     b1 = st.button('connect to Vanti')
@@ -176,6 +178,8 @@ def run_exp(up_file, dc_file):
         h_score_w = 1
         alpha = 0.3
         feed1, feed2 = st.columns([1,4])
+        vanti_prev = 0
+        h20_prev = 0
         for i in range(1, thr1 + thr2):
             # time.sleep(0.05)
 
@@ -210,10 +214,11 @@ def run_exp(up_file, dc_file):
                                            index=[i])
             predictions = pd.concat([predictions, new_predictions], axis=0)
 
-            h20_val = h_score_w
+            h20_val = np.round(h_score_w,2)
             vanti_val = v_score_w
-            vanti_val = predictions['Vanti'].iloc[i]
+            vanti_val = np.round(predictions['Vanti'].iloc[i],2)
             with pl.container():
+                m1, m2 = st.columns([2,1])
                 fig = px.line(predictions[['Vanti', 'H20']], markers=True)
                 fig.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
                 fig['data'][0]['line']['color'] = "#52de97"
@@ -222,7 +227,16 @@ def run_exp(up_file, dc_file):
                 fig.update_xaxes(range=[1, 300])
                 fig.update_yaxes(range=[0.45, 1])
 
-                st.write(fig)
+                m1.write(fig)
+
+
+
+            vanti_delta = np.round(vanti_val - vanti_prev, 2)*100
+            h20_delta = np.round(h20_val - h20_prev, 2)*100
+            m2.metric(label="Vanti Accuracy", value=vanti_val*100, delta=vanti_delta)
+            m2.metric(label="H20 Accuracy", value=h20_val*100, delta=h20_delta)
+            h20_prev = h20_val
+            vanti_prev = vanti_val
             with pl2.container():
                 if i == 1:
                     feed1.success('@index :: '+str(i))
@@ -259,18 +273,18 @@ def get_cols_diff(up_file, dc_file):
 
 
 with st.sidebar:
+    st.image('assets/Images/Vanti - Main Logo@4x copy.png')
+
     models()
     uploaded_file, dont_care = files()
-    # st.markdown("""---""")
 
-st.markdown("""---""")
-st.title('Run Experiment')
+st.subheader('Run Experiment')
 if st.button('Run!'):
     run_exp(uploaded_file, dont_care)
 else:
     a = 1
 
-st.text(" ")
+# st.text(" ")
 st.markdown("""---""")
 with st.expander('what is drift?'):
     st.image("assets/Images/drift sketch black copy.png")
