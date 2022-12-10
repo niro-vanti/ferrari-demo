@@ -7,6 +7,7 @@ import streamlit.components.v1 as components
 import webbrowser
 import time
 import plotly.express as px
+from sklearn.decomposition import PCA
 
 vanti_app_url = 'https://app.vanti.ai'
 h2o_app_url = 'https://cloud.h2o.ai/apps/6ab8bf64-9bc5-4a68-9a7e-7251909c8d47'
@@ -38,6 +39,17 @@ def highlight_survived(s):
 def color_survived(val):
     color = '#52de97' if val else 'red'
     return f'background-color: {color}'
+
+
+def my_pcs(df, n_comp):
+    pca = PCA(n_components=n_comp, random_state=22)
+    pca.fit(df)
+    x = pca.transform(df)
+    x = pd.DataFrame(x)
+    x.index = df.index
+    col_names = ['component_' + str(i) for i in range(x.shape[1])]
+    x.columns = col_names
+    return x
 
 
 def files():
@@ -136,11 +148,19 @@ def calc_perf(df, name, window=50):
 def run_exp(up_file, dc_file):
     pl = st.empty()
     pl2 = st.empty()
+    pca_plot = st.empty()
+
     recovery = False
     drop = False
     if up_file is not None:
 
         tar, tar_concat, df, df_concat, dc, kpi, thr1, thr2, b, dic, inv_dic = parse_files(up_file, dc_file)
+
+        numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+
+        new_df = df.select_dtypes(include=numerics)
+        df_pca = my_pcs(new_df, 2)
+        df_pca = (df_pca - df_pca.mean()) / df_pca.std()
 
         with st.expander('Data snippet'):
 
@@ -177,11 +197,12 @@ def run_exp(up_file, dc_file):
         v_score_w = 1
         h_score_w = 1
         alpha = 0.3
-        feed1, feed2 = st.columns([1,4])
+        feed1, feed2 = st.columns([1, 4])
         vanti_prev = 0
         h20_prev = 0
         for i in range(1, thr1 + thr2):
             # time.sleep(0.05)
+
 
 
             error_val = -1 if i >= thr1 else 0
@@ -202,9 +223,6 @@ def run_exp(up_file, dc_file):
 
             df_predictions = pd.concat([df_predictions, new_p], axis=0)
 
-            # p2.dataframe(df_predictions)
-            # p2.write(df_predictions.style.apply(highlight_survived, axis=1))
-
             v_score_w = v_score_w * alpha + v_score * (1 - alpha)
             h_score_w = h_score_w * alpha + h_score * (1 - alpha)
             new_predictions = pd.DataFrame({'Vanti': [v_score_w],
@@ -214,11 +232,10 @@ def run_exp(up_file, dc_file):
                                            index=[i])
             predictions = pd.concat([predictions, new_predictions], axis=0)
 
-            h20_val = np.round(h_score_w,2)
-            vanti_val = v_score_w
-            vanti_val = np.round(predictions['Vanti'].iloc[i],2)
+            h20_val = np.round(h_score_w, 2)
+            vanti_val = np.round(predictions['Vanti'].iloc[i], 2)
             with pl.container():
-                m1, m2 = st.columns([2,1])
+                m1, m2 = st.columns([2, 1])
                 fig = px.line(predictions[['Vanti', 'H20']], markers=True)
                 fig.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
                 fig['data'][0]['line']['color'] = "#52de97"
@@ -229,20 +246,32 @@ def run_exp(up_file, dc_file):
 
                 m1.write(fig)
 
-
-
-            vanti_delta = np.round(vanti_val - vanti_prev, 2)*100
-            h20_delta = np.round(h20_val - h20_prev, 2)*100
-            m2.metric(label="Vanti Accuracy", value=vanti_val*100, delta=vanti_delta)
-            m2.metric(label="H20 Accuracy", value=h20_val*100, delta=h20_delta)
+            vanti_delta = np.round(vanti_val - vanti_prev, 2) * 100
+            h20_delta = np.round(h20_val - h20_prev, 2) * 100
+            m2.metric(label="Vanti Accuracy", value=vanti_val * 100, delta=vanti_delta)
+            m2.metric(label="H20 Accuracy", value=h20_val * 100, delta=h20_delta)
             h20_prev = h20_val
             vanti_prev = vanti_val
             with pl2.container():
+                n1 = df_pca.columns[0]
+                n2 = df_pca.columns[1]
+
+                data = df_pca.iloc[:i].copy()
+
+                data['pred'] = 'old'
+                data['pred'].iloc[-1] = 'new'
+                sct = px.scatter(data, x=n1, y=n2, color='pred')
+                sct.update_layout(plot_bgcolor='#ffffff')
+                # sct.update_xaxes(range=[0, 13])
+                # sct.update_yaxes(range=[-13, 0])
+
+                # st.write(sct)
+
                 if i == 1:
-                    feed1.success('@index :: '+str(i))
+                    feed1.success('@index :: ' + str(i))
                     feed2.success('all is good!')
                 if not drop and h20_val < 0.7 and i > 100:
-                    feed1.success('@index :: '+str(i))
+                    feed1.success('@index :: ' + str(i))
                     feed1.error('alert')
                     feed1.info('notice')
                     feed2.error('drift detected! - 3 missing columns')
@@ -255,7 +284,7 @@ def run_exp(up_file, dc_file):
                 if vanti_val > 0.7 and recovery and np.random.rand() < 0.1:
                     node = np.random.randint(0, 10, 1)
                     layer = np.random.randint(0, 10, 1)
-                    feed1.success('@index :: '+str(i))
+                    feed1.success('@index :: ' + str(i))
                     feed1.info('notice')
                     feed1.info('notice')
                     feed2.success('updating Vanti')
