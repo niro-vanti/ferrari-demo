@@ -348,16 +348,33 @@ with st.expander('How does adaptive AI work?'):
 with st.expander('Visit Vanti.AI'):
     components.iframe('http://vanti.ai', height=900)
 
-hide_menu_style = """
-        <style>
-        MainMenu {visibility: hidden; }
-        footer {visibility: hidden;}
-        body 
-        {
-            color: #fff;
-            background-color: #2359dd;
-        }
-        </style>
-        
-        """
-st.markdown(hide_menu_style, unsafe_allow_html=True)
+# hide_menu_style = """
+#         <style>
+#         MainMenu {visibility: hidden; }
+#         footer {visibility: hidden;}
+#         primary: #52DE97;
+#
+#         </style>
+#
+#         """
+# st.markdown(hide_menu_style, unsafe_allow_html=True)
+
+with open('styles.css') as f:
+    st.markdown(f'<style>{f.read()}</style', unsafe_allow_html=True)
+
+# def get_color_styles(color: str) -> str:
+#     """Compile some hacky CSS to override the theme color."""
+#     # fmt: off
+#     color_selectors = ["a", "a:hover", "*:not(textarea).st-ex:hover", ".st-en:hover"]
+#     bg_selectors = [".st-da", "*:not(button).st-en:hover"]
+#     border_selectors = [".st-ft", ".st-fs", ".st-fr", ".st-fq", ".st-ex:hover", ".st-en:hover"]
+#     # fmt: on
+#     css_root = "#root { --primary: %s }" % color
+#     css_color = ", ".join(color_selectors) + "{ color: %s !important }" % color
+#     css_bg = ", ".join(bg_selectors) + "{ background-color: %s !important }" % color
+#     css_border = ", ".join(border_selectors) + "{ border-color: %s !important }" % color
+#     other = ".decoration { background: %s !important }" % color
+#     return f"<style>{css_root}{css_color}{css_bg}{css_border}{other}</style>"
+#
+#
+# st.write(get_color_styles("#00818A"), unsafe_allow_html=True)

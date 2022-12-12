@@ -1,0 +1,6 @@
+MainMenu {visibility: hidden; }
+footer {visibility: hidden;}
+root {primary: #ff3c78;}
+a, a:hover *:not(textarea).st-ex:hover, .st-en:hover {
+    color: #ff3c78 !important
+}
