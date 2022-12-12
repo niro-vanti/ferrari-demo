@@ -6,6 +6,19 @@ from PIL import Image
 import os
 import pandas as pd
 
+
+# functions
+def files():
+    with st.expander('files'):
+        # st.header("files")
+        uploaded_file_int = st.file_uploader("upload car image", accept_multiple_files=False)
+        # dontcare_int = st.file_uploader("upload 'drift' file", accept_multiple_files=False)
+        return uploaded_file_int
+
+
+
+
+# page
 page_title = "Paint shop Visual Defect Detection App"
 page_icon = ":money_with_wings:"  # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = "centered"
@@ -36,19 +49,24 @@ alerts = pd.DataFrame()
 
 
 with st.sidebar:
-
-    token = st.text_input('plug in your Vanti application Token')
+    st.image('assets/Images/Vanti - Main Logo@4x copy.png')
+    sbc1, sbc2 = st.columns((2,1))
+    token = st.text_input('Vanti Model id', "####-production")
     connect = st.button('connect')
     if connect:
         for i in range(10000000):
             a = 1
         st.success('connected to model')
-    stream = st.button('Start Injection mode')
-    stop_stream = st.button('Stop Injection')
+    sbc1, sbc2 = st.columns(2)
+    stream = sbc1.button('Start Injection')
+    stop_stream = sbc2.button('Stop Injection')
+    sensitivity = st.slider('model sensitivity', 0, 100, 50)
+    speed = st.slider('select path size',16, 64, 32)
+    files()
 
 
 
-st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
+# st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title(page_title)
 st.text(' ')
 st.image('assets/Images/ferrari-cropped.png')
@@ -107,7 +125,7 @@ if stream:
 hide_streamlit_style = """
             <style>
             footer {visibility: hidden;}
-            primaryColor="#52de97"
+            primary="#52de97"
             backgroundColor = "#FFFFFF"
             textColor = "#000000"
             </style>
