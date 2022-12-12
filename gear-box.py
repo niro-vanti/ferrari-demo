@@ -1,13 +1,7 @@
 import streamlit as st
-import os
 import pandas as pd
-import time
 import plotly.express as px
 import numpy as np
-import matplotlib.pyplot as plt
-import plotly.graph_objects as go
-
-
 
 page_title = "GearBox Anomaly Detection App"
 page_icon = ":money_with_wings:"  # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
@@ -17,7 +11,7 @@ layout = "wide"
 # --------------------------------------
 
 
-def get_reason(type):
+def get_reason(internal_type):
     ind = np.random.randint(0, 2, 1)[0]
     sensor_reasons = [
         'Sensor value is ok, but trend is unlikely',
@@ -31,19 +25,23 @@ def get_reason(type):
         ''
     ]
 
-    if type == 'sensor':
+    if internal_type == 'sensor':
         return sensor_reasons[ind]
-    if type == 'situation':
+    if internal_type == 'situation':
         return situation_reasons[ind]
     return 'no clear cut root cause'
+
 
 def color_survived(val):
     color = '#52de97' if val else 'red'
     return f'background-color: {color}'
 
 
-def highlight_survived(s):
-    return ['color: #52de97'] * len(s) if s['alert type'] == 'Situation' else ['color: #000000'] * len(s)
+def highlight_survived(internal_string):
+    return ['color: #52de97'] * len(internal_string) if internal_string['alert type'] == 'Situation' else ['color: '
+                                                                                                           '#000000']\
+                                                                                                          * len(
+        internal_string)
 
 
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout='wide')  # , layout=layout)
@@ -51,7 +49,7 @@ st.set_page_config(page_title=page_title, page_icon=page_icon, layout='wide')  #
 
 df = pd.read_csv('parsed_with_prog.csv', index_col=None)
 df.drop(columns=['prog'], inplace=True)
-df = (df-df.mean())/df.std()
+df = (df - df.mean()) / df.std()
 
 df['sen_alert'] = 0
 df['sit_alert'] = 0
@@ -74,8 +72,6 @@ st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title(page_title)
 st.text(' ')
 
-
-
 clist = ['All Sensors']
 
 for i in df.columns.to_list():
@@ -86,14 +82,11 @@ st.text("You selected: {}".format(", ".join(feats)))
 if 'All Sensors' in feats:
     feats = df.columns.to_list()
 
-
-
-
 c1, c2 = st.columns(2)
 mode = c1.radio('select alert mode',
-                    ['alert me only when there''s a situation anomaly',
-                     'alert me only when there''s a sensor anomaly',
-                     'I want all alerts'])
+                ['alert me only when there''s a situation anomaly',
+                 'alert me only when there''s a sensor anomaly',
+                 'I want all alerts'])
 with c2.expander('what are these alerts?'):
     st.write('a **sensor** anomaly is when a single sensor is tracked by Vanti''s model and the model decides to '
              'alert the user')
@@ -108,9 +101,9 @@ elif mode == 'alert me only when there''s a sensor anomaly':
     MODE = 1
 elif mode == 'I want all alerts':
     MODE = 2
+else:
+    MODE = 3
 print(MODE)
-
-
 
 sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 50.0)
 with c2.expander("what is model sensitivity?"):
@@ -131,7 +124,7 @@ with st.expander('data visualization'):
 ms = {i: df[i].mean() for i in feats}
 ss = {i: df[i].std() for i in feats}
 
-alerts = pd.DataFrame()
+# alerts = pd.DataFrame()
 c1, c2, c3 = st.columns(3)
 stream = c1.button('Start Injection mode')
 dont = c3.button('Start Real Time Monitor')
@@ -178,8 +171,8 @@ if stream:
                         eee = min(i, df.shape[0])
                         temp2 = df[f].iloc[sss:eee]
 
-                        fig3 = px.line(temp2,  markers=True)
-                        fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10,l=10,b=10,r=10))
+                        fig3 = px.line(temp2, markers=True)
+                        fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
                         # hide and lock down axes
                         fig3.update_xaxes(visible=False, fixedrange=True)
                         fig3.update_yaxes(visible=False, fixedrange=True)
@@ -205,7 +198,7 @@ if stream:
                     eee = min(i, df.shape[0])
                     temp2 = df[feats].iloc[sss:eee]
                     fig3 = px.line(temp2, markers=True)
-                    fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10,l=10,b=10,r=10))
+                    fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
                     # hide and lock down axes
                     fig3.update_xaxes(visible=False, fixedrange=True)
                     fig3.update_yaxes(visible=False, fixedrange=True)
@@ -214,7 +207,6 @@ if stream:
 
                 with st.expander('situation-alert zoom-in @' + str(df.index[i])):
                     st.write(fig3, title=str(df.index[i]))
-
 
         with pl.container():
             # st.text(str(np.round(i / df.shape[0] * 100, 2)) + ' %')
@@ -227,7 +219,6 @@ if stream:
             fig2.update_layout(plot_bgcolor='#ffffff')
             st.write(fig2)
 
-
             # st.line_chart(temp2.iloc[sss:eee])
 
 # with st.expander('alert table'):
@@ -236,7 +227,6 @@ if stream:
 with st.expander('see training data'):
     st.dataframe(df)
 
-
 hide_streamlit_style = """
             <style>
             footer {visibility: hidden;}
@@ -244,5 +234,3 @@ hide_streamlit_style = """
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-
