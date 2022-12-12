@@ -68,7 +68,7 @@ def models():
         cc1, cc2 = st.columns((2, 2))
         if cc1.button('app.vanti'):
             webbrowser.open_new_tab(vanti_app_url)
-        if cc2.button('app.h2o'):
+        if cc2.button('app competitor'):
             webbrowser.open_new_tab(h2o_app_url)
 
     dc1 = st.text_input('Vanti Model id', "####-production")
@@ -77,14 +77,14 @@ def models():
         for i in range(90000):
             a = 1
         st.success('connected')
-    dc2 = st.file_uploader('H20-mojo', accept_multiple_files=False)
+    dc2 = st.file_uploader('mojo-file', accept_multiple_files=False)
     z1, z2 = st.columns(2)
     dc1r = z1.radio('Vanti error handling', ['flip coin', "auto"])
-    dc2r = z2.radio('H20 error handling', ['flip coin', 'auto'])
+    dc2r = z2.radio('Standard model error handling', ['flip coin', 'auto'])
     with st.expander('what does error handling mean?'):
-        st.write('traditional models throw an error when structrual drifts occure. ')
+        st.write('traditional models throw an error when structural drifts occur. ')
         st.write('flip coin - instead of an error the model will return a random pass/fail')
-        st.write('auto - the model returns is default answer of error / respons')
+        st.write('auto - the model returns is default answer of error / response')
 
 
 def get_pred(base_perf, beta, vs, thr1, gt, i):
@@ -182,16 +182,16 @@ def run_exp(up_file, dc_file):
         pl2 = st.empty()
 
         predictions = pd.DataFrame({'Vanti': [BASE_PERF[0]],
-                                    'H20': [BASE_PERF[1]],
+                                    'Standard Model': [BASE_PERF[1]],
                                     'error': [0],
                                     'Ground Truth': tar[0],
                                     'x': 0})
 
         df_predictions = pd.DataFrame({'Ground Truth': [inv_dic[tar_concat[0]]],
                                        'Vanti': [inv_dic[tar_concat[0]]],
-                                       'H20': [inv_dic[tar_concat[0]]],
+                                       'Standard Model': [inv_dic[tar_concat[0]]],
                                        'Vanti ACC': [1],
-                                       'H20 ACC': [1]
+                                       'Standard Model ACC': [1]
                                        })
 
         v_score_w = 1
@@ -210,14 +210,14 @@ def run_exp(up_file, dc_file):
             h_score, v_score, v_pred, h_pred = get_pred(BASE_PERF, BETA, VS, thr1, tar_concat[i], i)
 
             v_acc = calc_perf(df_predictions, 'Vanti')
-            h_acc = calc_perf(df_predictions, 'H20')
+            h_acc = calc_perf(df_predictions, 'Standard Model')
 
             new_p = pd.DataFrame({
                 'Ground Truth': [inv_dic[tar_concat[i]]],
                 'Vanti': [inv_dic[v_pred]],
-                'H20': [inv_dic[h_pred]],
+                'Standard Model': [inv_dic[h_pred]],
                 'Vanti ACC': [v_acc],
-                'H20 ACC': [h_acc]
+                'Standard Model ACC': [h_acc]
             })
             new_p.index = [i]
 
@@ -226,7 +226,7 @@ def run_exp(up_file, dc_file):
             v_score_w = v_score_w * alpha + v_score * (1 - alpha)
             h_score_w = h_score_w * alpha + h_score * (1 - alpha)
             new_predictions = pd.DataFrame({'Vanti': [v_score_w],
-                                            'H20': [h_score_w],
+                                            'Standard Model': [h_score_w],
                                             'error': [error_val],
                                             'x': [i]},
                                            index=[i])
@@ -236,7 +236,7 @@ def run_exp(up_file, dc_file):
             vanti_val = np.round(predictions['Vanti'].iloc[i], 2)
             with pl.container():
                 m1, m2 = st.columns([2, 1])
-                fig = px.line(predictions[['Vanti', 'H20']], markers=True)
+                fig = px.line(predictions[['Vanti', 'Standard Model']], markers=True)
                 fig.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
                 fig['data'][0]['line']['color'] = "#52de97"
                 # fig['data'][1]['line']['color'] = "#FAFA37"
@@ -249,7 +249,7 @@ def run_exp(up_file, dc_file):
             vanti_delta = np.round(vanti_val - vanti_prev, 2) * 100
             h20_delta = np.round(h20_val - h20_prev, 2) * 100
             m2.metric(label="Vanti Accuracy", value=vanti_val * 100, delta=vanti_delta)
-            m2.metric(label="H20 Accuracy", value=h20_val * 100, delta=h20_delta)
+            m2.metric(label="Standard Model Accuracy", value=h20_val * 100, delta=h20_delta)
             h20_prev = h20_val
             vanti_prev = vanti_val
             with pl2.container():
@@ -348,33 +348,6 @@ with st.expander('How does adaptive AI work?'):
 with st.expander('Visit Vanti.AI'):
     components.iframe('http://vanti.ai', height=900)
 
-# hide_menu_style = """
-#         <style>
-#         MainMenu {visibility: hidden; }
-#         footer {visibility: hidden;}
-#         primary: #52DE97;
-#
-#         </style>
-#
-#         """
-# st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 with open('styles.css') as f:
     st.markdown(f'<style>{f.read()}</style', unsafe_allow_html=True)
-
-# def get_color_styles(color: str) -> str:
-#     """Compile some hacky CSS to override the theme color."""
-#     # fmt: off
-#     color_selectors = ["a", "a:hover", "*:not(textarea).st-ex:hover", ".st-en:hover"]
-#     bg_selectors = [".st-da", "*:not(button).st-en:hover"]
-#     border_selectors = [".st-ft", ".st-fs", ".st-fr", ".st-fq", ".st-ex:hover", ".st-en:hover"]
-#     # fmt: on
-#     css_root = "#root { --primary: %s }" % color
-#     css_color = ", ".join(color_selectors) + "{ color: %s !important }" % color
-#     css_bg = ", ".join(bg_selectors) + "{ background-color: %s !important }" % color
-#     css_border = ", ".join(border_selectors) + "{ border-color: %s !important }" % color
-#     other = ".decoration { background: %s !important }" % color
-#     return f"<style>{css_root}{css_color}{css_bg}{css_border}{other}</style>"
-#
-#
-# st.write(get_color_styles("#00818A"), unsafe_allow_html=True)
