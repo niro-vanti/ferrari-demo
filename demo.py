@@ -352,6 +352,12 @@ hide_menu_style = """
         <style>
         MainMenu {visibility: hidden; }
         footer {visibility: hidden;}
+        body 
+        {
+            color: #fff;
+            background-color: #2359dd;
+        }
         </style>
+        
         """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
