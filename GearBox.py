@@ -47,7 +47,9 @@ def highlight_survived(internal_string):
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout='wide')  # , layout=layout)
 # color_scale = alt.Scale(range=['#FAFA37', '#52de97', '#c9c9c9'])
 
-df = pd.read_csv('parsed_with_prog.csv', index_col=None)
+
+raw = pd.read_csv('parsed_with_prog.csv', index_col=None)
+df = raw.copy()
 df.drop(columns=['prog'], inplace=True)
 df = (df - df.mean()) / df.std()
 
@@ -170,14 +172,14 @@ if stream:
 
                     with pl2.container():
                         sss = max(0, i - 10)
-                        eee = min(i, df.shape[0])
-                        temp2 = df[f].iloc[sss:eee]
+                        eee = min(i+10, df.shape[0])
+                        temp2 = df[f].iloc[sss:eee].copy()
 
                         fig3 = px.line(temp2, markers=True)
                         fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
                         # hide and lock down axes
-                        fig3.update_xaxes(visible=False, fixedrange=True)
-                        fig3.update_yaxes(visible=False, fixedrange=True)
+                        fig3.update_xaxes(visible=True, fixedrange=True)
+                        fig3.update_yaxes(visible=True, fixedrange=True)
                         # remove facet/subplot labels
                         fig3.update_layout(annotations=[], overwrite=True)
                     with st.expander('sensor-alert zoom-in @' + str(df.index[i])):
@@ -197,13 +199,14 @@ if stream:
 
                 with pl2.container():
                     sss = max(0, i - 10)
-                    eee = min(i, df.shape[0])
-                    temp2 = df[feats].iloc[sss:eee]
+                    eee = min(i+10, df.shape[0])
+                    print('sit', sss, eee)
+                    temp2 = df[feats].iloc[sss:eee].copy()
                     fig3 = px.line(temp2, markers=True)
                     fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
                     # hide and lock down axes
-                    fig3.update_xaxes(visible=False, fixedrange=True)
-                    fig3.update_yaxes(visible=False, fixedrange=True)
+                    fig3.update_xaxes(visible=True, fixedrange=True)
+                    fig3.update_yaxes(visible=True, fixedrange=True)
                     # remove facet/subplot labels
                     fig3.update_layout(annotations=[], overwrite=True)
 
@@ -221,30 +224,13 @@ if stream:
             fig2.update_layout(plot_bgcolor='#ffffff')
             st.write(fig2)
 
-            # st.line_chart(temp2.iloc[sss:eee])
-
-# with st.expander('alert table'):
-#     st.dataframe(alerts.style.apply(highlight_survived, axis=1))
 
 with st.expander('see training data'):
     st.dataframe(df)
 
-# hide_streamlit_style = """
-#             <style>
-#             footer {visibility: hidden;}
-#             primaryColor:"#52DE97";
-#             </style>
-#             """
-# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-# with open('styles.css') as f:
-#     st.markdown(f'<style>{f.read()}</style', unsafe_allow_html=True)
 hide_streamlit_style = """
             <style>
             footer {visibility: hidden;}
-            primary="#52de97"
-            backgroundColor = "#FFFFFF"
-            textColor = "#000000"
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
