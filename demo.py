@@ -349,5 +349,5 @@ with st.expander('Visit Vanti.AI'):
     components.iframe('http://vanti.ai', height=900)
 
 
-with open('styles.css') as f:
-    st.markdown(f'<style>{f.read()}</style', unsafe_allow_html=True)
+# with open('styles.css') as f:
+#     st.markdown(f'<style>{f.read()}</style', unsafe_allow_html=True)
