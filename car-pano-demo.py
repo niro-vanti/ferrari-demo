@@ -50,7 +50,7 @@ alerts = pd.DataFrame()
 
 with st.sidebar:
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
-    sbc1, sbc2 = st.columns((2,1))
+    # sbc1, sbc2 = st.columns((2,1))
     token = st.text_input('Vanti Model id', "####-production")
     connect = st.button('connect')
     if connect:

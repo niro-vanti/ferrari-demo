@@ -55,8 +55,10 @@ df['sen_alert'] = 0
 df['sit_alert'] = 0
 
 with st.sidebar:
-    token = st.text_input('plug in your Vanti application Token')
+    st.image('assets/Images/Vanti - Main Logo@4x copy.png')
+    token = st.text_input('Vanti Model id', "####-production")
     connect = st.button('connect')
+
     if connect:
         for i in range(10000000):
             a = 1
@@ -68,7 +70,7 @@ with st.sidebar:
     st.text(' ')
     batch = st.file_uploader("upload batch file")
 
-st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
+# st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title(page_title)
 st.text(' ')
 
@@ -227,10 +229,22 @@ if stream:
 with st.expander('see training data'):
     st.dataframe(df)
 
+# hide_streamlit_style = """
+#             <style>
+#             footer {visibility: hidden;}
+#             primaryColor:"#52DE97";
+#             </style>
+#             """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# with open('styles.css') as f:
+#     st.markdown(f'<style>{f.read()}</style', unsafe_allow_html=True)
 hide_streamlit_style = """
             <style>
             footer {visibility: hidden;}
-            primaryColor:"#52DE97";
+            primary="#52de97"
+            backgroundColor = "#FFFFFF"
+            textColor = "#000000"
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)

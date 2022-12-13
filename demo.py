@@ -160,7 +160,7 @@ def run_exp(up_file, dc_file):
 
         new_df = df.select_dtypes(include=numerics)
         df_pca = my_pcs(new_df, 2)
-        df_pca = (df_pca - df_pca.mean()) / df_pca.std()
+        # df_pca = (df_pca - df_pca.mean()) / df_pca.std()
 
         with st.expander('Data snippet'):
 
