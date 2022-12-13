@@ -47,7 +47,7 @@ st.set_page_config(page_title=page_title, page_icon=page_icon, layout='wide')  #
 
 # color_scale = alt.Scale(range=['#FAFA37', '#52de97', '#c9c9c9'])
 
-df = pd.read_csv('assets/data/anomaly.csv', index_col=0)
+df = pd.read_csv('assets/Data/anomaly.csv', index_col=0)
 df['sen_alert'] = 0
 df['sit_alert'] = 0
 
@@ -159,7 +159,6 @@ if stream:
                         sss = max(0, i - 10)
                         eee = min(i + 1, df.shape[0])
                         temp2 = df[f].iloc[sss:eee]
-
                         fig3 = px.line(temp2)
                         fig3.update_layout(plot_bgcolor='#ffffff')
                     with st.expander('sensor-alert zoom-in @' + str(df.index[i])):
