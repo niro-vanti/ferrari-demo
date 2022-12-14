@@ -174,7 +174,7 @@ if stream:
 
                     with pl2.container():
                         sss = max(0, i - 10)
-                        eee = min(i + 1, df.shape[0])
+                        eee = min(i + 5, df.shape[0])
                         temp2 = df[f].iloc[sss:eee]
                         fig3 = px.line(temp2)
                         fig3.update_layout(plot_bgcolor='#ffffff')
@@ -195,7 +195,7 @@ if stream:
 
                 with pl2.container():
                     sss = max(0, i - 10)
-                    eee = min(i + 1, df.shape[0])
+                    eee = min(i + 5, df.shape[0])
                     temp2 = df[feats].iloc[sss:eee]
                     fig3 = px.line(temp2)
                     fig3.update_layout(plot_bgcolor='#ffffff')
