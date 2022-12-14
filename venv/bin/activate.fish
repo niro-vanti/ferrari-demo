@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/niro/Documents/GitHub/Real-Time-Anomaly/venv"
+set -gx VIRTUAL_ENV "/Users/niro/Documents/GitHub/ferrari-demo/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
