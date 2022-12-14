@@ -114,16 +114,16 @@ with c2.expander("what is model sensitivity?"):
     st.write("_sensitivity 100 --> alert me on **everything**_")
     st.write("_sensitivity 0 --> alert me on **critical things only**_")
 
-with st.expander('data visualization'):
-    q = pd.read_csv('prog_km.csv', index_col=0)
-    col0 = 'x'
-    col1 = 'y'
-
-    # st.write(q)
-    fig = px.scatter(q, x=col0, y=col1, color='Group')
-    fig.update_layout(plot_bgcolor="#ffffff")
-    fig.update_layout(title='units data distribution')
-    st.write(fig)
+# with st.expander('data visualization'):
+#     q = pd.read_csv('prog_km.csv', index_col=0)
+#     col0 = 'x'
+#     col1 = 'y'
+#
+#     # st.write(q)
+#     fig = px.scatter(q, x=col0, y=col1, color='Group')
+#     fig.update_layout(plot_bgcolor="#ffffff")
+#     fig.update_layout(title='units data distribution')
+#     st.write(fig)
 
 ms = {i: df[i].mean() for i in feats}
 ss = {i: df[i].std() for i in feats}
