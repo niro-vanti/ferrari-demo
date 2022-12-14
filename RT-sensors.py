@@ -75,6 +75,11 @@ with st.sidebar:
     st.write(batch)
     if batch is not None :
         df = pd.read_csv(batch)
+
+        if 'prog' in df.columns:
+            df.drop(columns=['prog'], inplace=True)
+            df = (df - df.mean()) / df.std()
+
         df['sen_alert'] = 0
         df['sit_alert'] = 0
 
