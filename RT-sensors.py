@@ -63,8 +63,13 @@ with st.sidebar:
         for col in df.columns:
             qwer = str(col)
             s1 = st.button(qwer)
-    st.text(' ')
+    # st.text(' ')
     batch = st.file_uploader("upload batch file")
+    st.write(batch)
+    if batch is not None :
+        df = pd.read_csv(batch)
+        df['sen_alert'] = 0
+        df['sit_alert'] = 0
 
 # st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title(page_title)
