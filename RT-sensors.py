@@ -48,6 +48,13 @@ st.set_page_config(page_title=page_title, page_icon=page_icon, layout='wide')  #
 # color_scale = alt.Scale(range=['#FAFA37', '#52de97', '#c9c9c9'])
 
 df = pd.read_csv('assets/Data/anomaly.csv', index_col=0)
+
+if 'prog' in df.columns:
+    df.drop(columns=['prog'], inplace=True)
+    df = (df - df.mean()) / df.std()
+
+
+
 df['sen_alert'] = 0
 df['sit_alert'] = 0
 
