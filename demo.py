@@ -285,14 +285,16 @@ def run_exp(up_file, dc_file):
                     recovery = True
 
                 if vanti_val > 0.7 and recovery and np.random.rand() < 0.1:
-                    node = np.random.randint(0, 10, 1)
+                    node = np.random.randint(0, 10, 1)[0]
                     node = nodes[node]
+                    new_node = np.random.randint(0, 10, 1)[0]
+                    new_node = nodes[new_node]
                     layer = np.random.randint(0, 10, 1)
                     feed1.success('@index :: ' + str(i))
                     feed1.info('notice')
                     feed1.info('notice')
                     feed2.success('updating Vanti')
-                    feed2.info('replacing node ' + str(node) + ' layer ' + str(layer) + ' with new node')
+                    feed2.info('replacing node ' + str(node) + ' in layer ' + str(layer) + ' with '+str(new_node))
                     feed2.info('Vanti: accuracy restored to ' + str(np.round(v_acc * 100)) + '%')
 
 
