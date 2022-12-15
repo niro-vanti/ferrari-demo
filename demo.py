@@ -31,6 +31,9 @@ BETA = 1 - GAMMA / (BASE_PERF[0])
 # gamma = ()
 VS = 0.01
 
+nodes = ['anomaly remover','formatter','mini decision tree','regressor','classifier','SVM','perceptron',
+         'nan filler','normalizer','encoder','balancer']
+
 
 def highlight_survived(s):
     return ['color: #52de97'] * len(s) if s['Ground Truth'] == s['Vanti'] else ['background-color: #008181A'] * len(s)
@@ -275,7 +278,7 @@ def run_exp(up_file, dc_file):
                     feed1.error('alert')
                     feed1.info('notice')
                     feed2.error('drift detected! - 3 missing columns')
-                    feed2.error('H20 accuracy -->  50%')
+                    feed2.error('standard model accuracy -->  50%')
                     feed2.info('Vanti: analyzing affected nodes')
                     # st.info('This is a purely informational message', icon="ℹ️")
                     drop = True
@@ -283,6 +286,7 @@ def run_exp(up_file, dc_file):
 
                 if vanti_val > 0.7 and recovery and np.random.rand() < 0.1:
                     node = np.random.randint(0, 10, 1)
+                    node = nodes[node]
                     layer = np.random.randint(0, 10, 1)
                     feed1.success('@index :: ' + str(i))
                     feed1.info('notice')
