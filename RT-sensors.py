@@ -74,6 +74,7 @@ with st.sidebar:
     batch = st.file_uploader("upload batch file")
     st.write(batch)
     if batch is not None :
+    if batch is not None :
         df = pd.read_csv(batch)
 
         if 'prog' in df.columns:
