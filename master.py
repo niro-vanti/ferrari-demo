@@ -37,6 +37,8 @@ s = f"""
 <style>
 div.stButton > button:first-child {{ border: 2px solid {primaryColor}; border-radius:10px 10px 10px 10px; }}
 div.stButton > button:hover {{ background-color: {primaryColor}; color:#000000;}}
+footer {{ visibility: hidden;}}
+# header {{ visibility: hidden;}}
 <style>
 """
 st.markdown(s, unsafe_allow_html=True)
@@ -54,7 +56,6 @@ def my_pcs(df, n_comp):
     col_names = ['component_' + str(i) for i in range(x.shape[1])]
     x.columns = col_names
     return x
-
 
 def get_pred(base_perf, beta, vs, thr1, gt, i):
     if i >= thr1:
@@ -74,7 +75,6 @@ def get_pred(base_perf, beta, vs, thr1, gt, i):
     h_pred = gt if h_flip <= h_score else 1 - gt
 
     return h_score, v_score, v_pred, h_pred
-
 
 def parse_files(up_file, dc_file):
     # df = pd.read_csv(up_file)
@@ -102,7 +102,6 @@ def parse_files(up_file, dc_file):
     tar_concat.replace(dic, inplace=True)
 
     return tar, tar_concat, df, df_concat, dc, kpi, thr1, thr2, b, dic, inv_dic
-
 
 def calc_perf(df, name, window=50):
     if df.shape[0] < window:
