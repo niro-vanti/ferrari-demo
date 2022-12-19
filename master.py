@@ -9,6 +9,7 @@ import time
 import plotly.express as px
 from sklearn.decomposition import PCA
 import os
+import toml
 
 
 
@@ -24,11 +25,21 @@ GAMMA = BASE_PERF[0] - 0.25
 BETA = 1 - GAMMA / (BASE_PERF[0])
 # gamma = ()
 VS = 0.01
+stream = False
 
 nodes = ['anomaly remover','formatter','mini decision tree','regressor','classifier','SVM','perceptron',
          'nan filler','normalizer','encoder','balancer']
 
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout=layout)
+
+primaryColor = toml.load(".streamlit/config.toml")['theme']['primaryColor']
+s = f"""
+<style>
+div.stButton > button:first-child {{ border: 2px solid {primaryColor}; border-radius:10px 10px 10px 10px; }}
+div.stButton > button:hover {{ background-color: {primaryColor}; color:#000000;}}
+<style>
+"""
+st.markdown(s, unsafe_allow_html=True)
 
 
 # files
@@ -326,12 +337,9 @@ def highlight_survived(s):
     return ['color: #52de97'] * len(s) if s['alert type'] == 'Situation' else ['color: #000000'] * len(s)
 
 # app functions
-def paint_shop_app():
+def paint_shop_app(stream):
     st.title('In-line Paint Shop Defect Detection')
     st.image('assets/Images/ferrari-cropped.png')
-    sbc1, sbc2 = st.columns(2)
-    stream = sbc1.button('Start Injection')
-    stop_stream = sbc2.button('Stop Injection')
     sbc1, sbc2 = st.columns(2)
     sensitivity = sbc1.slider('model sensitivity', 0, 100, 50)
     speed = sbc1.slider('select path size', 16, 64, 32)
@@ -365,7 +373,6 @@ def paint_shop_app():
     is_error = False
 
     if stream:
-        # stop_stream = c2.button('Stop Injection')
         if stop_stream:
             stream = False
 
@@ -390,7 +397,7 @@ def paint_shop_app():
                 with st.expander(defect + '  ::  defect-alert zoom-in @ section' + str(i % N)):
                     st.image('assets/Images/' + str(i % N) + '_zoom_' + defect + '.png')
 
-def RT_sensors_app():
+def RT_sensors_app(stream):
     st.title('Real Time Anomaly Detection')
     df = files[0]
     if 'prog' in df.columns:
@@ -441,8 +448,6 @@ def RT_sensors_app():
     ss = {i: df[i].std() for i in feats}
 
     c1, c2, c3 = st.columns(3)
-    stream = c1.button('Start Injection mode')
-    dont = c3.button('Start Real Time Monitor')
     sensitivity = (100 - sensitivity) / 10
 
     temp = df[feats].iloc[:2].copy()
@@ -452,10 +457,7 @@ def RT_sensors_app():
     pl2 = st.empty()
     alerts = pd.DataFrame()
 
-    # tab1, tab2 = st.tabs(['alert table','alert graph'])
-
     if stream:
-        stop_stream = c2.button('Stop Injection')
         if stop_stream:
             stream = False
 
@@ -525,18 +527,11 @@ def RT_sensors_app():
     with st.expander('see training data'):
         st.dataframe(df)
 
-def medical_device_app():
+def medical_device_app(stream):
     st.title('Medical Device Early Fault Detection')
 
     df = files[0]
     KPI = files[1]
-    # sbc1, sbc2 = st.columns(2)
-    # stream = sbc1.button('Start Injection')
-    # stop_stream = sbc2.button('Stop Injection')
-    # sensitivity = st.slider('model sensitivity', 0, 100, 50)
-    # with st.expander("what is model sensitivity?"):
-    #     st.write("_sensitivity 100 --> find **everything**_ I'm ok with some false alarms")
-    #     st.write("_sensitivity 0 --> find  **critical things only**_ with high certainty")
     # --------------------------------------
     clist = ['All Measurements']
 
@@ -577,9 +572,6 @@ def medical_device_app():
         st.write("_sensitivity 0 --> alert me on **critical things only**_")
 
     sbc1, sbc2 = st.columns(2)
-    stream = sbc1.button('Start Injection')
-    stop_stream = sbc2.button('Stop Injection')
-
 
     ms = {i: df[i].mean() for i in feats}
     ss = {i: df[i].std() for i in feats}
@@ -625,7 +617,7 @@ def medical_device_app():
                     # feed2.error('@index :: ' + str(i))
                     feed2.info(get_reason_medical(df, ms, ss))
 
-def adaptive_ai_demo():
+def adaptive_ai_demo(stream):
     st.title('Adaptive AI Demo')
     st.header('Run Experiment')
     models()
@@ -636,7 +628,6 @@ def adaptive_ai_demo():
     else:
         a = 1
 
-    # st.text(" ")
     st.markdown("""---""")
     with st.expander('what is drift?'):
         st.image("assets/Images/drift sketch black copy.png")
@@ -646,23 +637,18 @@ def adaptive_ai_demo():
             'a result of modern data architectures. Data drift breaks processes and corrupts data, but can also reveal '
             'new opportunities for data use.')
 
-    # st.title("Useful")
+
     with st.expander('6 easy steps'):
         st.title('6 easy steps')
         st.image('6 easy step copy.png')
-
-        # st.markdown("""---""")
 
     with st.expander('reach out to our CTO'):
         ro1, ro2 = st.columns(2)
         st.title('Reach out!')
         ro1.write("sub: [ADAPTIVE-AI DEMO] →")
         ro2.write("niro@vanti.ai")
-        # st.markdown("---")
-        # st.write('niro@vanti-analytics.com')
         ro1.write('vanti.ai')
         ro2.write('app.vanti.ai')
-        # st.markdown("""---""")
 
     with st.expander('How does adaptive AI work?'):
         st.title('Self Wiring Networks')
@@ -672,7 +658,7 @@ def adaptive_ai_demo():
     with st.expander('Visit Vanti.AI'):
         components.iframe('http://vanti.ai', height=900)
 
-def image_classification_app():
+def image_classification_app(stream):
     st.title('Image Classification')
 
 def ask_for_files(app_type):
@@ -735,42 +721,42 @@ def ask_for_files(app_type):
 
 # sidebar
 with st.sidebar:
-    # st.title('asdfasdf')
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
+    stream = False
+    app_type = st.selectbox('select application', ['paint shop defect detection',
+                                                   'real-time sensor anomaly detection',
+                                                   'adaptive AI demo',
+                                                   'image classification',
+                                                   'medical device early fault detection'])
+    b1, b2 = st.columns(2)
+
+    stream = b1.button('Start')
+    stop_stream = b2.button('Stop')
     token = st.text_input('Vanti Model id', "####-production")
+
     connect = st.button('connect')
     if connect:
         for i in range(10000000):
             a = 1
         st.success('connected to to model')
 
-    app_type = st.selectbox('select application',['paint shop defect detection',
-                                              'real-time sensor anomaly detection',
-                                              'adaptive AI demo',
-                                              'image classification',
-                                              'medical device early fault detection'])
     files = ask_for_files(app_type)
-    # if app_type == 'adaptive AI demo':
-    #     models()
-# title
-# st.title('APP')
 
 
 # main loop
-# st.write("Streamlit version:", st.__version__)
 
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
 if app_type == 'paint shop defect detection':
-    paint_shop_app()
+    paint_shop_app(stream)
 
 if app_type == 'real-time sensor anomaly detection':
-    RT_sensors_app()
+    RT_sensors_app(stream)
 
 if app_type == 'adaptive AI demo':
-    adaptive_ai_demo()
+    adaptive_ai_demo(stream)
 
 if app_type == 'image classification':
-    image_classification_app()
+    image_classification_app(stream)
 
 if app_type == 'medical device early fault detection':
-    medical_device_app()
+    medical_device_app(stream)
