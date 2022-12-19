@@ -327,7 +327,7 @@ def highlight_survived(s):
 
 # app functions
 def paint_shop_app():
-    st.title('Paint Shop Defect')
+    st.title('In-line Paint Shop Defect Detection')
     st.image('assets/Images/ferrari-cropped.png')
     sbc1, sbc2 = st.columns(2)
     stream = sbc1.button('Start Injection')
@@ -757,6 +757,9 @@ with st.sidebar:
 
 
 # main loop
+# st.write("Streamlit version:", st.__version__)
+
+# tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
 if app_type == 'paint shop defect detection':
     paint_shop_app()
 
