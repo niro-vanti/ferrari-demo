@@ -218,7 +218,6 @@ def run_exp(up_file, dc_file):
 
             vanti_delta = np.round(vanti_val - vanti_prev, 2) * 100
             h20_delta = np.round(h20_val - h20_prev, 2) * 100
-            st.write(vanti_val)
             m2.metric(label="Vanti Accuracy", value=vanti_val * 100, delta=vanti_delta)
             m2.metric(label="Standard Model Accuracy", value=h20_val * 100, delta=h20_delta)
             h20_prev = h20_val
@@ -263,7 +262,7 @@ def run_exp(up_file, dc_file):
                     feed1.info('notice')
                     feed2.success('updating Vanti')
                     feed2.info('replacing node ' + str(node) + ' in layer ' + str(layer) + ' with '+str(new_node))
-                    feed2.info('Vanti: accuracy restored to ' + str(np.round(v_acc * 100)) + '%')
+                    feed2.info('Vanti: accuracy restored to ' + str(np.round(vanti_val * 100)) + '%')
 
 def get_cols_diff(up_file, dc_file):
     cols1 = up_file.columns
