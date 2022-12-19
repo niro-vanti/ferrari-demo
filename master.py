@@ -104,7 +104,6 @@ def calc_perf(df, name, window=50):
         acc = accuracy_score(gt, pr)
     return acc
 
-
 def run_exp(up_file, dc_file):
     pl = st.empty()
     pl2 = st.empty()
@@ -208,6 +207,7 @@ def run_exp(up_file, dc_file):
 
             vanti_delta = np.round(vanti_val - vanti_prev, 2) * 100
             h20_delta = np.round(h20_val - h20_prev, 2) * 100
+            st.write(vanti_val)
             m2.metric(label="Vanti Accuracy", value=vanti_val * 100, delta=vanti_delta)
             m2.metric(label="Standard Model Accuracy", value=h20_val * 100, delta=h20_delta)
             h20_prev = h20_val
@@ -253,7 +253,6 @@ def run_exp(up_file, dc_file):
                     feed2.success('updating Vanti')
                     feed2.info('replacing node ' + str(node) + ' in layer ' + str(layer) + ' with '+str(new_node))
                     feed2.info('Vanti: accuracy restored to ' + str(np.round(v_acc * 100)) + '%')
-
 
 def get_cols_diff(up_file, dc_file):
     cols1 = up_file.columns
@@ -302,7 +301,6 @@ def models():
         st.write('traditional models throw an error when structural drifts occur. ')
         st.write('flip coin - instead of an error the model will return a random pass/fail')
         st.write('auto - the model returns is default answer of error / response')
-
 
 def get_reason(type):
     ind = np.random.randint(0, 2, 1)[0]
@@ -656,14 +654,15 @@ def adaptive_ai_demo():
         # st.markdown("""---""")
 
     with st.expander('reach out to our CTO'):
+        ro1, ro2 = st.columns(2)
         st.title('Reach out!')
-        st.text("sub: [AI-CONF] →")
-        st.text("niro@vanti.ai")
-        st.markdown("---")
+        ro1.write("sub: [ADAPTIVE-AI DEMO] →")
+        ro2.write("niro@vanti.ai")
+        # st.markdown("---")
         # st.write('niro@vanti-analytics.com')
-        st.text('vanti.ai')
-        st.text('app.vanti.ai')
-        st.markdown("""---""")
+        ro1.write('vanti.ai')
+        ro2.write('app.vanti.ai')
+        # st.markdown("""---""")
 
     with st.expander('How does adaptive AI work?'):
         st.title('Self Wiring Networks')
@@ -745,7 +744,7 @@ with st.sidebar:
             a = 1
         st.success('connected to to model')
 
-    app_type = st.radio('select application',['paint shop defect detection',
+    app_type = st.selectbox('select application',['paint shop defect detection',
                                               'real-time sensor anomaly detection',
                                               'adaptive AI demo',
                                               'image classification',
