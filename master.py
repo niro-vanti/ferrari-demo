@@ -676,7 +676,9 @@ def video_assembly_app(stream):
     N = df.shape[0]
     metrics = col1.empty()
     error_inv = st.empty()
+    st.subheader('train vs real time root cause distribution')
     graph_inv = st.empty()
+    st.subheader('Root Cause per Unit')
 
     v = df['reason'].value_counts(normalize=True) * 100
     v = v.reset_index(level=0)
@@ -694,6 +696,7 @@ def video_assembly_app(stream):
         feed1, feed2 = st.columns([1, 4])
         fail_counter = 0
         # i = 0
+
         for i in range(df.shape[0]*5):
             time.sleep(0.2)
             if KPI[i%N] == 'Fail':
