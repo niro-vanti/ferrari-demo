@@ -656,8 +656,83 @@ def adaptive_ai_demo(stream):
     with st.expander('Visit Vanti.AI'):
         components.iframe('http://vanti.ai', height=900)
 
-def image_classification_app(stream):
-    st.title('Image Classification')
+def video_assembly_app(stream):
+    st.title('Defect Detection in Video Assembly')
+    st.write(' ')
+    col1, col2 = st.columns((1,4))
+
+    with col1:
+        st.write(' ')
+
+    with col2:
+        st.image('assets/Data/assembly-movie-small.gif', caption='assemly video')
+
+    # with col3:
+    #     st.write(' ')
+
+
+    df = files[0]
+    KPI = files[1]
+    N = df.shape[0]
+    metrics = col1.empty()
+    error_inv = st.empty()
+    graph_inv = st.empty()
+
+    v = df['reason'].value_counts(normalize=True) * 100
+    v = v.reset_index(level=0)
+    v.columns = ['reason', 'train_count']
+    v['predict_count'] = 0
+    # st.write(v)
+
+
+    if stream:
+        if stop_stream:
+            stream = False
+        # fig = px.bar(df)
+        # fig.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+        # st.write(fig)
+        feed1, feed2 = st.columns([1, 4])
+        fail_counter = 0
+        # i = 0
+        for i in range(df.shape[0]*5):
+            time.sleep(0.2)
+            if KPI[i%N] == 'Fail':
+                fail_counter = fail_counter + 1
+                v['predict_count'].loc[v['reason']==df['reason'].iloc[i%N]] = v['predict_count'].loc[v['reason']==df['reason'].iloc[i%N]] + 1
+            with metrics.container():
+                st.metric(label="Predictions", value=i)
+                st.metric(label="Fails", value=fail_counter)
+                st.metric(label="Ratio", value=str(np.round(fail_counter / (i + 1) * 100, 1)) + "%")
+            with error_inv.container():
+                if KPI[i%N] == 'Fail':
+                    a =1
+                    feed1.error('FAIL @' + str(df.index[i%N]))
+                    feed2.info(df['reason'].iloc[i%N])
+            with graph_inv.container():
+                q = v.copy()
+                q['predict_count'] = q['predict_count'] / fail_counter * 100
+                fig = px.bar(q,
+                             x='reason',
+                             y='predict_count',
+                             barmode='group',
+                             color_discrete_sequence=["#00818A"])
+                fig.add_trace(px.bar(v,
+                                     x='reason',
+                                     y='train_count',
+                                     barmode='group',
+                                     color_discrete_sequence=["#52de97","#00818A"]).data[0])
+                fig.update_layout(plot_bgcolor='#ffffff')
+                fig.update_layout(showlegend=True)
+                fig.update_xaxes(type='category')
+                fig.update_layout(yaxis_visible=True, yaxis_showticklabels=True)
+                fig.update_layout(xaxis_visible=True, xaxis_showticklabels=True)
+                fig.update_layout(
+                    width=800,
+                    height=400,
+                    margin=dict(l=5, r=5, t=5, b=5),
+                )
+                st.write(fig)
+
 
 def ask_for_files(app_type):
     if app_type == 'paint shop defect detection':
@@ -713,7 +788,21 @@ def ask_for_files(app_type):
         files.append(KPI)
         st.write(files)
         return files
+    if app_type == 'manual assembly with video':
+        batch = st.file_uploader('upload assembly videos', accept_multiple_files=False)
+        if batch is not None:
+            raw = pd.read_csv(batch)
+        else:
+            raw = pd.read_csv('assets/Data/flex-results.csv', index_col=0)
 
+        df = raw.copy()
+        KPI = df['result'].copy()
+        df.drop(columns=['result'], inplace=True)
+        files = []
+        files.append(df)
+        files.append(KPI)
+        st.write(files)
+        return files
 
     st.error('app type not supported')
 
@@ -724,7 +813,7 @@ with st.sidebar:
     app_type = st.selectbox('select application', ['paint shop defect detection',
                                                    'real-time sensor anomaly detection',
                                                    'adaptive AI demo',
-                                                   'image classification',
+                                                   'manual assembly with video',
                                                    'medical device early fault detection'])
     b1, b2 = st.columns(2)
 
@@ -753,8 +842,8 @@ if app_type == 'real-time sensor anomaly detection':
 if app_type == 'adaptive AI demo':
     adaptive_ai_demo(stream)
 
-if app_type == 'image classification':
-    image_classification_app(stream)
+if app_type == 'manual assembly with video':
+    video_assembly_app(stream)
 
 if app_type == 'medical device early fault detection':
     medical_device_app(stream)
