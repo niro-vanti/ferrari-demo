@@ -378,10 +378,13 @@ def paint_shop_app(stream):
     is_error = False
 
     if stream:
-        if stop_stream:
-            stream = False
 
         for i in range(1000):
+            if stop_stream:
+                stream = False
+                break
+
+
             with pl.container():
                 st.image('assets/Images/' + str(i % N) + '_rect.png')
 
@@ -464,10 +467,11 @@ def RT_sensors_app(stream):
     alerts = pd.DataFrame()
 
     if stream:
-        if stop_stream:
-            stream = False
-
         for i in range(df.shape[0]):
+            if stop_stream:
+                stream = False
+                break
+
             s = max(0, i - window)
             e = min(i, df.shape[0])
             temp = df[feats].iloc[s:e]
@@ -587,14 +591,15 @@ def medical_device_app(stream):
     error_inv = st.empty()
     metrics = st.empty()
     if stream:
-        if stop_stream:
-            stream = False
 
         feed1, feed2 = st.columns([1, 4])
         fail_counter = 0
         i = 0
 
         for i in range(df.shape[0]):
+            if stop_stream:
+                stream = False
+                break
             if KPI[i] == 1:
                 fail_counter = fail_counter + 1
             s = 0
@@ -696,13 +701,14 @@ def video_assembly_app(stream):
     # st.write(v)
 
     if stream:
-        if stop_stream:
-            stream = False
         feed1, feed2 = st.columns([1, 4])
         fail_counter = 0
         # i = 0
 
         for i in range(df.shape[0] * 5):
+            if stop_stream:
+                stream = False
+                break
             time.sleep(0.2)
             if KPI[i % N] == 'Fail':
                 fail_counter = fail_counter + 1
@@ -763,9 +769,13 @@ def pre_paint_app(stream):
     N = len(names)
 
     if stream:
-        if stop_stream:
-            stream = False
+
         for j in range(N * 10):
+            if stop_stream:
+                stream = False
+                break
+
+
             i = np.random.randint(0, N - 1, 1)[0]
             runner.append(classes[i % N])
             q = pd.DataFrame(runner)
