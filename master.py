@@ -384,7 +384,6 @@ def paint_shop_app(stream):
                 stream = False
                 break
 
-
             with pl.container():
                 st.image('assets/Images/' + str(i % N) + '_rect.png')
 
@@ -757,8 +756,9 @@ def pre_paint_app(stream):
     col1, col2 = st.columns((2, 2))
     image_cont = col1.empty()
     class_cont = col2.empty()
+    seen_cont = st.empty()
 
-    runner, names, classes = [], [], []
+    runner, names, classes, seen_names, seen_class = [], [], [], [], []
 
     for folder in os.listdir(os.path.join('assets', 'Data', 'paint-data')):
         if "." not in folder:
@@ -775,7 +775,6 @@ def pre_paint_app(stream):
                 stream = False
                 break
 
-
             i = np.random.randint(0, N - 1, 1)[0]
             runner.append(classes[i % N])
             q = pd.DataFrame(runner)
@@ -787,6 +786,8 @@ def pre_paint_app(stream):
             with image_cont.container():
                 time.sleep(1)
                 st.image(names[i % N], use_column_width=True)  # , caption = names[i%N])
+                seen_names.append(names[i % N])
+                seen_class.append(classes[i % N])
             with class_cont.container():
                 conf = np.random.randint(85, 100, 1)[0]
                 st.info(classes[i % N] + ' with ' + str(conf) + '% confidence')
@@ -801,6 +802,31 @@ def pre_paint_app(stream):
                     # margin=dict(l=5, r=5, t=5, b=5),
                 )
                 st.write(fig)
+
+            unique_list = (list(set(seen_class)))
+            # st.write(unique_list)
+            with seen_cont.container():
+                for u in unique_list:
+                    # st.write(u)
+                    # g1, g2, g3, g4 = seen_cont.columns(4)
+                    with st.expander(u):
+                        g1, g2, g3, g4 = st.columns(4)
+                        count = 0
+                        for im in range(len(seen_names)):
+
+                            if seen_class[im] == u:
+                                if count == 0:
+                                    g1.image(seen_names[im], use_column_width=True, caption=u + "_" + str(im))
+                                if count == 1:
+                                    g2.image(seen_names[im], use_column_width=True, caption=u + "_" + str(im))
+                                if count == 2:
+                                    g3.image(seen_names[im], use_column_width=True, caption=u + "_" + str(im))
+                                if count == 3:
+                                    g4.image(seen_names[im], use_column_width=True, caption=u + "_" + str(im))
+                                count = count + 1
+                                count = count % 4
+
+                        # st.write(u)
 
 
 def ask_for_files(app_type):
