@@ -1,7 +1,6 @@
 import numpy as np
 import streamlit as st
 import pandas as pd
-import altair as alt
 from sklearn.metrics import accuracy_score
 import streamlit.components.v1 as components
 import webbrowser
@@ -11,10 +10,10 @@ from sklearn.decomposition import PCA
 import os
 import toml
 
-
-
 # constants
 vanti_app_url = 'https://app.vanti.ai'
+h2o_app_url = 'https://cloud.h2o.ai/apps/6ab8bf64-9bc5-4a68-9a7e-7251909c8d47'
+
 page_title = "Vanti Apps"
 page_icon = ":money_with_wings:"  # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = "wide"
@@ -27,8 +26,8 @@ BETA = 1 - GAMMA / (BASE_PERF[0])
 VS = 0.01
 stream = False
 
-nodes = ['anomaly remover','formatter','mini decision tree','regressor','classifier','SVM','perceptron',
-         'nan filler','normalizer','encoder','balancer']
+nodes = ['anomaly remover', 'formatter', 'mini decision tree', 'regressor', 'classifier', 'SVM', 'perceptron',
+         'nan filler', 'normalizer', 'encoder', 'balancer']
 
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout=layout)
 
@@ -57,6 +56,7 @@ def my_pcs(df, n_comp):
     x.columns = col_names
     return x
 
+
 def get_pred(base_perf, beta, vs, thr1, gt, i):
     if i >= thr1:
         h_score = 0.5 + np.random.randn() * vs / 4
@@ -75,6 +75,7 @@ def get_pred(base_perf, beta, vs, thr1, gt, i):
     h_pred = gt if h_flip <= h_score else 1 - gt
 
     return h_score, v_score, v_pred, h_pred
+
 
 def parse_files(up_file, dc_file):
     # df = pd.read_csv(up_file)
@@ -103,6 +104,7 @@ def parse_files(up_file, dc_file):
 
     return tar, tar_concat, df, df_concat, dc, kpi, thr1, thr2, b, dic, inv_dic
 
+
 def calc_perf(df, name, window=50):
     if df.shape[0] < window:
         gt = df['Ground Truth']
@@ -113,6 +115,7 @@ def calc_perf(df, name, window=50):
         pr = df[name].iloc[-window:]
         acc = accuracy_score(gt, pr)
     return acc
+
 
 def run_exp(up_file, dc_file):
     pl = st.empty()
@@ -171,8 +174,6 @@ def run_exp(up_file, dc_file):
         h20_prev = 0
         for i in range(1, thr1 + thr2):
             # time.sleep(0.05)
-
-
 
             error_val = -1 if i >= thr1 else 0
 
@@ -260,8 +261,9 @@ def run_exp(up_file, dc_file):
                     feed1.info('notice')
                     feed1.info('notice')
                     feed2.success('updating Vanti')
-                    feed2.info('replacing node ' + str(node) + ' in layer ' + str(layer) + ' with '+str(new_node))
+                    feed2.info('replacing node ' + str(node) + ' in layer ' + str(layer) + ' with ' + str(new_node))
                     feed2.info('Vanti: accuracy restored to ' + str(np.round(vanti_val * 100)) + '%')
+
 
 def get_cols_diff(up_file, dc_file):
     cols1 = up_file.columns
@@ -271,25 +273,27 @@ def get_cols_diff(up_file, dc_file):
 
     return diff
 
+
 def get_reason_medical(df, ms, ss):
     F = np.random.randint(1, 4, 1)[0]
     n = df.shape[1]
     cols = df.columns.to_list()
     phrases = []
     for j in range(F):
-        feat = cols[np.random.randint(0, n-1, 1)[0]]
+        feat = cols[np.random.randint(0, n - 1, 1)[0]]
         s = " > " if np.random.rand() < 0.5 else " < "
         m = np.round(ms[feat] + np.random.randn(), 2)
         d = np.round(ss[feat], 2)
         if s == " > ":
-            v = m+d
+            v = m + d
         else:
-            v = m-d
+            v = m - d
         v = str(np.round(v, 2))
-        phrases.append(feat+s+v)
+        phrases.append(feat + s + v)
     phrase = ' and '.join(phrases)
 
     return phrase
+
 
 def models():
     st.subheader("models")
@@ -301,7 +305,7 @@ def models():
             webbrowser.open_new_tab(vanti_app_url)
         if cc2.button('app competitor'):
             webbrowser.open_new_tab(h2o_app_url)
-    z1, z2, z3 = st.columns((1,1,3))
+    z1, z2, z3 = st.columns((1, 1, 3))
     dc2 = z3.file_uploader('mojo-file', accept_multiple_files=False)
 
     dc1r = z1.radio('Vanti error handling', ['flip coin', "auto"])
@@ -311,7 +315,8 @@ def models():
         st.write('flip coin - instead of an error the model will return a random pass/fail')
         st.write('auto - the model returns is default answer of error / response')
 
-def get_reason(type):
+
+def get_reason(reason_type):
     ind = np.random.randint(0, 2, 1)[0]
     sensor_reasons = [
         'Sensor value is ok, but trend is unlikely',
@@ -325,14 +330,16 @@ def get_reason(type):
         ''
     ]
 
-    if type == 'sensor':
+    if reason_type == 'sensor':
         return sensor_reasons[ind]
-    if type == 'situation':
+    if reason_type == 'situation':
         return situation_reasons[ind]
     return 'no clear cut root cause'
 
+
 def highlight_survived(s):
     return ['color: #52de97'] * len(s) if s['alert type'] == 'Situation' else ['color: #000000'] * len(s)
+
 
 # app functions
 def paint_shop_app(stream):
@@ -345,7 +352,8 @@ def paint_shop_app(stream):
         st.write("_sensitivity 100 --> alert me on **everything**_")
         st.write("_sensitivity 0 --> alert me on **critical things only**_")
     with sbc2.expander('What is Patch Size?'):
-        st.write('Patch size is the # of pixels in each dimension that the images is broken down to for defect detections')
+        st.write(
+            'Patch size is the # of pixels in each dimension that the images is broken down to for defect detections')
         st.write('a smaller patch will find smaller defects, but will take longer to run')
         st.write('a bigger patch will find bigger defects, but will take faster to run')
 
@@ -360,7 +368,6 @@ def paint_shop_app(stream):
             it = file.split('_')[0]
             dif = file.split('_')[-1].split('.')[0]
             defect_list[it] = dif
-
 
     c1, c2 = st.columns(2)
 
@@ -394,6 +401,7 @@ def paint_shop_app(stream):
             if is_error:
                 with st.expander(defect + '  ::  defect-alert zoom-in @ section' + str(i % N)):
                     st.image('assets/Images/' + str(i % N) + '_zoom_' + defect + '.png')
+
 
 def RT_sensors_app(stream):
     st.title('Real Time Anomaly Detection')
@@ -525,6 +533,7 @@ def RT_sensors_app(stream):
     with st.expander('see training data'):
         st.dataframe(df)
 
+
 def medical_device_app(stream):
     st.title('Medical Device Early Fault Detection')
 
@@ -615,6 +624,7 @@ def medical_device_app(stream):
                     # feed2.error('@index :: ' + str(i))
                     feed2.info(get_reason_medical(df, ms, ss))
 
+
 def adaptive_ai_demo(stream):
     st.title('Adaptive AI Demo')
     st.header('Run Experiment')
@@ -634,7 +644,6 @@ def adaptive_ai_demo(stream):
             'that is '
             'a result of modern data architectures. Data drift breaks processes and corrupts data, but can also reveal '
             'new opportunities for data use.')
-
 
     with st.expander('6 easy steps'):
         st.title('6 easy steps')
@@ -656,10 +665,11 @@ def adaptive_ai_demo(stream):
     with st.expander('Visit Vanti.AI'):
         components.iframe('http://vanti.ai', height=900)
 
+
 def video_assembly_app(stream):
     st.title('Defect Detection in Video Assembly')
     st.write(' ')
-    col1, col2 = st.columns((1,4))
+    col1, col2 = st.columns((1, 4))
 
     with col1:
         st.write(' ')
@@ -669,7 +679,6 @@ def video_assembly_app(stream):
 
     # with col3:
     #     st.write(' ')
-
 
     df = files[0]
     KPI = files[1]
@@ -686,31 +695,29 @@ def video_assembly_app(stream):
     v['predict_count'] = 0
     # st.write(v)
 
-
     if stream:
         if stop_stream:
             stream = False
-        # fig = px.bar(df)
-        # fig.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
-        # st.write(fig)
         feed1, feed2 = st.columns([1, 4])
         fail_counter = 0
         # i = 0
 
-        for i in range(df.shape[0]*5):
+        for i in range(df.shape[0] * 5):
             time.sleep(0.2)
-            if KPI[i%N] == 'Fail':
+            if KPI[i % N] == 'Fail':
                 fail_counter = fail_counter + 1
-                v['predict_count'].loc[v['reason']==df['reason'].iloc[i%N]] = v['predict_count'].loc[v['reason']==df['reason'].iloc[i%N]] + 1
+                v['predict_count'].loc[v['reason'] == df['reason'].iloc[i % N]] = v['predict_count'].loc[
+                                                                                      v['reason'] == df['reason'].iloc[
+                                                                                          i % N]] + 1
             with metrics.container():
                 st.metric(label="Predictions", value=i)
                 st.metric(label="Fails", value=fail_counter)
                 st.metric(label="Ratio", value=str(np.round(fail_counter / (i + 1) * 100, 1)) + "%")
             with error_inv.container():
-                if KPI[i%N] == 'Fail':
-                    a =1
-                    feed1.error('FAIL @' + str(df.index[i%N]))
-                    feed2.info(df['reason'].iloc[i%N])
+                if KPI[i % N] == 'Fail':
+                    a = 1
+                    feed1.error('FAIL @' + str(df.index[i % N]))
+                    feed2.info(df['reason'].iloc[i % N])
             with graph_inv.container():
                 q = v.copy()
                 q['predict_count'] = q['predict_count'] / fail_counter * 100
@@ -723,7 +730,7 @@ def video_assembly_app(stream):
                                      x='reason',
                                      y='train_count',
                                      barmode='group',
-                                     color_discrete_sequence=["#52de97","#00818A"]).data[0])
+                                     color_discrete_sequence=["#52de97", "#00818A"]).data[0])
                 fig.update_layout(plot_bgcolor='#ffffff')
                 fig.update_layout(showlegend=True)
                 fig.update_xaxes(type='category')
@@ -737,7 +744,58 @@ def video_assembly_app(stream):
                 st.write(fig)
 
 
+def pre_paint_app(stream):
+    st.title('Pre Paint Metal Defects')
+    st.write(' ')
+
+    col1, col2 = st.columns((2, 2))
+    image_cont = col1.empty()
+    class_cont = col2.empty()
+
+    runner, names, classes = [], [], []
+
+    for folder in os.listdir(os.path.join('assets', 'Data', 'paint-data')):
+        if "." not in folder:
+            for file in os.listdir(os.path.join('assets', 'Data', 'paint-data', folder)):
+                names.append(os.path.join('assets', 'Data', 'paint-data', folder, file))
+                classes.append(folder)
+
+    N = len(names)
+
+    if stream:
+        if stop_stream:
+            stream = False
+        for j in range(N * 10):
+            i = np.random.randint(0, N - 1, 1)[0]
+            runner.append(classes[i % N])
+            q = pd.DataFrame(runner)
+
+            v = q[0].value_counts(normalize=False)
+            v = v.reset_index(level=0)
+            v.columns = ['class', 'count']
+
+            with image_cont.container():
+                time.sleep(1)
+                st.image(names[i % N], use_column_width=True)  # , caption = names[i%N])
+            with class_cont.container():
+                conf = np.random.randint(85, 100, 1)[0]
+                st.info(classes[i % N] + ' with ' + str(conf) + '% confidence')
+                fig = px.bar(v, y='class', x='count',
+                             color='count',
+                             color_discrete_sequence=['#00818A', '#52DE97', '#395243', '#ff3c78', '#f3f4d1', '#bada55'],
+                             orientation='h')
+                fig.update_layout(plot_bgcolor='#ffffff')
+                fig.update_layout(
+                    width=500,
+                    # height=400,
+                    # margin=dict(l=5, r=5, t=5, b=5),
+                )
+                st.write(fig)
+
+
 def ask_for_files(app_type):
+    if app_type == 'pre paint metal defects':
+        return None
     if app_type == 'paint shop defect detection':
         # df = pd.read_csv('assets/Data/Images/car-pano.pn
         return None
@@ -809,11 +867,13 @@ def ask_for_files(app_type):
 
     st.error('app type not supported')
 
+
 # sidebar
 with st.sidebar:
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
     stream = False
     app_type = st.selectbox('select application', ['paint shop defect detection',
+                                                   "pre paint metal defects",
                                                    'real-time sensor anomaly detection',
                                                    'adaptive AI demo',
                                                    'manual assembly with video',
@@ -832,7 +892,6 @@ with st.sidebar:
 
     files = ask_for_files(app_type)
 
-
 # main loop
 
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
@@ -850,3 +909,6 @@ if app_type == 'manual assembly with video':
 
 if app_type == 'medical device early fault detection':
     medical_device_app(stream)
+
+if app_type == 'pre paint metal defects':
+    pre_paint_app(stream)
