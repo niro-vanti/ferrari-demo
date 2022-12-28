@@ -118,9 +118,9 @@ def calc_perf(df, name, window=50):
 
 
 def run_exp(up_file, dc_file):
-    pl = st.empty()
-    pl2 = st.empty()
-    pca_plot = st.empty()
+    # pl = st.empty()
+    # pl2 = st.empty()
+    # pca_plot = st.empty()
 
     recovery = False
     drop = False
@@ -268,7 +268,7 @@ def run_exp(up_file, dc_file):
 def get_cols_diff(up_file, dc_file):
     cols1 = up_file.columns
     diff = []
-    temp = [diff.append(i) for i in cols1 if i not in dc_file.columns]
+    [diff.append(i) for i in cols1 if i not in dc_file.columns]
     # [st.write(i) for i in cols1 if i not in dc_file.columns]
 
     return diff
@@ -357,8 +357,8 @@ def paint_shop_app(stream):
         st.write('a smaller patch will find smaller defects, but will take longer to run')
         st.write('a bigger patch will find bigger defects, but will take faster to run')
 
-    N = 146
-    zoom_names = []
+    # image_number = 146
+    # zoom_names = []
     defect_list = {}
 
     alerts = pd.DataFrame()
@@ -373,7 +373,7 @@ def paint_shop_app(stream):
 
     pl = st.empty()
     p2 = st.empty()
-    N = 146
+    image_number = 146
     cls = ''
     is_error = False
 
@@ -385,9 +385,9 @@ def paint_shop_app(stream):
                 break
 
             with pl.container():
-                st.image('assets/Images/' + str(i % N) + '_rect.png')
+                st.image('assets/Images/' + str(i % image_number) + '_rect.png')
 
-                defect = defect_list[str(i % N)]
+                defect = defect_list[str(i % image_number)]
                 print(i, defect)
 
                 if defect == 'no-defect':
@@ -396,16 +396,16 @@ def paint_shop_app(stream):
                 else:
                     is_error = True
                     q = pd.DataFrame({
-                        'section': [i % N],
+                        'section': [i % image_number],
                         'defect': [defect],
                     })
                     alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
             if is_error:
-                with st.expander(defect + '  ::  defect-alert zoom-in @ section' + str(i % N)):
-                    st.image('assets/Images/' + str(i % N) + '_zoom_' + defect + '.png')
+                with st.expander(defect + '  ::  defect-alert zoom-in @ section' + str(i % image_number)):
+                    st.image('assets/Images/' + str(i % image_number) + '_zoom_' + defect + '.png')
 
 
-def RT_sensors_app(stream):
+def rt_sensors_app(stream):
     st.title('Real Time Anomaly Detection')
     df = files[0]
     if 'prog' in df.columns:
@@ -567,14 +567,14 @@ def medical_device_app(stream):
     a = 1
 
     if mode == 'alert me only when there''s a situation anomaly':
-        MODE = 0
+        selected_mode = 0
     elif mode == 'alert me only when there''s a sensor anomaly':
-        MODE = 1
+        selected_mode = 1
     elif mode == 'I want all alerts':
-        MODE = 2
+        selected_mode = 2
     else:
-        MODE = 3
-    print(MODE)
+        selected_mode = 3
+    print(selected_mode)
 
     sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 50.0)
     with c2.expander("what is model sensitivity?"):
@@ -720,7 +720,6 @@ def video_assembly_app(stream):
                 st.metric(label="Ratio", value=str(np.round(fail_counter / (i + 1) * 100, 1)) + "%")
             with error_inv.container():
                 if KPI[i % N] == 'Fail':
-                    a = 1
                     feed1.error('FAIL @' + str(df.index[i % N]))
                     feed2.info(df['reason'].iloc[i % N])
             with graph_inv.container():
@@ -842,9 +841,8 @@ def ask_for_files(app_type):
 
             df['sen_alert'] = 0
             df['sit_alert'] = 0
-        files = []
-        files.append(df)
-        return files
+        loaded_files = [df]
+        return loaded_files
     if app_type == 'adaptive AI demo':
         data_file = st.file_uploader("upload `good' file", accept_multiple_files=False)
         dont_file = st.file_uploader("upload `drift' file", accept_multiple_files=False)
@@ -853,15 +851,13 @@ def ask_for_files(app_type):
         else:
             uploaded_file_int = pd.read_csv('assets/Data/adaptive-ai-demo-data.csv')
         if dont_file is not None:
-            dontcare_int = pd.read_csv(dont_file)
+            dont_care_int = pd.read_csv(dont_file)
         else:
-            dontcare_int = pd.read_csv('assets/Data/adaptive-ai-demo-drifted.csv')
+            dont_care_int = pd.read_csv('assets/Data/adaptive-ai-demo-drifted.csv')
 
-        files = []
-        files.append(uploaded_file_int)
-        files.append(dontcare_int)
-        st.write(files)
-        return files
+        loaded_files = [uploaded_file_int, dont_care_int]
+        st.write(loaded_files)
+        return loaded_files
     if app_type == 'medical device early fault detection':
         batch = st.file_uploader('upload medical device data', accept_multiple_files=False)
         if batch is not None:
@@ -871,14 +867,12 @@ def ask_for_files(app_type):
 
         raw = raw.sample(frac=1).reset_index(drop=True)
         kpi = 'S_Scrap'
-        KPI = raw[kpi].copy()
+        kpi_col = raw[kpi].copy()
         df = raw.copy()
         df.drop(columns=[kpi], inplace=True)
-        files = []
-        files.append(df)
-        files.append(KPI)
-        st.write(files)
-        return files
+        loaded_files = [df, kpi_col]
+        st.write(loaded_files)
+        return loaded_files
     if app_type == 'manual assembly with video':
         batch = st.file_uploader('upload assembly videos', accept_multiple_files=False)
         if batch is not None:
@@ -887,13 +881,11 @@ def ask_for_files(app_type):
             raw = pd.read_csv('assets/Data/flex-results.csv', index_col=0)
 
         df = raw.copy()
-        KPI = df['result'].copy()
+        kpi_col = df['result'].copy()
         df.drop(columns=['result'], inplace=True)
-        files = []
-        files.append(df)
-        files.append(KPI)
-        st.write(files)
-        return files
+        loaded_files = [df, kpi_col]
+        st.write(loaded_files)
+        return loaded_files
 
     st.error('app type not supported')
 
@@ -929,7 +921,7 @@ if app_type == 'paint shop defect detection':
     paint_shop_app(stream)
 
 if app_type == 'real-time sensor anomaly detection':
-    RT_sensors_app(stream)
+    rt_sensors_app(stream)
 
 if app_type == 'adaptive AI demo':
     adaptive_ai_demo(stream)
