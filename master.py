@@ -432,7 +432,7 @@ def RT_sensors_app(stream):
     with c2.expander('what are these alerts?'):
         st.write('a **sensor** anomaly is when a single sensor is tracked by Vanti''s model and the model decides to '
                  'alert the user')
-        st.write('a **situation** anomaly is when all sensors are tracked together by Vanti''s model and the the model '
+        st.write('a **situation** anomaly is when all sensors are tracked together by Vanti''s model and the model '
                  'decides to alert the user')
 
     a = 1
@@ -561,7 +561,7 @@ def medical_device_app(stream):
     with c2.expander('what are these alerts?'):
         st.write('a **sensor** anomaly is when a single sensor is tracked by Vanti''s model and the model decides to '
                  'alert the user')
-        st.write('a **situation** anomaly is when all sensors are tracked together by Vanti''s model and the the model '
+        st.write('a **situation** anomaly is when all sensors are tracked together by Vanti''s model and the model '
                  'decides to alert the user')
 
     a = 1
@@ -804,16 +804,12 @@ def pre_paint_app(stream):
                 st.write(fig)
 
             unique_list = (list(set(seen_class)))
-            # st.write(unique_list)
             with seen_cont.container():
                 for u in unique_list:
-                    # st.write(u)
-                    # g1, g2, g3, g4 = seen_cont.columns(4)
                     with st.expander(u):
                         g1, g2, g3, g4 = st.columns(4)
                         count = 0
                         for im in range(len(seen_names)):
-
                             if seen_class[im] == u:
                                 if count == 0:
                                     g1.image(seen_names[im], use_column_width=True, caption=u + "_" + str(im))
@@ -825,8 +821,6 @@ def pre_paint_app(stream):
                                     g4.image(seen_names[im], use_column_width=True, caption=u + "_" + str(im))
                                 count = count + 1
                                 count = count % 4
-
-                        # st.write(u)
 
 
 def ask_for_files(app_type):
