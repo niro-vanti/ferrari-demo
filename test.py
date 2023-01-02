@@ -489,7 +489,7 @@ def adaptive_ai_demo(stream):
     uploaded_file = files[0]
     dont_care = files[1]
     if st.button('Run!'):
-        run_exp(uploaded_file, dont_care)
+        run_exp(uploaded_file, dont_care, BASE_PERF, BETA, VS)
     else:
         a = 1
 
