@@ -1,17 +1,14 @@
-# import numpy as np
-# import streamlit as st
-# import pandas as pd
+import numpy as np
+import streamlit as st
+import pandas as pd
 # from sklearn.metrics import accuracy_score
 import streamlit.components.v1 as components
-# import webbrowser
 import time
 import plotly.express as px
-# from sklearn.decomposition import PCA
 import os
 import toml
 from auxFunctions import *
-from PIL import Image
-import PIL
+import plotly.graph_objects as go
 
 # constants
 vanti_app_url = 'https://app.vanti.ai'
@@ -302,13 +299,19 @@ def rt_sensors_app(stream):
                     ['alert me only when there''s a situation anomaly',
                      'alert me only when there''s a sensor anomaly',
                      'I want all alerts'])
+    normalize = st.checkbox('Scale Sensors', value=True)
+    if normalize:
+        df = df / df.max()
+    else:
+        a =1
+
+    max_val = df.max().max()*1.1
+    min_val = df.min().min()*1.1
     with c2.expander('what are these alerts?'):
         st.write('a **sensor** anomaly is when a single sensor is tracked by Vanti''s model and the model decides to '
                  'alert the user')
         st.write('a **situation** anomaly is when all sensors are tracked together by Vanti''s model and the model '
                  'decides to alert the user')
-
-    a = 1
 
     if mode == 'alert me only when there''s a situation anomaly':
         MODE = 0
@@ -338,6 +341,9 @@ def rt_sensors_app(stream):
     pl2 = st.empty()
     alerts = pd.DataFrame()
 
+    alert_highlights = {}
+    colors_highlights = ["LightSkyBlue", "RoyalBlue", "forestgreen", "lightseagreen"]
+
     if stream:
         for i in range(df.shape[0]):
             if stop_stream:
@@ -360,10 +366,27 @@ def rt_sensors_app(stream):
                         'reason': [rr],
                         'alert type': ['sensor']
                     })
+
                     if MODE == 1 or MODE == 2:
                         alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
                         df['sen_alert'].iloc[i] = 1
-                        # print('writing sen alert to ', i)
+                        colorh = '#ff3c78'
+                        sss = max(0, i - 5)
+                        eee = min(i + 5, df.shape[0])
+
+                        alert_num = df['sit_alert'].cumsum().max()
+                        alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
+                            type="rect",
+                            x0=df.index[sss],
+                            y0=min_val,  # df['keyPoints1'].iloc[i-1],
+                            x1=df.index[eee],
+                            y1=max_val,  # df['keyPoints2'].iloc[i-1],
+                            fillcolor=colorh,
+                            line=dict(
+                                color=colorh,
+                                width=3),
+                            opacity=0.25,
+                            layer="below")
 
                         with pl2.container():
                             sss = max(0, i - 10)
@@ -385,6 +408,22 @@ def rt_sensors_app(stream):
                     })
                     alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
                     df['sit_alert'].iloc[i] = 1
+                    colorh = '#ff3c78'
+                    sss = max(0, i - 5)
+                    eee = min(i + 5, df.shape[0])
+                    alert_num = df['sit_alert'].cumsum().max()
+                    alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
+                        type="rect",
+                        x0=df.index[sss],
+                        y0=min_val,  # df['keyPoints1'].iloc[i-1],
+                        x1=df.index[eee],
+                        y1=max_val,  # df['keyPoints2'].iloc[i-1],
+                        fillcolor=colorh,
+                        line=dict(
+                            color=colorh,
+                            width=3),
+                        opacity=0.25,
+                        layer="below")
 
                     with pl2.container():
                         sss = max(0, i - 10)
@@ -392,13 +431,15 @@ def rt_sensors_app(stream):
                         temp2 = df[feats].iloc[sss:eee]
                         fig3 = px.line(temp2)
                         fig3.update_layout(plot_bgcolor='#ffffff')
+
                     with st.expander('situation-alert zoom-in @' + str(df.index[i])):
                         st.write(fig3, title=str(df.index[i]))
 
             with pl.container():
-                # st.text(str(np.round(i / df.shape[0] * 100, 2)) + ' %')
                 fig = px.line(data_frame=temp)
                 fig.update_layout(plot_bgcolor='#ffffff')
+                lst_shapes = list(alert_highlights.values())
+                fig.update_layout(shapes=lst_shapes)
                 st.write(fig)
                 # time.sleep(0.1)
                 st.dataframe(alerts.style.apply(highlight_survived, axis=1))
@@ -580,7 +621,6 @@ def video_assembly_app(stream):
 
     st.subheader('train vs real time root cause distribution')
     graph_inv = st.empty()
-
 
     st.subheader('Root Cause per Unit')
 
