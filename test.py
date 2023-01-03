@@ -417,7 +417,7 @@ def medical_device_app(stream):
     KPI = files[1]
     fi = files[2]
     # --------------------------------------
-    fi['Feature Importance'] = fi['Feature Importance'].apply(lambda x:float(x.split('%')[0]))
+    fi['Feature Importance'] = fi['Feature Importance'].apply(lambda x: float(x.split('%')[0]))
     fi.sort_values(by=['Feature Importance'], ascending=False, inplace=True)
 
     # --------------------------------------
@@ -569,8 +569,19 @@ def video_assembly_app(stream):
     N = df.shape[0]
     metrics = col1.empty()
     error_inv = st.empty()
+    with st.expander('Operator Annotation'):
+        with st.form("what was the error?"):
+            ui1, ui2 = st.columns(2)
+            user_sn = ui1.text_input('Unit SN')
+            user_reason = ui2.text_input('what was the cause of failure?')
+            submitted = st.form_submit_button("Submit")
+            if submitted:
+                st.write("Unit", user_sn, "root cause", user_reason)
+
     st.subheader('train vs real time root cause distribution')
     graph_inv = st.empty()
+
+
     st.subheader('Root Cause per Unit')
 
     v = df['reason'].value_counts(normalize=True) * 100
@@ -602,6 +613,9 @@ def video_assembly_app(stream):
                 if KPI[i % N] == 'Fail':
                     feed1.error('FAIL @' + str(df.index[i % N]))
                     feed2.info(df['reason'].iloc[i % N])
+                    # if df['reason'].iloc[i % N] == 'General Error':
+                    #     new_reason = st.text_input(str(i%N)+'_what was the reason?')
+                    #     df['reason'].iloc[i % N] = new_reason
             with graph_inv.container():
                 q = v.copy()
                 q['predict_count'] = q['predict_count'] / fail_counter * 100
