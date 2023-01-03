@@ -415,6 +415,11 @@ def medical_device_app(stream):
 
     df = files[0]
     KPI = files[1]
+    fi = files[2]
+    # --------------------------------------
+    fi['Feature Importance'] = fi['Feature Importance'].apply(lambda x:float(x.split('%')[0]))
+    fi.sort_values(by=['Feature Importance'], ascending=False, inplace=True)
+
     # --------------------------------------
     clist = ['All Measurements']
 
@@ -454,6 +459,8 @@ def medical_device_app(stream):
         st.write("_sensitivity 100 --> alert me on **everything**_")
         st.write("_sensitivity 0 --> alert me on **critical things only**_")
 
+    with st.expander('feature importance'):
+        st.bar_chart(fi)
     sbc1, sbc2 = st.columns(2)
 
     ms = {i: df[i].mean() for i in feats}
@@ -733,17 +740,19 @@ def ask_for_files(app_type):
         return loaded_files
     if app_type == 'medical device early fault detection':
         batch = st.file_uploader('upload medical device data', accept_multiple_files=False)
+        fe = st.file_uploader('upload model feature importance', accept_multiple_files=False)
         if batch is not None:
             raw = pd.read_csv(batch)
         else:
             raw = pd.read_csv('assets/Data/medical-data.csv')
+            fe = pd.read_csv('assets/Data/medical_device_feature_importance.csv', index_col=0)
 
         raw = raw.sample(frac=1).reset_index(drop=True)
         kpi = 'S_Scrap'
         kpi_col = raw[kpi].copy()
         df = raw.copy()
         df.drop(columns=[kpi], inplace=True)
-        loaded_files = [df, kpi_col]
+        loaded_files = [df, kpi_col, fe]
         st.write(loaded_files)
         return loaded_files
     if app_type == 'manual assembly with video':
