@@ -459,7 +459,7 @@ def medical_device_app(stream):
         st.write("_sensitivity 100 --> alert me on **everything**_")
         st.write("_sensitivity 0 --> alert me on **critical things only**_")
 
-    with st.expander('feature importance'):
+    with st.expander('Driving Factors'):
         st.bar_chart(fi)
     sbc1, sbc2 = st.columns(2)
 
