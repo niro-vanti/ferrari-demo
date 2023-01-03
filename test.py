@@ -10,6 +10,8 @@ import plotly.express as px
 import os
 import toml
 from auxFunctions import *
+from PIL import Image
+import PIL
 
 # constants
 vanti_app_url = 'https://app.vanti.ai'
@@ -216,6 +218,8 @@ def paint_shop_app(stream):
 
     alerts = pd.DataFrame()
 
+    seen_names, seen_class = [], []
+
     for file in os.listdir('assets/Images'):
         if '_zoom' in file:
             it = file.split('_')[0]
@@ -229,19 +233,24 @@ def paint_shop_app(stream):
     image_number = 146
     cls = ''
     is_error = False
+    seen_cont = st.empty()
 
     if stream:
 
-        for i in range(1000):
+        for i in range(image_number):
             if stop_stream:
                 stream = False
                 break
 
             with pl.container():
-                st.image('assets/Images/' + str(i % image_number) + '_rect.png')
+                im_name = 'assets/Images/' + str(i % image_number) + '_rect.png'
+                st.image(im_name)
 
                 defect = defect_list[str(i % image_number)]
-                print(i, defect)
+                # print(i, defect)
+
+                seen_names.append('assets/Images/' + str(i % image_number) + '_rect_thumb.png')
+                seen_class.append(defect)
 
                 if defect == 'no-defect':
                     st.success('no defect!')
@@ -253,6 +262,17 @@ def paint_shop_app(stream):
                         'defect': [defect],
                     })
                     alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
+
+            unique_list = (list(set(seen_class)))
+
+            with seen_cont.container():
+                for u in unique_list:
+                    with st.expander(u):
+                        selected = []
+                        for name, cls in zip(seen_names, seen_class):
+                            if cls == u:
+                                selected.append(name)
+                        st.image(selected)
             if is_error:
                 with st.expander(defect + '  ::  defect-alert zoom-in @ section' + str(i % image_number)):
                     st.image('assets/Images/' + str(i % image_number) + '_zoom_' + defect + '.png')
