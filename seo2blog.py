@@ -3,7 +3,6 @@ import streamlit as st
 import pyperclip
 
 # Set the API key
-# openai.api_key = "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"
 
 # Set the model
 model = "text-davinci-002"
