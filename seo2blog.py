@@ -87,7 +87,8 @@ with st.sidebar:
     st.write('then select a topic, style, and word count and generate your SEO optimized blog post. ')
     st.write('\n')
 
-    input_key = st.text_input('enter your api key', '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',
+    input_key = st.text_input('enter your api key',
+                              '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',
                               type='password')
     print(input_key)
     print(type(input_key))
