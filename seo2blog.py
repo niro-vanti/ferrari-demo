@@ -13,8 +13,7 @@ st.set_page_config(page_title=page_title, page_icon=page_icon, layout="wide")
 
 
 def set_api_key(api_key):
-
-    api_key = 'sk-'+'Rh36PLsQZNVABOvAKoLHT3BlbkFJiAo8ruFDkRxE3B48HGMK'
+    api_key = 'sk-'+'VS6Smvx6EnEer1Cr1IFVT3BlbkFJMOwzIrdGlLdylDf7XOzu'
     st.session_state.api_key = api_key
     openai.api_key = api_key
     st.session_state.api_key_success = True
@@ -77,7 +76,7 @@ if 'blog' not in st.session_state:
 if 'style' not in st.session_state:
     st.session_state.style = None
 if 'api_key' not in st.session_state:
-    st.session_state.api_key = None
+    st.session_state.api_key =
 if 'api_key_success' not in st.session_state:
     st.session_state.api_key_success = False
 
@@ -88,7 +87,7 @@ with st.sidebar:
     st.write('enter a topic, and some seo optimized blog topics will appear.')
     st.write('then select a topic, style, and word count and generate your SEO optimized blog post. ')
     st.write('\n')
-    input_key = st.text_input('enter your api key','Rh36PLsQZNVABOvAKoLHT3BlbkFJiAo8ruFDkRxE3B48HGMK',
+    input_key = st.text_input('enter your api key','don\'t have a key? contact niro',
                               type='password')
     print(input_key)
     print(type(input_key))
