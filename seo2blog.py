@@ -3,7 +3,7 @@ import streamlit as st
 import pyperclip
 
 # Set the API key
-openai.api_key = "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"
+# openai.api_key = "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"
 
 # Set the model
 model = "text-davinci-002"
@@ -11,6 +11,12 @@ model = "text-davinci-002"
 page_title = "SEO blog post generator"
 page_icon = ":fax:"  # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout="wide")
+
+
+def set_api_key(api_key):
+    st.session_state.api_key = api_key
+    openai.api_key = api_key
+    st.session_state.api_key_success = True
 
 
 def copy_blog():
@@ -69,6 +75,10 @@ if 'blog' not in st.session_state:
     st.session_state.blog = None
 if 'style' not in st.session_state:
     st.session_state.style = None
+if 'api_key' not in st.session_state:
+    st.session_state.api_key = None
+if 'api_key_success' not in st.session_state:
+    st.session_state.api_key_success = False
 
 st.title('Niro\'s SEO magic')
 with st.sidebar:
@@ -77,6 +87,14 @@ with st.sidebar:
     st.write('enter a topic, and some seo optimized blog topics will appear.')
     st.write('then select a topic, style, and word count and generate your SEO optimized blog post. ')
     st.write('\n')
+
+    input_key = st.text_input('enter your api key', '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',
+                              type='password')
+    print(input_key)
+    print(type(input_key))
+    st.button('connect', on_click=set_api_key, kwargs={'api_key': input_key})
+    if st.session_state.api_key_success:
+        st.success('connected')
 
 col1, col2 = st.columns(2)
 query = col1.text_input('enter a topic')
