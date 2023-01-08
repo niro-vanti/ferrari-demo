@@ -76,7 +76,7 @@ if 'blog' not in st.session_state:
 if 'style' not in st.session_state:
     st.session_state.style = None
 if 'api_key' not in st.session_state:
-    st.session_state.api_key =
+    st.session_state.api_key = None
 if 'api_key_success' not in st.session_state:
     st.session_state.api_key_success = False
 
