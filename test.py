@@ -9,6 +9,7 @@ import os
 import toml
 from auxFunctions import *
 import plotly.graph_objects as go
+import random
 
 # constants
 vanti_app_url = 'https://app.vanti.ai'
@@ -303,10 +304,10 @@ def rt_sensors_app(stream):
     if normalize:
         df = df / df.max()
     else:
-        a =1
+        a = 1
 
-    max_val = df.max().max()*1.1
-    min_val = df.min().min()*1.1
+    max_val = df.max().max() * 1.1
+    min_val = df.min().min() * 1.1
     with c2.expander('what are these alerts?'):
         st.write('a **sensor** anomaly is when a single sensor is tracked by Vanti''s model and the model decides to '
                  'alert the user')
@@ -756,7 +757,63 @@ def pre_paint_app(stream):
                                 count = count % 4
 
 
+def rt_test_reorder(stream):
+    st.title('Real Time Process Optimization')
+    st.subheader('cycle time reduction with dynamic test reordering')
+    df = files[0]
+    df.set_index('time', drop=True, inplace=True)
+    df = df.astype(np.int8)
+    # st.line_chart(df)
+
+    window = 10
+
+    col1, dummy, col2 = st.columns((4,1,2))
+    data_graph = col1.empty()
+    list_cont = col2.empty()
+
+    if stream:
+        for i in range(df.shape[0]):
+            if stop_stream:
+                stream = False
+                break
+
+            with data_graph.container():
+                sss = max(0, i - 10)
+                eee = min(i, df.shape[0])
+                temp2 = df.iloc[sss:eee]
+
+                fig3 = px.line(temp2, markers=True)
+                fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+                # hide and lock down axes
+                fig3.update_xaxes(visible=True, fixedrange=True)
+                fig3.update_yaxes(visible=True, fixedrange=True)
+                # remove facet/subplot labels
+                fig3.update_layout(annotations=[], overwrite=True)
+                st.write(fig3)
+            with list_cont.container():
+                local = df.iloc[i].copy()
+                local = pd.DataFrame(local)
+                title = local.columns
+                st.info(local.columns[0] + ' top 5 tests in order')
+                local.columns = ['order']
+                local.sort_values(by='order', ascending=True, inplace=True)
+                for i in range(local.shape[0]):
+                    st.success(local.index[i])
+                # st.success(local.index[0])
+                # st.success(local.index[0])
+                # st.success(local.index[0])
+                # st.success(local.index[0])
+                # st.write(local)
+        with st.expander('full data'):
+            st.line_chart(df)
+    return None
+
+
 def ask_for_files(app_type):
+    if app_type == 'real time process optimization':
+        df = pd.read_csv('assets/Data/test-reorder-data.csv')
+        loaded_files = [df]
+        return loaded_files
     if app_type == 'pre paint metal defects':
         return None
     if app_type == 'paint shop defect detection':
@@ -830,7 +887,8 @@ def ask_for_files(app_type):
 with st.sidebar:
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
     stream = False
-    app_type = st.selectbox('select application', ['paint shop defect detection',
+    app_type = st.selectbox('select application', ['real time process optimization',
+                                                   'paint shop defect detection',
                                                    "pre paint metal defects",
                                                    'real-time sensor anomaly detection',
                                                    'adaptive AI demo',
@@ -853,6 +911,9 @@ with st.sidebar:
 # main loop
 
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
+if app_type == 'real time process optimization':
+    rt_test_reorder(stream)
+
 if app_type == 'paint shop defect detection':
     paint_shop_app(stream)
 
