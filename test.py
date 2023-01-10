@@ -636,8 +636,9 @@ def video_assembly_app(assembly_stream):
             if kpi_file[j % video_num] == 'Fail':
                 fail_counter = fail_counter + 1
                 v['predict_count'].loc[v['reason'] == df['reason'].iloc[j % video_num]] = v['predict_count'].loc[
-                                                                                      v['reason'] == df['reason'].iloc[
-                                                                                          j % video_num]] + 1
+                                                                                              v['reason'] ==
+                                                                                              df['reason'].iloc[
+                                                                                                  j % video_num]] + 1
             with metrics.container():
                 st.metric(label="Predictions", value=j)
                 st.metric(label="Fails", value=fail_counter)
@@ -748,14 +749,20 @@ def pre_paint_app(paint_stream):
 def rt_test_reorder(test_order_stream):
     st.title('Real Time Process Optimization')
     st.subheader('cycle time reduction with dynamic test reordering')
+    st.write('---------------------------------------------------------')
     df = files[0]
     df.set_index('time', drop=True, inplace=True)
     df = df.astype(np.int8)
+
+    # for repeat in range(3):
+    #     df = pd.concat([df, df], axis=0)
     # st.line_chart(df)
 
     test_reorder_window = 10
+    nominal = 60
 
-    col1, dummy, col2 = st.columns((2, 4, 2))
+    col1, dummy, col2 = st.columns((4, 1, 2))
+    metrics = dummy.empty()
     data_graph = col1.empty()
     list_cont = col2.empty()
 
@@ -764,6 +771,12 @@ def rt_test_reorder(test_order_stream):
             if stop_stream:
                 # test_order_stream = False
                 break
+            optimized = nominal - np.random.randint(10, 15)
+            tp = int((nominal / optimized - 1) * 100)
+            with metrics.container():
+                st.metric(label="Nominal", value=nominal)
+                st.metric(label="Optimized Test Time", value=optimized)
+                st.metric(label="Throughput", value='+' + str(tp) + "%")
 
             with data_graph.container():
                 # sss = max(0, j - test_reorder_window)
@@ -781,11 +794,10 @@ def rt_test_reorder(test_order_stream):
                 local = df.iloc[j].copy()
                 local = pd.DataFrame(local)
                 # title = local.columns
-                st.info(local.columns[0] + ' top 5 tests in order')
+                st.code(local.columns[0] + ' top 5 tests in order')
                 local.columns = ['order']
                 local.sort_values(by='order', ascending=True, inplace=True)
-                for test_index in range(local.shape[0]):
-                    st.success(local.index[test_index])
+                st.code(''.join(['* ' + q + '\n' for q in local.index.to_list()]))
         with st.expander('full data'):
             st.line_chart(df)
     return None
