@@ -758,7 +758,7 @@ def rt_test_reorder(test_order_stream):
     #     df = pd.concat([df, df], axis=0)
     # st.line_chart(df)
 
-    test_reorder_window = 10
+    # test_reorder_window = 10
     nominal = 60
 
     col1, dummy, col2 = st.columns((4, 1, 2))
