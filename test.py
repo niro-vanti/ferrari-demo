@@ -1,15 +1,11 @@
-import numpy as np
-import streamlit as st
-import pandas as pd
 # from sklearn.metrics import accuracy_score
 import streamlit.components.v1 as components
 import time
 import plotly.express as px
 import os
 import toml
-from auxFunctions import *
+from assets.helpful_stuff.auxFunctions import *
 import plotly.graph_objects as go
-import random
 
 # constants
 vanti_app_url = 'https://app.vanti.ai'
@@ -767,7 +763,7 @@ def rt_test_reorder(stream):
 
     window = 10
 
-    col1, dummy, col2 = st.columns((4,1,2))
+    col1, dummy, col2 = st.columns((2, 4, 2))
     data_graph = col1.empty()
     list_cont = col2.empty()
 
@@ -778,16 +774,14 @@ def rt_test_reorder(stream):
                 break
 
             with data_graph.container():
-                sss = max(0, i - 10)
+                sss = max(0, i - window)
                 eee = min(i, df.shape[0])
                 temp2 = df.iloc[sss:eee]
 
                 fig3 = px.line(temp2, markers=True)
                 fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
-                # hide and lock down axes
                 fig3.update_xaxes(visible=True, fixedrange=True)
                 fig3.update_yaxes(visible=True, fixedrange=True)
-                # remove facet/subplot labels
                 fig3.update_layout(annotations=[], overwrite=True)
                 st.write(fig3)
             with list_cont.container():
@@ -799,11 +793,6 @@ def rt_test_reorder(stream):
                 local.sort_values(by='order', ascending=True, inplace=True)
                 for i in range(local.shape[0]):
                     st.success(local.index[i])
-                # st.success(local.index[0])
-                # st.success(local.index[0])
-                # st.success(local.index[0])
-                # st.success(local.index[0])
-                # st.write(local)
         with st.expander('full data'):
             st.line_chart(df)
     return None

@@ -9,7 +9,7 @@ import plotly.express as px
 # from sklearn.decomposition import PCA
 import os
 import toml
-from auxFunctions import *
+from assets.helpful_stuff.auxFunctions import *
 
 # constants
 vanti_app_url = 'https://app.vanti.ai'

@@ -1,9 +1,6 @@
-import torch
 from torch import autocast
-from diffusers import StableDiffusionPipeline
 import streamlit as st
 import os
-from authtoken import auth_token
 
 page_title = "Vanti-DataGen"
 page_icon = ":money_with_wings:"  # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
@@ -126,10 +123,10 @@ if stock_button:
     st.success(str(img_num) + ' of ' + prompt)
     if style == 'x-ray':
         # def_img = ['xray_0.png', 'xray_1.png','xray_2.png', 'xray_3.png']
-        def_img = get_images_from_path('assets/Images/xray')
+        def_img = get_images_from_path('../assets/Images/xray')
         print(len(def_img))
         st.image(def_img, width=350, caption=['xray_image_'] * len(def_img))
     if style == 'PCB':
         # def_img = ['hr_0.png', 'hr_1.png', 'hr_2.png', 'hr_3.png']
-        def_img = get_images_from_path('assets/Images/pcb')
+        def_img = get_images_from_path('../assets/Images/pcb')
         st.image(def_img, width=350, caption=['PCB_image_'] * len(def_img))
