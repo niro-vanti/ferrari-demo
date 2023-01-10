@@ -28,7 +28,7 @@ nodes = ['anomaly remover', 'formatter', 'mini decision tree', 'local regression
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout="wide")
 
 primaryColor = toml.load(".streamlit/config.toml")['theme']['primaryColor']
-s = f"""
+style_description = f"""
 <style>
 div.stButton > button:first-child {{ border: 2px solid {primaryColor}; border-radius:10px 10px 10px 10px; }}
 div.stButton > button:hover {{ background-color: {primaryColor}; color:#000000;}}
@@ -36,7 +36,7 @@ footer {{ visibility: hidden;}}
 # header {{ visibility: hidden;}}
 <style>
 """
-st.markdown(s, unsafe_allow_html=True)
+st.markdown(style_description, unsafe_allow_html=True)
 
 
 # files
@@ -233,7 +233,7 @@ def paint_shop_app(ferrari_stream):
     if ferrari_stream:
         for j in range(image_number):
             if stop_stream:
-                ferrari_stream = False
+                # ferrari_stream = False
                 break
 
             with pl.container():
@@ -341,7 +341,7 @@ def rt_sensors_app(sensor_stream):
     if sensor_stream:
         for col in range(df.shape[0]):
             if stop_stream:
-                sensor_stream = False
+                # sensor_stream = False
                 break
 
             start_index = max(0, col - sensor_window)
@@ -511,7 +511,7 @@ def medical_device_app(medical_stream):
 
         for col in range(df.shape[0]):
             if stop_stream:
-                medical_stream = False
+                # medical_stream = False
                 break
             if kpi_file[col] == 1:
                 fail_counter = fail_counter + 1
@@ -630,7 +630,7 @@ def video_assembly_app(assembly_stream):
 
         for j in range(df.shape[0] * 5):
             if stop_stream:
-                assembly_stream = False
+                # assembly_stream = False
                 break
             time.sleep(0.2)
             if kpi_file[j % video_num] == 'Fail':
@@ -698,7 +698,7 @@ def pre_paint_app(paint_stream):
 
         for j in range(names_len * 10):
             if stop_stream:
-                paint_stream = False
+                # paint_stream = False
                 break
 
             k = np.random.randint(0, names_len - 1, 1)[0]
@@ -762,11 +762,12 @@ def rt_test_reorder(test_order_stream):
     if test_order_stream:
         for j in range(df.shape[0]):
             if stop_stream:
-                test_order_stream = False
+                # test_order_stream = False
                 break
 
             with data_graph.container():
-                sss = max(0, j - test_reorder_window)
+                # sss = max(0, j - test_reorder_window)
+                sss = 0
                 eee = min(j, df.shape[0])
                 temp2 = df.iloc[sss:eee]
 
