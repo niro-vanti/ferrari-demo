@@ -13,7 +13,7 @@ st.set_page_config(page_title=page_title, page_icon=page_icon, layout="wide")
 
 
 def set_api_key(api_key):
-    api_key = 'sk-'+'VS6Smvx6EnEer1Cr1IFVT3BlbkFJMOwzIrdGlLdylDf7XOzu'
+    # api_key = 'sk-'+'VS6Smvx6EnEer1Cr1IFVT3BlbkFJMOwzIrdGlLdylDf7XOzu'
     st.session_state.api_key = api_key
     openai.api_key = api_key
     st.session_state.api_key_success = True
