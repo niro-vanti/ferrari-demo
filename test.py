@@ -804,6 +804,92 @@ def rt_test_reorder(test_order_stream):
     return None
 
 
+def SI_demo(stream):
+    st.title('Standard Industries Demo')
+    st.subheader('event prediction')
+    fi = files[2]
+    preds = files[0]
+    df = files[1]
+    SI_window = 10
+    norm = st.checkbox('normalize values?', value=True)
+    if norm:
+        df = (df - df.min()) / (df.max() - df.min())
+
+    fi['importance'] = fi['importance'].astype('float') * 100
+    fi.set_index('feature', drop=True, inplace=True)
+    fi.sort_values(by=['importance'], ascending=False, inplace=True)
+    fi = fi.iloc[:10]
+    # st.write(fi)
+    with st.expander('Driving Factors'):
+        st.bar_chart(fi)
+    cm_cont = st.empty()
+    col1, col2, col3, col4 = st.columns((1, 1, 1, 5))
+    conf_mat_1 = col1.empty()
+    conf_mat_2 = col2.empty()
+    conf_mat_3 = col3.empty()
+    graph_mat = col4.empty()
+    n = preds.shape[0]
+    cm = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+    ]
+    if stream:
+        for i in range(n):
+            if stop_stream:
+                break
+            test = preds['tusCoatingLine.MES.UtilizationState'].iloc[i]
+            pred = preds['predictions'].iloc[i]
+            if test == 'Running':
+                if pred == 'Running':
+                    cm[0][0] = cm[0][0] + 1
+                if pred == 'Running Slow':
+                    cm[0][1] = cm[0][1] + 1
+                if pred == 'Downtime':
+                    cm[0][2] = cm[0][2] + 1
+            if test == 'Running Slow':
+                if pred == 'Running':
+                    cm[1][1] = cm[1][0] + 1
+                if pred == 'Running Slow':
+                    cm[1][1] = cm[1][1] + 1
+                if pred == 'Downtime':
+                    cm[1][2] = cm[1][2] + 1
+            if test == 'Downtime':
+                if pred == 'Running':
+                    cm[2][0] = cm[2][0] + 1
+                if pred == 'Running Slow':
+                    cm[2][1] = cm[2][1] + 1
+                if pred == 'Downtime':
+                    cm[2][2] = cm[2][2] + 1
+            # st.write(test, pred)
+            with cm_cont.container():
+                if test == pred:
+                    st.success(f'{df.index[i]} : the model predicted {pred} -- the real result was also {test}')
+                else:
+                    st.success(f'{df.index[i]} : the model predicted {pred} -- but the real result was  {test}')
+
+                # st.info(test)
+                # st.success(pred)
+            with graph_mat.container():
+                sss = max(0, i - SI_window)
+                eee = min(df.shape[0], i + 1)
+
+                st.line_chart(df.iloc[sss:eee])
+
+            with conf_mat_1.container():
+                st.metric(label='Running Running', value=cm[0][0])
+                st.metric(label='Running Slow Running', value=cm[1][0])
+                st.metric(label='Downtime Running', value=cm[2][0])
+            with conf_mat_2.container():
+                st.metric(label='Running Running Slow', value=cm[1][0])
+                st.metric(label='Running Slow Running Slow', value=cm[1][1])
+                st.metric(label='Downtime Running Slow', value=cm[1][2])
+            with conf_mat_3.container():
+                st.metric(label='Running Downtime', value=cm[2][0])
+                st.metric(label='Running Slow Downtime ', value=cm[2][1])
+                st.metric(label='Downtime Downtime', value=cm[2][2])
+
+
 def ask_for_files(app_type_file):
     if app_type_file == 'real time process optimization':
         df = pd.read_csv('assets/Data/test-reorder-data.csv')
@@ -874,6 +960,16 @@ def ask_for_files(app_type_file):
         loaded_files = [df, kpi_col]
         st.write(loaded_files)
         return loaded_files
+    if app_type_file == 'Standard Industries Demo':
+        batch = st.file_uploader('upload data file', accept_multiple_files=False)
+        if batch is not None:
+            raw = pd.read_csv(batch)
+        else:
+            raw = pd.read_csv('assets/Data/SI-results.csv', index_col=0)
+        loaded_files = [raw,
+                        pd.read_csv('assets/Data/top-10-feats.csv', index_col=0),
+                        pd.read_csv('assets/Data/SI_feat_imp.csv', index_col=0)]
+        return loaded_files
 
     st.error('app type not supported')
 
@@ -881,7 +977,8 @@ def ask_for_files(app_type_file):
 # sidebar
 with st.sidebar:
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
-    app_type = st.selectbox('select application', ['real time process optimization',
+    app_type = st.selectbox('select application', ['Standard Industries Demo',
+                                                   'real time process optimization',
                                                    'paint shop defect detection',
                                                    "pre paint metal defects",
                                                    'real-time sensor anomaly detection',
@@ -905,6 +1002,9 @@ with st.sidebar:
 # main loop
 
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
+if app_type == 'Standard Industries Demo':
+    SI_demo(stream)
+
 if app_type == 'real time process optimization':
     rt_test_reorder(stream)
 
