@@ -565,7 +565,8 @@ def adaptive_ai_demo():
 
     with st.expander('6 easy steps'):
         st.title('6 easy steps')
-        st.image('6 easy step copy.png')
+        # st.image('as6 easy step copy.png')
+        st.image('assets/helpful_stuff/6 easy step copy.png')
 
     with st.expander('reach out to our CTO'):
         ro1, ro2 = st.columns(2)
