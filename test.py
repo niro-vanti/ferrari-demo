@@ -823,7 +823,8 @@ def SI_demo(stream):
     with st.expander('Driving Factors'):
         st.bar_chart(fi)
     cm_cont = st.empty()
-    col1, col2, col3, col4 = st.columns((1, 1, 1, 5))
+    tit, col1, col2, col3, col4 = st.columns((1, 1, 1, 1, 5))
+    gt = tit.empty()
     conf_mat_1 = col1.empty()
     conf_mat_2 = col2.empty()
     conf_mat_3 = col3.empty()
@@ -870,24 +871,40 @@ def SI_demo(stream):
 
                 # st.info(test)
                 # st.success(pred)
+            st.subheader('')
             with graph_mat.container():
                 sss = max(0, i - SI_window)
                 eee = min(df.shape[0], i + 1)
 
                 st.line_chart(df.iloc[sss:eee])
-
+            with gt.container():
+                st.write('GROUND TRUTH')
+                st.write(' ')
+                st.write(' ')
+                st.write('Running')
+                st.write('')
+                st.write('')
+                st.write('')
+                st.write('Running Slow')
+                st.write('')
+                st.write('')
+                st.write('')
+                st.write('Downtime')
             with conf_mat_1.container():
-                st.metric(label='Running Running', value=cm[0][0])
-                st.metric(label='Running Slow Running', value=cm[1][0])
-                st.metric(label='Downtime Running', value=cm[2][0])
+                st.write('Running')
+                st.metric(label='', value=cm[0][0])
+                st.metric(label='', value=cm[1][0])
+                st.metric(label='', value=cm[2][0])
             with conf_mat_2.container():
-                st.metric(label='Running Running Slow', value=cm[1][0])
-                st.metric(label='Running Slow Running Slow', value=cm[1][1])
-                st.metric(label='Downtime Running Slow', value=cm[1][2])
+                st.write('Running Slow')
+                st.metric(label='', value=cm[1][0])
+                st.metric(label='', value=cm[1][1])
+                st.metric(label='', value=cm[1][2])
             with conf_mat_3.container():
-                st.metric(label='Running Downtime', value=cm[2][0])
-                st.metric(label='Running Slow Downtime ', value=cm[2][1])
-                st.metric(label='Downtime Downtime', value=cm[2][2])
+                st.write('Downtime')
+                st.metric(label='', value=cm[2][0])
+                st.metric(label='', value=cm[2][1])
+                st.metric(label='', value=cm[2][2])
 
 
 def ask_for_files(app_type_file):
