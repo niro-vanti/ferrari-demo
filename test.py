@@ -278,6 +278,8 @@ def rt_sensors_app(sensor_stream):
     if 'prog' in df.columns:
         df.drop(columns=['prog'], inplace=True)
         df = (df - df.mean()) / df.std()
+
+    orig_col_list = df.columns
     df['sen_alert'] = 0
     df['sit_alert'] = 0
 
@@ -297,6 +299,11 @@ def rt_sensors_app(sensor_stream):
                      'alert me only when there''s a sensor anomaly',
                      'I want all alerts'])
     normalize = st.checkbox('Scale Sensors', value=True)
+    auto_clean_up = st.checkbox('Automated Data Cleaning', value=True)
+    if auto_clean_up:
+        for col in orig_col_list:
+            df[col][df[col] == 0] = df[col].mean()
+
     if normalize:
         df = df / df.max()
     else:
@@ -320,7 +327,7 @@ def rt_sensors_app(sensor_stream):
         alert_mode = 3
     print(alert_mode)
 
-    sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 50.0)
+    sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 75.0)
     with c2.expander("what is model sensitivity?"):
         st.write("_sensitivity 100 --> alert me on **everything**_")
         st.write("_sensitivity 0 --> alert me on **critical things only**_")
@@ -804,7 +811,7 @@ def rt_test_reorder(test_order_stream):
     return None
 
 
-def SI_demo(stream):
+def si_demo(stream):
     st.title('Standard Industries Demo')
     st.subheader('event prediction')
     fi = files[2]
@@ -1020,7 +1027,7 @@ with st.sidebar:
 
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
 if app_type == 'Standard Industries Demo':
-    SI_demo(stream)
+    si_demo(stream)
 
 if app_type == 'real time process optimization':
     rt_test_reorder(stream)
