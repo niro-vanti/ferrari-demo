@@ -327,7 +327,7 @@ def rt_sensors_app(sensor_stream):
         alert_mode = 3
     print(alert_mode)
 
-    sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 75.0)
+    sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 50.0)
     with c2.expander("what is model sensitivity?"):
         st.write("_sensitivity 100 --> alert me on **everything**_")
         st.write("_sensitivity 0 --> alert me on **critical things only**_")
@@ -336,26 +336,29 @@ def rt_sensors_app(sensor_stream):
     ss = {feat: df[feat].std() for feat in feats}
 
     _, c2, c3 = st.columns(3)
-    sensitivity = (100 - sensitivity) / 10
+    sensitivity = (100 - sensitivity) / 20
 
-    sensor_window = 300
+    sensor_window = 150
+    zoom_window = 5
     pl = st.empty()
     pl2 = st.empty()
     alerts = pd.DataFrame()
 
     alert_highlights = {}
+    graph_col, alert_col = st.columns((3, 2))
+    graph_cont = graph_col.empty()
+    alert_cont = alert_col.empty()
 
     if sensor_stream:
         for col in range(df.shape[0]):
             if stop_stream:
-                # sensor_stream = False
                 break
 
             start_index = max(0, col - sensor_window)
             e = min(col, df.shape[0])
             temp = df[feats].iloc[start_index:e]
-            temp['sen_alert'] = df['sen_alert'].iloc[start_index:e]
-            temp['sit_alert'] = df['sit_alert'].iloc[start_index:e]
+            # temp['sen_alert'] = df['sen_alert'].iloc[start_index:e]
+            # temp['sit_alert'] = df['sit_alert'].iloc[start_index:e]
             count = 0
             for f in feats:
                 if np.abs(df[f].iloc[col] - ms[f]) > (ss[f] * sensitivity):
@@ -370,10 +373,10 @@ def rt_sensors_app(sensor_stream):
 
                     if alert_mode == 1 or alert_mode == 2:
                         alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
-                        df['sen_alert'].iloc[col] = 1
+                        # df['sen_alert'].iloc[col] = 1
                         colorh = '#ff3c78'
-                        sss = max(0, col - 5)
-                        eee = min(col + 5, df.shape[0])
+                        sss = max(0, col - zoom_window)
+                        eee = min(col + zoom_window, df.shape[0])
 
                         alert_num = df['sit_alert'].cumsum().max()
                         alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
@@ -390,8 +393,8 @@ def rt_sensors_app(sensor_stream):
                             layer="below")
 
                         with pl2.container():
-                            sss = max(0, col - 10)
-                            eee = min(col + 5, df.shape[0])
+                            sss = max(0, col - zoom_window)
+                            eee = min(col + zoom_window, df.shape[0])
                             temp2 = df[f].iloc[sss:eee]
                             fig3 = px.line(temp2)
                             fig3.update_layout(plot_bgcolor='#ffffff')
@@ -410,8 +413,8 @@ def rt_sensors_app(sensor_stream):
                     alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
                     df['sit_alert'].iloc[col] = 1
                     colorh = '#ff3c78'
-                    sss = max(0, col - 5)
-                    eee = min(col + 5, df.shape[0])
+                    sss = max(0, col - zoom_window)
+                    eee = min(col + zoom_window, df.shape[0])
                     alert_num = df['sit_alert'].cumsum().max()
                     alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
                         type="rect",
@@ -427,8 +430,8 @@ def rt_sensors_app(sensor_stream):
                         layer="below")
 
                     with pl2.container():
-                        sss = max(0, col - 10)
-                        eee = min(col + 5, df.shape[0])
+                        sss = max(0, col - zoom_window)
+                        eee = min(col + zoom_window, df.shape[0])
                         temp2 = df[feats].iloc[sss:eee]
                         fig3 = px.line(temp2)
                         fig3.update_layout(plot_bgcolor='#ffffff')
@@ -436,17 +439,29 @@ def rt_sensors_app(sensor_stream):
                     with st.expander('situation-alert zoom-in @' + str(df.index[col])):
                         st.write(fig3, title=str(df.index[col]))
 
-            with pl.container():
+            with alert_cont.container():
+                for idx in range(alerts.shape[0]):
+                    ts = alerts['time stamp'].iloc[idx]
+                    sens = alerts['sensor'].iloc[idx]
+                    reason = alerts['reason'].iloc[idx]
+                    if len(reason) > 20:
+                        reason = reason[:19]+'\n '+reason[19:]
+                        st.code(f'{ts} :: {sens} : {reason}') # : {reason[:20]}')
+                    else:
+                        st.code(f'{ts} :: {sens} : {reason}')
+
+
+            with graph_cont.container():
                 fig = px.line(data_frame=temp)
                 fig.update_layout(plot_bgcolor='#ffffff')
                 lst_shapes = list(alert_highlights.values())
                 fig.update_layout(shapes=lst_shapes)
                 st.write(fig)
-                # time.sleep(0.1)
-                st.dataframe(alerts.style.apply(highlight_survived, axis=1))
-                fig2 = px.line(temp[['sen_alert', 'sit_alert']].cumsum())
-                fig2.update_layout(plot_bgcolor='#ffffff')
-                st.write(fig2)
+            #     # time.sleep(0.1)
+            #     st.dataframe(alerts.style.apply(highlight_survived, axis=1))
+            #     fig2 = px.line(temp[['sen_alert', 'sit_alert']].cumsum())
+            #     fig2.update_layout(plot_bgcolor='#ffffff')
+            #     st.write(fig2)
 
     with st.expander('see training data'):
         st.dataframe(df)
