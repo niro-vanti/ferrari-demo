@@ -310,7 +310,7 @@ def rt_sensors_app(sensor_stream):
         df = df
 
     max_val = df.max().max() * 1.1
-    min_val = df.min().min() * 1.1
+    # min_val = df.min().min() * 1.1
     with c2.expander('what are these alerts?'):
         st.write('a **sensor** anomaly is when a single sensor is tracked by Vanti''s model and the model decides to '
                  'alert the user')
@@ -338,7 +338,7 @@ def rt_sensors_app(sensor_stream):
     _, c2, c3 = st.columns(3)
     sensitivity = (100 - sensitivity) / 20
 
-    sensor_window = 150
+    sensor_window = 50
     zoom_window = 5
     pl = st.empty()
     pl2 = st.empty()
@@ -453,20 +453,24 @@ def rt_sensors_app(sensor_stream):
 
             with graph_cont.container():
                 alert_keys = list(alert_highlights.keys())
-                # st.write(alert_keys)
                 for alert_idx in range(len(alert_start_end)):
                     if alert_start_end[alert_idx] not in temp.index:
-                        # st.write(f'time stamp {alert_start_end[alert_idx]} is not in frame')
                         del alert_highlights[alert_keys[alert_idx]]
                         del alert_start_end[alert_idx]
 
+                if temp.shape[0] < sensor_window:
+                    pad = pd.DataFrame(index=df.index[temp.shape[1]:sensor_window], columns=temp.columns)
+                    temp = pd.concat([temp, pad], axis=0)
+
                 fig = px.line(data_frame=temp)
                 fig.update_layout(plot_bgcolor='#ffffff')
+
                 lst_shapes = list(alert_highlights.values())
                 fig.update_layout(shapes=lst_shapes)
                 st.write(fig)
 
             # with debug.container():
+            #     st.write(pad.shape)
             #     # for alert_idx in range(len(alert_start_end)):
             #     #     if alert_start_end[alert_idx] in temp.index:
             #     #         st.write(alert_start_end[alert_idx])
@@ -846,6 +850,7 @@ def textile_app(textile_stream):
                                 count = count + 1
                                 count = count % 4
 
+
 def rt_test_reorder(test_order_stream):
     st.title('Real Time Process Optimization')
     st.subheader('cycle time reduction with dynamic test reordering')
@@ -854,11 +859,6 @@ def rt_test_reorder(test_order_stream):
     df.set_index('time', drop=True, inplace=True)
     df = df.astype(np.int8)
 
-    # for repeat in range(3):
-    #     df = pd.concat([df, df], axis=0)
-    # st.line_chart(df)
-
-    # test_reorder_window = 10
     nominal = 60
 
     col1, dummy, col2 = st.columns((4, 1, 2))
@@ -907,9 +907,9 @@ def si_demo(stream):
     st.title('Standard Industries Demo')
     st.subheader('event prediction')
     fi = files[2]
-    preds = files[0]
+    predictions = files[0]
     df = files[1]
-    SI_window = 10
+    si_window = 10
     norm = st.checkbox('normalize values?', value=True)
     if norm:
         df = (df - df.min()) / (df.max() - df.min())
@@ -928,18 +928,18 @@ def si_demo(stream):
     conf_mat_2 = col2.empty()
     conf_mat_3 = col3.empty()
     graph_mat = col4.empty()
-    n = preds.shape[0]
+    n = predictions.shape[0]
     cm = [
         [0, 0, 0],
         [0, 0, 0],
         [0, 0, 0]
     ]
     if stream:
-        for i in range(n):
+        for si_idx in range(n):
             if stop_stream:
                 break
-            test = preds['tusCoatingLine.MES.UtilizationState'].iloc[i]
-            pred = preds['predictions'].iloc[i]
+            test = predictions['tusCoatingLine.MES.UtilizationState'].iloc[si_idx]
+            pred = predictions['predictions'].iloc[si_idx]
             if test == 'Running':
                 if pred == 'Running':
                     cm[0][0] = cm[0][0] + 1
@@ -964,16 +964,16 @@ def si_demo(stream):
             # st.write(test, pred)
             with cm_cont.container():
                 if test == pred:
-                    st.success(f'{df.index[i]} : the model predicted {pred} -- the real result was also {test}')
+                    st.success(f'{df.index[si_idx]} : the model predicted {pred} -- the real result was also {test}')
                 else:
-                    st.success(f'{df.index[i]} : the model predicted {pred} -- but the real result was  {test}')
+                    st.success(f'{df.index[si_idx]} : the model predicted {pred} -- but the real result was  {test}')
 
                 # st.info(test)
                 # st.success(pred)
             st.subheader('')
             with graph_mat.container():
-                sss = max(0, i - SI_window)
-                eee = min(df.shape[0], i + 1)
+                sss = max(0, si_idx - si_window)
+                eee = min(df.shape[0], si_idx + 1)
 
                 st.line_chart(df.iloc[sss:eee])
             with gt.container():
@@ -1097,7 +1097,7 @@ def ask_for_files(app_type_file):
 with st.sidebar:
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
     app_type = st.selectbox('select application', ['textile defects',
-        'Standard Industries Demo',
+                                                   'Standard Industries Demo',
                                                    'real time process optimization',
                                                    'paint shop defect detection',
                                                    "pre paint metal defects",
