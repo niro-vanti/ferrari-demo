@@ -345,9 +345,12 @@ def rt_sensors_app(sensor_stream):
     alerts = pd.DataFrame()
 
     alert_highlights = {}
+    alert_start_end = []
     graph_col, alert_col = st.columns((3, 2))
     graph_cont = graph_col.empty()
     alert_cont = alert_col.empty()
+
+    debug = st.empty()
 
     if sensor_stream:
         for col in range(df.shape[0]):
@@ -373,22 +376,20 @@ def rt_sensors_app(sensor_stream):
 
                     if alert_mode == 1 or alert_mode == 2:
                         alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
-                        # df['sen_alert'].iloc[col] = 1
                         colorh = '#ff3c78'
                         sss = max(0, col - zoom_window)
                         eee = min(col + zoom_window, df.shape[0])
 
                         alert_num = df['sit_alert'].cumsum().max()
+                        alert_start_end.append(df.index[sss])
                         alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
                             type="rect",
                             x0=df.index[sss],
-                            y0=min_val,  # df['keyPoints1'].iloc[i-1],
+                            y0=-0.1,
                             x1=df.index[eee],
-                            y1=max_val,  # df['keyPoints2'].iloc[i-1],
+                            y1=max_val,
                             fillcolor=colorh,
-                            line=dict(
-                                color=colorh,
-                                width=3),
+                            line=dict(color=colorh, width=3),
                             opacity=0.25,
                             layer="below")
 
@@ -412,20 +413,20 @@ def rt_sensors_app(sensor_stream):
                     })
                     alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
                     df['sit_alert'].iloc[col] = 1
-                    colorh = '#ff3c78'
+                    colorh = '#00818A'
                     sss = max(0, col - zoom_window)
                     eee = min(col + zoom_window, df.shape[0])
                     alert_num = df['sit_alert'].cumsum().max()
+                    alert_start_end.append(df.index[sss])
+
                     alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
                         type="rect",
                         x0=df.index[sss],
-                        y0=min_val,  # df['keyPoints1'].iloc[i-1],
+                        y0=-0.1,
                         x1=df.index[eee],
-                        y1=max_val,  # df['keyPoints2'].iloc[i-1],
+                        y1=max_val,
                         fillcolor=colorh,
-                        line=dict(
-                            color=colorh,
-                            width=3),
+                        line=dict(color=colorh, width=3),
                         opacity=0.25,
                         layer="below")
 
@@ -445,23 +446,31 @@ def rt_sensors_app(sensor_stream):
                     sens = alerts['sensor'].iloc[idx]
                     reason = alerts['reason'].iloc[idx]
                     if len(reason) > 20:
-                        reason = reason[:19]+'\n '+reason[19:]
-                        st.code(f'{ts} :: {sens} : {reason}') # : {reason[:20]}')
+                        reason = reason[:19] + '\n ' + reason[19:]
+                        st.code(f'{ts} :: {sens} : {reason}')  # : {reason[:20]}')
                     else:
                         st.code(f'{ts} :: {sens} : {reason}')
 
-
             with graph_cont.container():
+                alert_keys = list(alert_highlights.keys())
+                # st.write(alert_keys)
+                for alert_idx in range(len(alert_start_end)):
+                    if alert_start_end[alert_idx] not in temp.index:
+                        # st.write(f'time stamp {alert_start_end[alert_idx]} is not in frame')
+                        del alert_highlights[alert_keys[alert_idx]]
+                        del alert_start_end[alert_idx]
+
                 fig = px.line(data_frame=temp)
                 fig.update_layout(plot_bgcolor='#ffffff')
                 lst_shapes = list(alert_highlights.values())
                 fig.update_layout(shapes=lst_shapes)
                 st.write(fig)
-            #     # time.sleep(0.1)
-            #     st.dataframe(alerts.style.apply(highlight_survived, axis=1))
-            #     fig2 = px.line(temp[['sen_alert', 'sit_alert']].cumsum())
-            #     fig2.update_layout(plot_bgcolor='#ffffff')
-            #     st.write(fig2)
+
+            # with debug.container():
+            #     # for alert_idx in range(len(alert_start_end)):
+            #     #     if alert_start_end[alert_idx] in temp.index:
+            #     #         st.write(alert_start_end[alert_idx])
+            #     st.write(alert_highlights)
 
     with st.expander('see training data'):
         st.dataframe(df)
