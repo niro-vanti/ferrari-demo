@@ -340,13 +340,13 @@ def rt_sensors_app(sensor_stream):
 
     sensor_window = 50
     zoom_window = 2
-    pl = st.empty()
+    # pl = st.empty()
     pl2 = st.empty()
     alerts = pd.DataFrame()
 
     alert_highlights = {}
     local_count = {}
-    alert_start, alert_end,alert_enable = [], [],[]
+    alert_start, alert_end, alert_enable = [], [], []
     graph_col, alert_col = st.columns((3, 2))
     graph_cont = graph_col.empty()
     alert_cont = alert_col.empty()
@@ -409,35 +409,26 @@ def rt_sensors_app(sensor_stream):
                 if count > 3:
                     rr = get_reason('situation')
                     q = pd.DataFrame({
-                        'time stamp': [df.index[col]],
-                        'sensor': ['combination'],
-                        'reason': [rr],
-                        'alert type': ['Situation']
-                    })
+                        'time stamp': [df.index[col]], 'sensor': ['combination'],
+                        'reason': [rr], 'alert type': ['Situation']})
                     alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
                     df['sit_alert'].iloc[col] = 1
                     colorh = '#00818A'
-                    sss = max(0, col - zoom_window)
-                    eee = min(col + zoom_window, df.shape[0])
+                    sss = max(col - sensor_window + 1, col - zoom_window)
+                    eee = min(col + zoom_window, col + sensor_window - 1)
                     alert_num = df['sit_alert'].cumsum().max()
                     alert_start.append(df.index[sss])
                     alert_end.append(df.index[eee])
                     alert_enable.append(0)
 
-                    alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
-                        type="rect",
-                        x0=df.index[sss],
-                        y0=-0.1,
-                        x1=df.index[eee],
-                        y1=max_val,
-                        fillcolor=colorh,
-                        line=dict(color=colorh, width=3),
-                        opacity=0.25,
-                        layer="below")
+                    alert_highlights['alert_' + str(int(alert_num))] = go.layout.Shape(
+                        type="rect", x0=df.index[sss], y0=-0.1, x1=df.index[eee], y1=max_val,
+                        # type="rect", x0=0, y0=-0.1, x1=4, y1=max_val,
+                        fillcolor=colorh, line=dict(color=colorh, width=3), opacity=0.25, layer="below")
 
                     with pl2.container():
-                        sss = max(0, col - zoom_window)
-                        eee = min(col + zoom_window, df.shape[0])
+                        sss = max(col - sensor_window + 1, col - zoom_window)
+                        eee = min(col + zoom_window, col + sensor_window - 1)
                         temp2 = df[feats].iloc[sss:eee]
                         fig3 = px.line(temp2)
                         fig3.update_layout(plot_bgcolor='#ffffff')
@@ -459,14 +450,14 @@ def rt_sensors_app(sensor_stream):
             with graph_cont.container():
                 alert_keys = list(alert_highlights.keys())
                 local_alerts = {}
-                local_start, local_end = [],[]
-                tries = 10
-                show_count = 35
+                local_start, local_end = [], []
+                tries = 5
+                show_count = 40
                 for alert_idx in range(len(alert_start)):
                     # for each alert see if it's enabled or not
                     # if not enabled toggle it to enable in next iteration
                     if alert_enable[alert_idx] <= tries:
-                        alert_enable[alert_idx] = alert_enable[alert_idx]+1
+                        alert_enable[alert_idx] = alert_enable[alert_idx] + 1
                     # if enabled, copy alert details and start to local list
                     else:
                         local_alerts[alert_keys[alert_idx]] = alert_highlights[alert_keys[alert_idx]]
@@ -475,9 +466,7 @@ def rt_sensors_app(sensor_stream):
                         if alert_keys[alert_idx] not in local_count.keys():
                             local_count[alert_keys[alert_idx]] = 0
 
-
-                    if alert_start[alert_idx] not in temp.index or alert_end[alert_idx] not in temp.index:
-                        # st.write(f'removing alert {alert_highlights[alert_keys[alert_idx]]}')
+                    if alert_start[alert_idx] not in temp.index and alert_end[alert_idx] not in temp.index:
                         del alert_highlights[alert_keys[alert_idx]]
                         del alert_start[alert_idx]
                         del alert_end[alert_idx]
@@ -485,11 +474,7 @@ def rt_sensors_app(sensor_stream):
                     # for all alerts to shown count the number of times it was shown
                     local_keys = list(local_alerts.keys())
                     for local_idx in range(len(local_alerts)):
-                        # print('')
-                        # print(local_count)
                         local_count[local_keys[local_idx]] = local_count[local_keys[local_idx]] + 1
-                        # print(local_count)
-                        # print(' ')
                         if local_count[local_keys[local_idx]] >= show_count:
                             del local_alerts[local_keys[local_idx]]
                             del local_start[local_idx]
@@ -501,6 +486,7 @@ def rt_sensors_app(sensor_stream):
 
                 fig = px.line(data_frame=temp)
                 fig.update_layout(plot_bgcolor='#ffffff')
+                fig.update_yaxes(range=[-0.1, 1.1], fixedrange=True)
 
                 # lst_shapes = list(alert_highlights.values())
                 lst_shapes = list(local_alerts.values())
@@ -508,6 +494,7 @@ def rt_sensors_app(sensor_stream):
                 st.write(fig)
 
             # with debug.container():
+            #     st.write(alert_highlights)
             #     st.write(local_count)
             #     st.write(local_alerts)
             #     st.write(pad.shape)
@@ -943,7 +930,7 @@ def rt_test_reorder(test_order_stream):
     return None
 
 
-def si_demo(stream):
+def si_demo(si_stream):
     st.title('Standard Industries Demo')
     st.subheader('event prediction')
     fi = files[2]
@@ -974,7 +961,7 @@ def si_demo(stream):
         [0, 0, 0],
         [0, 0, 0]
     ]
-    if stream:
+    if si_stream:
         for si_idx in range(n):
             if stop_stream:
                 break
