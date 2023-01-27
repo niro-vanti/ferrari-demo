@@ -339,13 +339,14 @@ def rt_sensors_app(sensor_stream):
     sensitivity = (100 - sensitivity) / 20
 
     sensor_window = 50
-    zoom_window = 5
+    zoom_window = 2
     pl = st.empty()
     pl2 = st.empty()
     alerts = pd.DataFrame()
 
     alert_highlights = {}
-    alert_start_end = []
+    local_count = {}
+    alert_start, alert_end,alert_enable = [], [],[]
     graph_col, alert_col = st.columns((3, 2))
     graph_cont = graph_col.empty()
     alert_cont = alert_col.empty()
@@ -381,7 +382,9 @@ def rt_sensors_app(sensor_stream):
                         eee = min(col + zoom_window, df.shape[0])
 
                         alert_num = df['sit_alert'].cumsum().max()
-                        alert_start_end.append(df.index[sss])
+                        alert_start.append(df.index[sss])
+                        alert_end.append(df.index[eee])
+                        alert_enable.append(0)
                         alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
                             type="rect",
                             x0=df.index[sss],
@@ -417,7 +420,9 @@ def rt_sensors_app(sensor_stream):
                     sss = max(0, col - zoom_window)
                     eee = min(col + zoom_window, df.shape[0])
                     alert_num = df['sit_alert'].cumsum().max()
-                    alert_start_end.append(df.index[sss])
+                    alert_start.append(df.index[sss])
+                    alert_end.append(df.index[eee])
+                    alert_enable.append(0)
 
                     alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
                         type="rect",
@@ -453,10 +458,42 @@ def rt_sensors_app(sensor_stream):
 
             with graph_cont.container():
                 alert_keys = list(alert_highlights.keys())
-                for alert_idx in range(len(alert_start_end)):
-                    if alert_start_end[alert_idx] not in temp.index:
+                local_alerts = {}
+                local_start, local_end = [],[]
+                tries = 10
+                show_count = 35
+                for alert_idx in range(len(alert_start)):
+                    # for each alert see if it's enabled or not
+                    # if not enabled toggle it to enable in next iteration
+                    if alert_enable[alert_idx] <= tries:
+                        alert_enable[alert_idx] = alert_enable[alert_idx]+1
+                    # if enabled, copy alert details and start to local list
+                    else:
+                        local_alerts[alert_keys[alert_idx]] = alert_highlights[alert_keys[alert_idx]]
+                        local_start.append(alert_start[alert_idx])
+                        local_end.append(alert_end[alert_idx])
+                        if alert_keys[alert_idx] not in local_count.keys():
+                            local_count[alert_keys[alert_idx]] = 0
+
+
+                    if alert_start[alert_idx] not in temp.index and alert_end[alert_idx] not in temp.index:
+                        # st.write(f'removing alert {alert_highlights[alert_keys[alert_idx]]}')
                         del alert_highlights[alert_keys[alert_idx]]
-                        del alert_start_end[alert_idx]
+                        del alert_start[alert_idx]
+                        del alert_end[alert_idx]
+
+                    # for all alerts to shown count the number of times it was shown
+                    local_keys = list(local_alerts.keys())
+                    for local_idx in range(len(local_alerts)):
+                        # print('')
+                        # print(local_count)
+                        local_count[local_keys[local_idx]] = local_count[local_keys[local_idx]] + 1
+                        # print(local_count)
+                        # print(' ')
+                        if local_count[local_keys[local_idx]] >= show_count:
+                            del local_alerts[local_keys[local_idx]]
+                            del local_start[local_idx]
+                            del local_end[local_idx]
 
                 if temp.shape[0] < sensor_window:
                     pad = pd.DataFrame(index=df.index[temp.shape[1]:sensor_window], columns=temp.columns)
@@ -465,11 +502,14 @@ def rt_sensors_app(sensor_stream):
                 fig = px.line(data_frame=temp)
                 fig.update_layout(plot_bgcolor='#ffffff')
 
-                lst_shapes = list(alert_highlights.values())
+                # lst_shapes = list(alert_highlights.values())
+                lst_shapes = list(local_alerts.values())
                 fig.update_layout(shapes=lst_shapes)
                 st.write(fig)
 
             # with debug.container():
+            #     st.write(local_count)
+            #     st.write(local_alerts)
             #     st.write(pad.shape)
             #     # for alert_idx in range(len(alert_start_end)):
             #     #     if alert_start_end[alert_idx] in temp.index:
