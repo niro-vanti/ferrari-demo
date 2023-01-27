@@ -476,7 +476,7 @@ def rt_sensors_app(sensor_stream):
                             local_count[alert_keys[alert_idx]] = 0
 
 
-                    if alert_start[alert_idx] not in temp.index and alert_end[alert_idx] not in temp.index:
+                    if alert_start[alert_idx] not in temp.index or alert_end[alert_idx] not in temp.index:
                         # st.write(f'removing alert {alert_highlights[alert_keys[alert_idx]]}')
                         del alert_highlights[alert_keys[alert_idx]]
                         del alert_start[alert_idx]
