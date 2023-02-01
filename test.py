@@ -1058,8 +1058,8 @@ def cpc(cpc_stream):
             optimized = nominal - np.random.randint(10, 15)
             tp = int((nominal / optimized - 1) * 100)
             with metrics.container():
-                st.metric(label="Nominal Consumption", value=nominal)
-                st.metric(label="Optimized Consumption", value=optimized)
+                st.metric(label="Nominal Consumption", value=f'{nominal} [MW/h]')
+                st.metric(label="Optimized Consumption", value=f'{optimized} [MW/h]')
                 st.metric(label="Savings", value='+' + str(tp) + "%")
 
             with data_graph.container():
@@ -1080,8 +1080,6 @@ def cpc(cpc_stream):
                 # title = local.columns
                 st.code(local.columns[0] + ' instructions')
                 local.columns = ['order']
-                print(local)
-                print(local['order'].iloc[0])
                 # local.sort_values(by='order', ascending=True, inplace=True)
                 instructions = {
                     1: f' {np.round(np.random.randint(-500,-100)/100,2)}%',
