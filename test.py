@@ -1040,10 +1040,8 @@ def cpc(cpc_stream):
     df = files[0]
     df.set_index('time', drop=True, inplace=True)
     df = df.astype(np.int8)
-    N = df.shape[0]
-    new_values = [np.random.choice([1, 2, 3, 4, 5], p=[0.005, 0.05, 1 - 2 * 0.05 - 2 * 0.005, 0.05, 0.005]) for ii in
-                  range(N)]
-    df['Valve 2 control'] = new_values
+    df['Valve 2 control'] = [np.random.choice([1, 2, 3, 4, 5], p=[0.005, 0.05, 1 - 2 * 0.05 - 2 * 0.005, 0.05, 0.005])
+                             for ii in range(df.shape[0])]
 
     nominal = 60
 
@@ -1054,6 +1052,11 @@ def cpc(cpc_stream):
     metrics = dummy.empty()
     data_graph = col1.empty()
     list_cont = col2.empty()
+    tp_cont = st.empty()
+    df_tp = pd.DataFrame()
+    df_tp['nominal'] = [nominal for ii in range(df.shape[0])]
+    df_tp['with Vanti'] = nominal
+    df_tp.index = df.index
 
     repeat_factor = 1
 
@@ -1066,7 +1069,9 @@ def cpc(cpc_stream):
                 # test_order_stream = False
                 break
             optimized = nominal - np.random.randint(10, 15)
+            optimized = nominal - np.round(np.random.normal(12.5, 2, 1), 1)
             tp = int((nominal / optimized - 1) * 100)
+            df_tp['with Vanti'].iloc[jj] = tp
             with metrics.container():
                 st.metric(label="Nominal Consumption", value=f'{nominal} [MW/h]')
                 st.metric(label="Optimized Consumption", value=f'{optimized} [MW/h]')
@@ -1099,6 +1104,18 @@ def cpc(cpc_stream):
                 }
                 st.code(''.join(['* ' + q + instructions[local['order'][idx]] + '\n' for idx, q in
                                  enumerate(local.index.to_list())]))
+        with st.expander('power consumption gains'):
+            # with tp_cont.container():
+            tp_fig = px.bar(df_tp['with Vanti'].iloc[sss:eee], color_discrete_sequence=["#52de97"])
+            tp_fig.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+            tp_fig.update_xaxes(visible=True, fixedrange=True)
+            tp_fig.update_yaxes(visible=True, fixedrange=True, range=[0,50])
+            tp_fig.update_layout(annotations=[], overwrite=True)
+            tp_fig.update_layout(
+                xaxis_title="Date", yaxis_title="Gains"
+            )
+            st.write(tp_fig)
+                # st.line_chart(df_tp)
         with st.expander('full data'):
             st.line_chart(df)
     return None
