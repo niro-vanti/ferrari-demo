@@ -1048,10 +1048,13 @@ def cpc(cpc_stream):
     data_graph = col1.empty()
     list_cont = col2.empty()
 
-
+    repeat_factor = 1
 
     if cpc_stream:
-        for j in range(df.shape[0]):
+        for jj in range(df.shape[0] * repeat_factor):
+
+            j = jj % df.shape[0]
+
             if stop_stream:
                 # test_order_stream = False
                 break
@@ -1063,9 +1066,8 @@ def cpc(cpc_stream):
                 st.metric(label="Savings", value='+' + str(tp) + "%")
 
             with data_graph.container():
-                # sss = max(0, j - test_reorder_window)
                 sss = 0
-                eee = min(j, df.shape[0])
+                eee = min(j, df.shape[0] * repeat_factor)
                 temp2 = df.iloc[sss:eee]
 
                 fig3 = px.line(temp2, markers=True)
