@@ -1043,6 +1043,9 @@ def cpc(cpc_stream):
 
     nominal = 60
 
+    random_dict = {i:np.random.choice([1,2,3,4,5]) for i in range(5)}
+    df.replace(random_dict, inplace=True)
+
     col1, dummy, col2 = st.columns((4, 1, 2))
     metrics = dummy.empty()
     data_graph = col1.empty()
