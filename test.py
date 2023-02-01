@@ -1040,10 +1040,11 @@ def cpc(cpc_stream):
     df = files[0]
     df.set_index('time', drop=True, inplace=True)
     df = df.astype(np.int8)
+    df['Valve 2 control'] = [np.random.choice[1,2,3,4,5] for i in range(df.shape[0])]
 
     nominal = 60
 
-    random_dict = {i:np.random.choice([1,2,3,4,5]) for i in range(5)}
+    random_dict = {i:np.random.choice([1,2,3,4,5]) for i in range(df.shape[1])}
     df.replace(random_dict, inplace=True)
 
     col1, dummy, col2 = st.columns((4, 1, 2))
