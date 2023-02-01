@@ -1033,6 +1033,69 @@ def si_demo(si_stream):
                 st.metric(label='', value=cm[2][2])
 
 
+def cpc(cpc_stream):
+    st.title('Continuous Process Optimization Demo')
+    st.subheader('closed loop power consumption reduction in real-time')
+    st.write('---------------------------------------------------------')
+    df = files[0]
+    df.set_index('time', drop=True, inplace=True)
+    df = df.astype(np.int8)
+
+    nominal = 60
+
+    col1, dummy, col2 = st.columns((4, 1, 2))
+    metrics = dummy.empty()
+    data_graph = col1.empty()
+    list_cont = col2.empty()
+
+
+
+    if cpc_stream:
+        for j in range(df.shape[0]):
+            if stop_stream:
+                # test_order_stream = False
+                break
+            optimized = nominal - np.random.randint(10, 15)
+            tp = int((nominal / optimized - 1) * 100)
+            with metrics.container():
+                st.metric(label="Nominal Consumption", value=nominal)
+                st.metric(label="Optimized Consumption", value=optimized)
+                st.metric(label="Savings", value='+' + str(tp) + "%")
+
+            with data_graph.container():
+                # sss = max(0, j - test_reorder_window)
+                sss = 0
+                eee = min(j, df.shape[0])
+                temp2 = df.iloc[sss:eee]
+
+                fig3 = px.line(temp2, markers=True)
+                fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+                fig3.update_xaxes(visible=True, fixedrange=True)
+                fig3.update_yaxes(visible=True, fixedrange=True)
+                fig3.update_layout(annotations=[], overwrite=True)
+                st.write(fig3)
+            with list_cont.container():
+                local = df.iloc[j].copy()
+                local = pd.DataFrame(local)
+                # title = local.columns
+                st.code(local.columns[0] + ' instructions')
+                local.columns = ['order']
+                print(local)
+                print(local['order'].iloc[0])
+                # local.sort_values(by='order', ascending=True, inplace=True)
+                instructions = {
+                    1: f' {np.round(np.random.randint(-500,-100)/100,2)}%',
+                    2: f' {np.round(np.random.randint(-100,0)/100,2)}%',
+                    4: f' {np.round(np.random.randint(0, 100)/100,2)}%',
+                    5: f' {np.round(np.random.randint(100, 500)/100,2)}%',
+                    3: ' no change',
+                }
+                st.code(''.join(['* ' + q + instructions[local['order'][idx]]+'\n' for idx, q in enumerate(local.index.to_list())]))
+        with st.expander('full data'):
+            st.line_chart(df)
+    return None
+
+
 def ask_for_files(app_type_file):
     if app_type_file == 'real time process optimization':
         df = pd.read_csv('assets/Data/test-reorder-data.csv')
@@ -1042,6 +1105,12 @@ def ask_for_files(app_type_file):
         return None
     if app_type_file == 'textile defects':
         return None
+
+    if app_type_file == 'continuous process optimization demo':
+        df = pd.read_csv('assets/Data/test-reorder-data.csv')
+        df.columns = ['time', 'Env Temperature', 'H1 Pressure', 'H2 Pressure', 'M1 motor velocity', 'Valve Release']
+        loaded_files = [df]
+        return loaded_files
 
     if app_type_file == 'paint shop defect detection':
         # df = pd.read_csv('assets/Data/Images/car-pano.png')
@@ -1117,13 +1186,14 @@ def ask_for_files(app_type_file):
                         pd.read_csv('assets/Data/SI_feat_imp.csv', index_col=0)]
         return loaded_files
 
-    st.error('app type not supported')
+    st.error('app type not supported sdsdf')
 
 
 # sidebar
 with st.sidebar:
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
-    app_type = st.selectbox('select application', ['textile defects',
+    app_type = st.selectbox('select application', ['continuous process optimization demo',
+                                                   'textile defects',
                                                    'Standard Industries Demo',
                                                    'real time process optimization',
                                                    'paint shop defect detection',
@@ -1149,6 +1219,9 @@ with st.sidebar:
 # main loop
 
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
+if app_type == 'continuous process optimization demo':
+    cpc(stream)
+
 if app_type == 'Standard Industries Demo':
     si_demo(stream)
 
