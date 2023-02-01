@@ -1034,7 +1034,7 @@ def si_demo(si_stream):
 
 
 def cpc(cpc_stream):
-    st.title('Continuous Process Optimization Demo')
+    st.title('Continuous Process Control Demo')
     st.subheader('closed loop power consumption reduction in real-time')
     st.write('---------------------------------------------------------')
     df = files[0]
