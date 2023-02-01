@@ -1040,13 +1040,14 @@ def cpc(cpc_stream):
     df = files[0]
     df.set_index('time', drop=True, inplace=True)
     df = df.astype(np.int8)
-    # N = df.shape[0]
-    # new_vals = [np.random.choice[1,2,3,4,5] for i in range(N)]
-    # df['Valve 2 control'] = new_vals
+    N = df.shape[0]
+    new_values = [np.random.choice([1, 2, 3, 4, 5], p=[0.005, 0.05, 1 - 2 * 0.05 - 2 * 0.005, 0.05, 0.005]) for ii in
+                  range(N)]
+    df['Valve 2 control'] = new_values
 
     nominal = 60
 
-    random_dict = {i:np.random.choice([1,2,3,4,5]) for i in range(df.shape[1])}
+    random_dict = {i: np.random.choice([1, 2, 3, 4, 5]) for i in range(df.shape[1])}
     df.replace(random_dict, inplace=True)
 
     col1, dummy, col2 = st.columns((4, 1, 2))
@@ -1090,13 +1091,14 @@ def cpc(cpc_stream):
                 local.columns = ['order']
                 # local.sort_values(by='order', ascending=True, inplace=True)
                 instructions = {
-                    1: f' {np.round(np.random.randint(-500,-100)/100,2)}%',
-                    2: f' {np.round(np.random.randint(-100,0)/100,2)}%',
-                    4: f' {np.round(np.random.randint(0, 100)/100,2)}%',
-                    5: f' {np.round(np.random.randint(100, 500)/100,2)}%',
+                    1: f' {np.round(np.random.randint(-500, -100) / 100, 2)}%',
+                    2: f' {np.round(np.random.randint(-100, 0) / 100, 2)}%',
+                    4: f' {np.round(np.random.randint(0, 100) / 100, 2)}%',
+                    5: f' {np.round(np.random.randint(100, 500) / 100, 2)}%',
                     3: ' no change',
                 }
-                st.code(''.join(['* ' + q + instructions[local['order'][idx]]+'\n' for idx, q in enumerate(local.index.to_list())]))
+                st.code(''.join(['* ' + q + instructions[local['order'][idx]] + '\n' for idx, q in
+                                 enumerate(local.index.to_list())]))
         with st.expander('full data'):
             st.line_chart(df)
     return None
