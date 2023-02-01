@@ -1040,8 +1040,9 @@ def cpc(cpc_stream):
     df = files[0]
     df.set_index('time', drop=True, inplace=True)
     df = df.astype(np.int8)
-    N = df.shape[0]
-    df['Valve 2 control'] = [np.random.choice[1,2,3,4,5] for i in range(N)]
+    # N = df.shape[0]
+    # new_vals = [np.random.choice[1,2,3,4,5] for i in range(N)]
+    # df['Valve 2 control'] = new_vals
 
     nominal = 60
 
