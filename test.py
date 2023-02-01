@@ -1131,7 +1131,7 @@ def ask_for_files(app_type_file):
     if app_type_file == 'textile defects':
         return None
 
-    if app_type_file == 'continuous process optimization demo':
+    if app_type_file == 'continuous process control demo':
         df = pd.read_csv('assets/Data/test-reorder-data.csv')
         df.columns = ['time', 'Env Temperature', 'H1 Pressure', 'H2 Pressure', 'M1 motor velocity', 'Valve Release']
         loaded_files = [df]
@@ -1217,7 +1217,7 @@ def ask_for_files(app_type_file):
 # sidebar
 with st.sidebar:
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
-    app_type = st.selectbox('select application', ['continuous process optimization demo',
+    app_type = st.selectbox('select application', ['continuous process control demo',
                                                    'textile defects',
                                                    'Standard Industries Demo',
                                                    'real time process optimization',
@@ -1244,7 +1244,7 @@ with st.sidebar:
 # main loop
 
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
-if app_type == 'continuous process optimization demo':
+if app_type == 'continuous process control demo':
     cpc(stream)
 
 if app_type == 'Standard Industries Demo':
