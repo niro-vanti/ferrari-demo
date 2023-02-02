@@ -1069,7 +1069,7 @@ def cpc(cpc_stream):
                 # test_order_stream = False
                 break
             optimized = nominal - np.random.randint(10, 15)
-            optimized = nominal - int(np.random.normal(12.5, 2, 1)[0])
+            optimized = nominal - int(np.random.normal(7, 1g, 1)[0])
             tp = int((nominal / optimized - 1) * 100)
             df_tp['with Vanti'].iloc[jj] = tp
             with metrics.container():
