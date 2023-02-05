@@ -1123,8 +1123,8 @@ def cpc(cpc_stream):
 
 def roadmap():
     st.components.v1.iframe(src='https://apac-rm.roadmunk.com/publish/ae1d0881e46dea81451714a14a2198675dcd20af',
-                            # width=None,
-                            # height=None,
+                            width=600,
+                            height=900,
                             scrolling=True)
 
 
