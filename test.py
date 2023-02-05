@@ -1120,6 +1120,10 @@ def cpc(cpc_stream):
             st.line_chart(df)
     return None
 
+def roadmap():
+    st.components.v1.iframe(src='https://apac-rm.roadmunk.com/publish/ae1d0881e46dea81451714a14a2198675dcd20af',
+                            width=None, height=None, scrolling=False)
+
 
 def ask_for_files(app_type_file):
     if app_type_file == 'real time process optimization':
@@ -1210,6 +1214,8 @@ def ask_for_files(app_type_file):
                         pd.read_csv('assets/Data/top-10-feats.csv', index_col=0),
                         pd.read_csv('assets/Data/SI_feat_imp.csv', index_col=0)]
         return loaded_files
+    if app_type_file == 'roadmap':
+        return
 
     st.error('app type not supported sdsdf')
 
@@ -1226,7 +1232,8 @@ with st.sidebar:
                                                    'real-time sensor anomaly detection',
                                                    'adaptive AI demo',
                                                    'manual assembly with video',
-                                                   'medical device early fault detection'])
+                                                   'medical device early fault detection',
+                                                   'roadmap'])
     b1, b2 = st.columns(2)
 
     stream = b1.button('Start')
@@ -1273,3 +1280,6 @@ if app_type == 'medical device early fault detection':
 
 if app_type == 'pre paint metal defects':
     pre_paint_app(stream)
+
+if app_type == 'roadmap':
+    roadmap()
