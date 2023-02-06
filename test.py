@@ -1235,7 +1235,7 @@ with st.sidebar:
                                                    'real-time sensor anomaly detection',
                                                    'adaptive AI demo',
                                                    'manual assembly with video',
-                                                   'medical device early fault detection'])\
+                                                   'medical device early fault detection'])
         # ,
         #                                            'roadmap'])
     b1, b2 = st.columns(2)
