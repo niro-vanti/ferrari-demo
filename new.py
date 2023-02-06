@@ -1122,7 +1122,8 @@ def cpc(cpc_stream):
 
 
 def roadmap():
-    st.components.v1.iframe(src='https://apac-rm.roadmunk.com/publish/ae1d0881e46dea81451714a14a2198675dcd20af',
+    source = 'https://app.clickup.com/5712158/v/b/5ea8y-1402'
+    st.components.v1.iframe(src=source,
                             width=1500,
                             height=900,
                             scrolling=True)
@@ -1235,7 +1236,8 @@ with st.sidebar:
                                                    'real-time sensor anomaly detection',
                                                    'adaptive AI demo',
                                                    'manual assembly with video',
-                                                   'medical device early fault detection'])
+                                                   'medical device early fault detection',
+                                                   'roadmap'])
 
     b1, b2 = st.columns(2)
 

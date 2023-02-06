@@ -1,361 +1,1080 @@
 Timestamp,tusCoatingLine.MES.UtilizationState,predictions
-2022-11-17 22:13:00,Running,Running
-2022-11-17 23:41:00,Running,Running
-2022-11-17 21:19:00,Running,Running
-2022-11-17 20:49:00,Running,Running
-2022-11-17 23:29:00,Running,Running
-2022-11-17 20:26:00,Running,Running
-2022-11-17 14:20:00,Running,Running
-2022-11-17 11:19:00,Running,Running
-2022-11-17 10:02:00,Running Slow,Running Slow
-2022-11-17 7:41:00,Running,Running
-2022-11-17 16:46:00,Running,Running Slow
-2022-11-17 4:54:00,Downtime,Downtime
-2022-11-17 20:09:00,Running,Running
-2022-11-17 16:28:00,Running,Running
-2022-11-17 8:31:00,Downtime,Downtime
-2022-11-17 8:07:00,Running,Running
-2022-11-17 18:44:00,Running Slow,Running Slow
-2022-11-17 16:32:00,Running,Running
-2022-11-17 15:00:00,Running,Running
-2022-11-17 12:01:00,Running,Running
-2022-11-17 1:30:00,Running,Running
-2022-11-17 19:46:00,Running,Running
-2022-11-17 13:21:00,Running,Running
-2022-11-17 11:01:00,Running,Running
-2022-11-17 3:13:00,Running Slow,Running Slow
-2022-11-17 19:27:00,Running,Running
-2022-11-17 17:23:00,Running Slow,Running Slow
-2022-11-17 9:15:00,Running,Running
-2022-11-17 14:30:00,Running,Running
-2022-11-17 12:45:00,Running,Running
-2022-11-17 10:32:00,Downtime,Running Slow
-2022-11-17 5:19:00,Downtime,Downtime
-2022-11-17 1:54:00,Running,Running
-2022-11-17 23:32:00,Running,Running
-2022-11-17 18:23:00,Downtime,Downtime
-2022-11-17 4:57:00,Downtime,Downtime
-2022-11-17 20:05:00,Running,Running
-2022-11-17 20:23:00,Running,Running
-2022-11-17 0:05:00,Running,Running
-2022-11-17 23:24:00,Running,Running
-2022-11-17 0:26:00,Running,Running
-2022-11-17 23:14:00,Running,Running
-2022-11-17 22:33:00,Running,Running
-2022-11-17 12:28:00,Running,Running
-2022-11-17 5:40:00,Running Slow,Running Slow
-2022-11-17 3:28:00,Running Slow,Running Slow
-2022-11-17 12:25:00,Running,Running
-2022-11-17 22:54:00,Running,Running
-2022-11-17 15:23:00,Running,Running
-2022-11-17 22:45:00,Running,Running
-2022-11-17 3:34:00,Running Slow,Running Slow
-2022-11-17 10:56:00,Running,Running
-2022-11-17 3:17:00,Running Slow,Running Slow
-2022-11-17 17:35:00,Downtime,Downtime
-2022-11-17 10:16:00,Downtime,Downtime
-2022-11-17 4:55:00,Downtime,Downtime
-2022-11-17 2:34:00,Running Slow,Running Slow
-2022-11-17 16:16:00,Running,Running
-2022-11-17 12:57:00,Running,Running
-2022-11-17 19:52:00,Running,Running
-2022-11-17 1:06:00,Running Slow,Running Slow
-2022-11-17 16:44:00,Running,Running
-2022-11-17 16:23:00,Running,Running
-2022-11-17 15:08:00,Running,Running
-2022-11-17 5:29:00,Running Slow,Running Slow
-2022-11-17 14:41:00,Running,Running
-2022-11-17 8:53:00,Running Slow,Running Slow
-2022-11-17 10:45:00,Running,Running
-2022-11-17 8:35:00,Downtime,Downtime
-2022-11-17 14:57:00,Running,Running
-2022-11-17 22:12:00,Running,Running
-2022-11-17 21:28:00,Running,Running
-2022-11-17 4:43:00,Running Slow,Running Slow
-2022-11-17 15:59:00,Running Slow,Running Slow
-2022-11-17 7:06:00,Running,Running
-2022-11-17 22:10:00,Running,Running
-2022-11-17 21:20:00,Running,Running
-2022-11-17 3:24:00,Downtime,Downtime
-2022-11-17 18:12:00,Downtime,Downtime
-2022-11-17 3:58:00,Running Slow,Running Slow
-2022-11-17 23:18:00,Running,Running
-2022-11-17 7:11:00,Running,Running
-2022-11-17 2:57:00,Running Slow,Running Slow
-2022-11-17 5:21:00,Running Slow,Running Slow
-2022-11-17 16:14:00,Running Slow,Running Slow
-2022-11-17 20:21:00,Running Slow,Running Slow
-2022-11-17 9:42:00,Running,Running
-2022-11-17 5:05:00,Downtime,Downtime
-2022-11-17 5:13:00,Downtime,Downtime
-2022-11-17 2:59:00,Running Slow,Running Slow
-2022-11-17 14:40:00,Running,Running
-2022-11-17 10:43:00,Running Slow,Running Slow
-2022-11-17 5:23:00,Running Slow,Running Slow
-2022-11-17 21:02:00,Running,Running
-2022-11-17 11:48:00,Running,Running
-2022-11-17 3:21:00,Running Slow,Running Slow
-2022-11-17 15:51:00,Downtime,Downtime
-2022-11-17 21:09:00,Running,Running
-2022-11-17 0:17:00,Running,Running
-2022-11-17 2:03:00,Running Slow,Running Slow
-2022-11-17 17:19:00,Running,Running Slow
-2022-11-17 12:46:00,Running,Running
-2022-11-17 20:54:00,Running,Running
-2022-11-17 22:40:00,Running,Running
-2022-11-17 8:24:00,Running Slow,Running Slow
-2022-11-17 18:26:00,Downtime,Downtime
-2022-11-17 13:56:00,Running,Running
-2022-11-17 19:22:00,Running,Running
-2022-11-17 6:17:00,Running Slow,Running Slow
-2022-11-17 1:36:00,Running,Running
-2022-11-17 3:30:00,Running Slow,Running Slow
-2022-11-17 6:36:00,Running,Running
-2022-11-17 14:22:00,Running,Running
-2022-11-17 10:20:00,Running Slow,Downtime
-2022-11-17 22:16:00,Running,Running
-2022-11-17 12:20:00,Running,Running
-2022-11-17 0:14:00,Running,Running
-2022-11-17 20:16:00,Running Slow,Running Slow
-2022-11-17 18:53:00,Running Slow,Running
-2022-11-17 15:50:00,Downtime,Downtime
-2022-11-17 3:00:00,Running Slow,Running Slow
-2022-11-17 4:25:00,Downtime,Downtime
-2022-11-17 17:17:00,Running Slow,Running Slow
-2022-11-17 8:45:00,Running Slow,Running Slow
-2022-11-17 7:39:00,Running,Running
-2022-11-17 13:18:00,Running,Running
-2022-11-17 16:39:00,Running,Running
-2022-11-17 22:50:00,Running,Running
-2022-11-17 18:30:00,Running Slow,Running Slow
-2022-11-17 23:05:00,Running Slow,Running
-2022-11-17 17:47:00,Downtime,Downtime
-2022-11-17 21:08:00,Running,Running
-2022-11-17 13:55:00,Running,Running
-2022-11-17 0:30:00,Running,Running
-2022-11-17 15:44:00,Downtime,Downtime
-2022-11-17 13:13:00,Running,Running
-2022-11-17 1:51:00,Running,Running
-2022-11-17 19:20:00,Running,Running
-2022-11-17 12:33:00,Running,Running
-2022-11-17 11:59:00,Running,Running
-2022-11-17 15:42:00,Downtime,Downtime
-2022-11-17 15:27:00,Running,Running
-2022-11-17 23:22:00,Running,Running
-2022-11-17 20:47:00,Running,Running
-2022-11-17 11:03:00,Running,Running
-2022-11-17 22:32:00,Running,Running
-2022-11-17 21:23:00,Running,Running
-2022-11-17 11:34:00,Running,Running
-2022-11-17 7:27:00,Running,Running
-2022-11-17 17:15:00,Running Slow,Running Slow
-2022-11-17 23:47:00,Running,Running
-2022-11-17 2:06:00,Running,Running
-2022-11-17 23:58:00,Running,Running
-2022-11-17 11:38:00,Running,Running
-2022-11-17 4:41:00,Downtime,Downtime
-2022-11-17 8:59:00,Running,Running
-2022-11-17 19:44:00,Running,Running
-2022-11-17 3:31:00,Running Slow,Running Slow
-2022-11-17 19:16:00,Running,Running
-2022-11-17 8:01:00,Running,Running
-2022-11-17 20:04:00,Running Slow,Running
-2022-11-17 15:13:00,Running,Running
-2022-11-17 10:59:00,Running,Running
-2022-11-17 11:35:00,Running,Running
-2022-11-17 13:41:00,Running,Running
-2022-11-17 2:29:00,Running Slow,Running Slow
-2022-11-17 1:56:00,Running,Running
-2022-11-17 21:56:00,Running,Running
-2022-11-17 7:07:00,Running,Running
-2022-11-17 17:59:00,Downtime,Downtime
-2022-11-17 22:01:00,Running,Running
-2022-11-17 10:11:00,Downtime,Downtime
-2022-11-17 3:04:00,Running Slow,Running Slow
-2022-11-17 22:31:00,Running,Running
-2022-11-17 19:56:00,Running,Running
-2022-11-17 7:22:00,Running,Running
-2022-11-17 10:14:00,Downtime,Downtime
-2022-11-17 13:06:00,Running,Running
-2022-11-17 9:21:00,Running,Running
-2022-11-17 6:39:00,Running,Running
-2022-11-17 13:29:00,Running,Running
-2022-11-17 1:50:00,Running,Running
-2022-11-17 8:09:00,Running,Running
-2022-11-17 7:25:00,Running,Running
-2022-11-17 20:06:00,Running,Running
-2022-11-17 5:44:00,Running Slow,Running Slow
-2022-11-17 20:58:00,Running,Running
-2022-11-17 4:07:00,Running Slow,Running Slow
-2022-11-17 10:27:00,Running Slow,Running Slow
-2022-11-17 1:43:00,Running,Running
-2022-11-17 13:51:00,Running,Running
-2022-11-17 20:11:00,Running,Running
-2022-11-17 0:12:00,Running,Running
-2022-11-17 10:48:00,Running,Running
-2022-11-17 16:53:00,Running Slow,Downtime
-2022-11-17 17:49:00,Downtime,Downtime
-2022-11-17 23:37:00,Running,Running
-2022-11-17 16:50:00,Running Slow,Running Slow
-2022-11-17 1:46:00,Running,Running
-2022-11-17 15:11:00,Running,Running
-2022-11-17 14:46:00,Running,Running
-2022-11-17 17:12:00,Running Slow,Running Slow
-2022-11-17 14:12:00,Running,Running
-2022-11-17 13:15:00,Running,Running
-2022-11-17 4:04:00,Running Slow,Running Slow
-2022-11-17 22:04:00,Running,Running
-2022-11-17 9:04:00,Running,Running
+2022-11-17 6:01:00,Running Slow,Running Slow
+2022-11-17 6:02:00,Running Slow,Running Slow
+2022-11-17 6:03:00,Running Slow,Running Slow
 2022-11-17 6:04:00,Running Slow,Running Slow
-2022-11-17 9:03:00,Running,Running
-2022-11-17 16:09:00,Running Slow,Running Slow
-2022-11-17 14:49:00,Running,Running
-2022-11-17 0:25:00,Running,Running
-2022-11-17 22:23:00,Running,Running
-2022-11-17 17:56:00,Downtime,Downtime
-2022-11-17 15:19:00,Running,Running
-2022-11-17 5:02:00,Downtime,Downtime
-2022-11-17 21:33:00,Running,Running
-2022-11-17 16:26:00,Running,Running
-2022-11-17 23:17:00,Running,Running
-2022-11-17 17:07:00,Running Slow,Running Slow
-2022-11-17 8:13:00,Running,Running
-2022-11-17 21:03:00,Running,Running
-2022-11-17 18:37:00,Running Slow,Running Slow
-2022-11-17 11:52:00,Running,Running
-2022-11-17 0:54:00,Running,Running
-2022-11-17 17:46:00,Downtime,Downtime
-2022-11-17 11:02:00,Running,Running
-2022-11-17 14:02:00,Running,Running
-2022-11-17 5:56:00,Running Slow,Running Slow
-2022-11-17 13:47:00,Running,Running
-2022-11-17 6:58:00,Running,Running
-2022-11-17 22:21:00,Running,Running
-2022-11-17 19:35:00,Running,Running
-2022-11-17 17:31:00,Downtime,Downtime
-2022-11-17 2:26:00,Running Slow,Running Slow
-2022-11-17 15:45:00,Downtime,Downtime
-2022-11-17 13:38:00,Running,Running
-2022-11-17 18:21:00,Downtime,Downtime
-2022-11-17 12:09:00,Running,Running
-2022-11-17 20:03:00,Running Slow,Running Slow
-2022-11-17 1:32:00,Running,Running
-2022-11-17 10:22:00,Running Slow,Running Slow
-2022-11-17 5:46:00,Running Slow,Running Slow
-2022-11-17 3:05:00,Running Slow,Running Slow
-2022-11-17 8:21:00,Running,Running
-2022-11-17 0:33:00,Running,Running
-2022-11-17 22:00:00,Running,Running
-2022-11-17 0:51:00,Running,Running
-2022-11-17 1:07:00,Running Slow,Running Slow
-2022-11-17 11:26:00,Running,Running
-2022-11-17 4:20:00,Running Slow,Running Slow
-2022-11-17 19:05:00,Running,Running
-2022-11-17 21:14:00,Running,Running
-2022-11-17 16:37:00,Running,Running
-2022-11-17 12:00:00,Running,Running
-2022-11-17 7:08:00,Running,Running
-2022-11-17 22:03:00,Running,Running
-2022-11-17 11:36:00,Running,Running
-2022-11-17 22:57:00,Running,Running
-2022-11-17 9:14:00,Running,Running
-2022-11-17 15:55:00,Running Slow,Running Slow
-2022-11-17 3:39:00,Running Slow,Running Slow
-2022-11-17 1:22:00,Running,Running
-2022-11-17 11:12:00,Running,Running
-2022-11-17 5:54:00,Running Slow,Running Slow
-2022-11-17 10:36:00,Running Slow,Running Slow
-2022-11-17 3:03:00,Running Slow,Running Slow
-2022-11-17 14:01:00,Running,Running
-2022-11-17 2:56:00,Running Slow,Running Slow
-2022-11-17 19:47:00,Running,Running
-2022-11-17 10:38:00,Running Slow,Running Slow
-2022-11-17 15:12:00,Running,Running
-2022-11-17 8:39:00,Running Slow,Running Slow
-2022-11-17 10:54:00,Running,Running
-2022-11-17 16:15:00,Running Slow,Running
-2022-11-17 3:20:00,Running Slow,Running Slow
-2022-11-17 10:24:00,Running Slow,Running Slow
-2022-11-17 10:53:00,Running,Running
-2022-11-17 2:43:00,Running Slow,Running Slow
-2022-11-17 7:19:00,Running,Running
-2022-11-17 5:04:00,Downtime,Downtime
-2022-11-17 4:58:00,Downtime,Downtime
-2022-11-17 16:01:00,Running Slow,Running Slow
-2022-11-17 5:27:00,Running Slow,Running Slow
-2022-11-17 0:46:00,Running,Running
-2022-11-17 22:51:00,Running,Running
-2022-11-17 17:05:00,Running Slow,Running Slow
-2022-11-17 4:00:00,Running Slow,Running Slow
-2022-11-17 18:11:00,Downtime,Downtime
-2022-11-17 15:24:00,Running,Running
-2022-11-17 5:55:00,Running Slow,Running Slow
-2022-11-17 6:30:00,Running,Running
-2022-11-17 6:33:00,Running,Running
-2022-11-17 7:30:00,Running Slow,Running Slow
-2022-11-17 20:20:00,Running Slow,Running Slow
-2022-11-17 1:24:00,Running,Running
-2022-11-17 4:03:00,Running Slow,Running Slow
-2022-11-17 21:16:00,Running,Running
-2022-11-17 5:00:00,Downtime,Downtime
-2022-11-17 15:06:00,Running,Running
-2022-11-17 10:46:00,Running,Running
-2022-11-17 23:56:00,Running,Running
-2022-11-17 8:43:00,Running Slow,Running Slow
-2022-11-17 4:01:00,Running Slow,Running Slow
-2022-11-17 9:08:00,Running,Running
-2022-11-17 6:11:00,Running Slow,Running Slow
-2022-11-17 15:40:00,Running Slow,Running Slow
-2022-11-17 4:12:00,Downtime,Downtime
-2022-11-17 4:37:00,Downtime,Downtime
-2022-11-17 16:08:00,Running Slow,Running Slow
-2022-11-17 0:53:00,Running,Running
-2022-11-17 18:24:00,Downtime,Downtime
-2022-11-17 16:06:00,Running Slow,Running Slow
-2022-11-17 0:34:00,Running,Running
-2022-11-17 11:53:00,Running,Running
-2022-11-17 13:25:00,Running,Running
-2022-11-17 7:34:00,Running Slow,Running Slow
-2022-11-17 21:37:00,Running,Running
-2022-11-17 15:22:00,Running,Running
-2022-11-17 8:11:00,Running,Running
-2022-11-17 1:16:00,Running,Running
-2022-11-17 21:24:00,Running,Running
-2022-11-17 6:57:00,Running,Running
-2022-11-17 19:36:00,Running,Running
-2022-11-17 6:48:00,Running,Running
-2022-11-17 17:13:00,Running Slow,Running Slow
-2022-11-17 9:19:00,Running,Running
-2022-11-17 21:46:00,Running,Running
-2022-11-17 8:34:00,Running Slow,Running Slow
-2022-11-17 13:30:00,Running,Running
-2022-11-17 16:49:00,Running Slow,Running Slow
-2022-11-17 11:09:00,Running,Running
-2022-11-17 8:28:00,Running Slow,Running Slow
-2022-11-17 8:23:00,Running Slow,Running Slow
-2022-11-17 15:28:00,Running,Running
-2022-11-17 3:52:00,Running Slow,Running Slow
-2022-11-17 9:06:00,Running,Running
-2022-11-17 4:24:00,Running Slow,Running Slow
-2022-11-17 20:19:00,Running Slow,Running Slow
-2022-11-17 14:39:00,Running,Running
-2022-11-17 6:40:00,Running,Running
-2022-11-17 21:36:00,Running,Running
-2022-11-17 8:03:00,Running,Running
-2022-11-17 7:23:00,Running,Running
-2022-11-17 8:19:00,Running,Running
-2022-11-17 23:53:00,Running Slow,Running Slow
-2022-11-17 13:37:00,Running,Running
-2022-11-17 15:09:00,Running,Running
-2022-11-17 8:38:00,Running Slow,Running Slow
-2022-11-17 4:51:00,Running Slow,Running Slow
-2022-11-17 4:18:00,Running Slow,Running Slow
-2022-11-17 18:05:00,Downtime,Downtime
-2022-11-17 11:41:00,Running,Running
-2022-11-17 6:25:00,Running,Running
-2022-11-17 19:15:00,Running,Running
-2022-11-17 6:29:00,Running,Running
-2022-11-17 6:55:00,Running,Running
-2022-11-17 7:05:00,Running,Running
+2022-11-17 6:05:00,Running Slow,Running Slow
+2022-11-17 6:06:00,Running Slow,Running Slow
+2022-11-17 6:07:00,Running Slow,Running Slow
+2022-11-17 6:08:00,Running Slow,Running Slow
 2022-11-17 6:09:00,Running Slow,Running Slow
+2022-11-17 6:10:00,Running Slow,Running Slow
+2022-11-17 6:11:00,Running Slow,Running Slow
+2022-11-17 6:12:00,Running Slow,Running Slow
+2022-11-17 6:13:00,Running Slow,Running Slow
+2022-11-17 6:14:00,Running Slow,Running Slow
+2022-11-17 6:15:00,Running Slow,Running Slow
+2022-11-17 6:16:00,Running Slow,Running Slow
+2022-11-17 6:17:00,Running Slow,Running Slow
+2022-11-17 6:18:00,Running Slow,Running Slow
+2022-11-17 6:19:00,Running Slow,Running Slow
+2022-11-17 6:20:00,Running Slow,Running Slow
+2022-11-17 6:21:00,Running Slow,Running Slow
+2022-11-17 6:22:00,Running Slow,Running Slow
+2022-11-17 6:23:00,Running,Running Slow
+2022-11-17 6:24:00,Running,Running Slow
+2022-11-17 6:25:00,Running,Running Slow
+2022-11-17 6:26:00,Running,Running Slow
+2022-11-17 6:27:00,Running,Running Slow
+2022-11-17 6:28:00,Running,Running Slow
+2022-11-17 6:29:00,Running,Running Slow
+2022-11-17 6:30:00,Running,Running Slow
+2022-11-17 6:31:00,Running,Running Slow
+2022-11-17 6:32:00,Running,Running Slow
+2022-11-17 6:33:00,Running,Running Slow
+2022-11-17 6:34:00,Running,Running Slow
+2022-11-17 6:35:00,Running,Running Slow
+2022-11-17 6:36:00,Running,Running Slow
+2022-11-17 6:37:00,Running,Running Slow
+2022-11-17 6:38:00,Running,Running Slow
+2022-11-17 6:39:00,Running,Running Slow
+2022-11-17 6:40:00,Running,Running Slow
+2022-11-17 6:41:00,Running,Running Slow
+2022-11-17 6:42:00,Running,Running Slow
+2022-11-17 6:43:00,Running,Running Slow
+2022-11-17 6:44:00,Running,Running Slow
+2022-11-17 6:45:00,Running,Running Slow
+2022-11-17 6:46:00,Running,Running Slow
+2022-11-17 6:47:00,Running,Running Slow
+2022-11-17 6:48:00,Running,Running Slow
+2022-11-17 6:49:00,Running,Running Slow
+2022-11-17 6:50:00,Running,Running Slow
+2022-11-17 6:51:00,Running,Running Slow
+2022-11-17 6:52:00,Running,Running Slow
+2022-11-17 6:53:00,Running,Running Slow
+2022-11-17 6:54:00,Running,Running Slow
+2022-11-17 6:55:00,Running,Running Slow
+2022-11-17 6:56:00,Running,Running Slow
+2022-11-17 6:57:00,Running,Running Slow
+2022-11-17 6:58:00,Running,Running Slow
+2022-11-17 6:59:00,Running,Running Slow
+2022-11-17 7:00:00,Running,Running Slow
+2022-11-17 7:01:00,Running,Running Slow
+2022-11-17 7:02:00,Running,Running Slow
+2022-11-17 7:03:00,Running,Running Slow
+2022-11-17 7:04:00,Running,Running Slow
+2022-11-17 7:05:00,Running,Running Slow
+2022-11-17 7:06:00,Running,Running
+2022-11-17 7:07:00,Running,Running
+2022-11-17 7:08:00,Running,Running
+2022-11-17 7:09:00,Running,Running
+2022-11-17 7:10:00,Running,Running
+2022-11-17 7:11:00,Running,Running
+2022-11-17 7:12:00,Running,Running
+2022-11-17 7:13:00,Running,Running
+2022-11-17 7:14:00,Running,Running
+2022-11-17 7:15:00,Running,Running
+2022-11-17 7:16:00,Running,Running
+2022-11-17 7:17:00,Running,Running
+2022-11-17 7:18:00,Running,Running
+2022-11-17 7:19:00,Running,Running
+2022-11-17 7:20:00,Running,Running
+2022-11-17 7:21:00,Running,Running
+2022-11-17 7:22:00,Running,Running
+2022-11-17 7:23:00,Running,Running
+2022-11-17 7:24:00,Running,Running
+2022-11-17 7:25:00,Running,Running
+2022-11-17 7:26:00,Running,Running
+2022-11-17 7:27:00,Running,Running
+2022-11-17 7:28:00,Running,Running
+2022-11-17 7:29:00,Running,Running
+2022-11-17 7:30:00,Running Slow,Running Slow
+2022-11-17 7:31:00,Running Slow,Running Slow
+2022-11-17 7:32:00,Running Slow,Running Slow
+2022-11-17 7:33:00,Running Slow,Running Slow
+2022-11-17 7:34:00,Running Slow,Running Slow
+2022-11-17 7:35:00,Running Slow,Running Slow
+2022-11-17 7:36:00,Running,Running Slow
+2022-11-17 7:37:00,Running,Running Slow
+2022-11-17 7:38:00,Running,Running Slow
+2022-11-17 7:39:00,Running,Running Slow
+2022-11-17 7:40:00,Running,Running Slow
+2022-11-17 7:41:00,Running,Running Slow
+2022-11-17 7:42:00,Running,Running Slow
+2022-11-17 7:43:00,Running,Running
+2022-11-17 7:44:00,Running,Running
+2022-11-17 7:45:00,Running,Running
+2022-11-17 7:46:00,Running,Running
+2022-11-17 7:47:00,Running,Running
+2022-11-17 7:48:00,Running,Running
+2022-11-17 7:49:00,Running,Running
+2022-11-17 7:50:00,Running,Running
+2022-11-17 7:51:00,Running,Running
+2022-11-17 7:52:00,Running Slow,Running Slow
+2022-11-17 7:53:00,Running Slow,Running Slow
+2022-11-17 7:54:00,Running Slow,Running Slow
+2022-11-17 7:55:00,Running Slow,Running Slow
+2022-11-17 7:56:00,Running Slow,Running Slow
+2022-11-17 7:57:00,Running Slow,Running Slow
+2022-11-17 7:58:00,Running Slow,Running
+2022-11-17 7:59:00,Running,Running
+2022-11-17 8:00:00,Running,Running
+2022-11-17 8:01:00,Running,Running
+2022-11-17 8:02:00,Running,Running
+2022-11-17 8:03:00,Running,Running
+2022-11-17 8:04:00,Running,Running
+2022-11-17 8:05:00,Running,Running
+2022-11-17 8:06:00,Running,Running
+2022-11-17 8:07:00,Running,Running
+2022-11-17 8:08:00,Running,Running
+2022-11-17 8:09:00,Running,Running
+2022-11-17 8:10:00,Running,Running
+2022-11-17 8:11:00,Running,Running
+2022-11-17 8:12:00,Running,Running
+2022-11-17 8:13:00,Running,Running
+2022-11-17 8:14:00,Running,Running
+2022-11-17 8:15:00,Running,Running
+2022-11-17 8:16:00,Running,Running
+2022-11-17 8:17:00,Running,Running
+2022-11-17 8:18:00,Running,Running
+2022-11-17 8:19:00,Running,Running
+2022-11-17 8:20:00,Running,Running
+2022-11-17 8:21:00,Running,Running
+2022-11-17 8:22:00,Running,Running
+2022-11-17 8:23:00,Running Slow,Running Slow
+2022-11-17 8:24:00,Running Slow,Running Slow
+2022-11-17 8:25:00,Running Slow,Running Slow
+2022-11-17 8:26:00,Running Slow,Running Slow
+2022-11-17 8:27:00,Running Slow,Running Slow
+2022-11-17 8:28:00,Running Slow,Running Slow
+2022-11-17 8:29:00,Running Slow,Running Slow
+2022-11-17 8:30:00,Running Slow,Running Slow
+2022-11-17 8:31:00,Downtime,Downtime
+2022-11-17 8:32:00,Downtime,Downtime
+2022-11-17 8:33:00,Downtime,Downtime
+2022-11-17 8:34:00,Running Slow,Running Slow
+2022-11-17 8:35:00,Downtime,Downtime
+2022-11-17 8:36:00,Downtime,Downtime
+2022-11-17 8:37:00,Downtime,Running Slow
+2022-11-17 8:38:00,Running Slow,Running Slow
+2022-11-17 8:39:00,Running Slow,Running Slow
+2022-11-17 8:40:00,Running Slow,Running Slow
+2022-11-17 8:41:00,Running Slow,Running Slow
+2022-11-17 8:42:00,Running Slow,Running Slow
+2022-11-17 8:43:00,Running Slow,Running Slow
+2022-11-17 8:44:00,Running Slow,Running Slow
+2022-11-17 8:45:00,Running Slow,Running Slow
+2022-11-17 8:46:00,Running Slow,Running Slow
+2022-11-17 8:47:00,Running Slow,Running Slow
+2022-11-17 8:48:00,Running Slow,Running Slow
+2022-11-17 8:49:00,Running Slow,Running Slow
+2022-11-17 8:50:00,Running Slow,Running Slow
+2022-11-17 8:51:00,Running Slow,Running Slow
+2022-11-17 8:52:00,Running Slow,Running Slow
+2022-11-17 8:53:00,Running Slow,Running Slow
+2022-11-17 8:54:00,Running Slow,Running Slow
+2022-11-17 8:55:00,Running Slow,Running Slow
+2022-11-17 8:56:00,Running Slow,Running Slow
+2022-11-17 8:57:00,Running Slow,Running Slow
+2022-11-17 8:58:00,Running,Running Slow
+2022-11-17 8:59:00,Running,Running
+2022-11-17 9:00:00,Running,Running Slow
+2022-11-17 9:01:00,Running,Running
+2022-11-17 9:02:00,Running,Running
+2022-11-17 9:03:00,Running,Running
+2022-11-17 9:04:00,Running,Running
+2022-11-17 9:05:00,Running,Running
+2022-11-17 9:06:00,Running,Running
+2022-11-17 9:07:00,Running,Running
+2022-11-17 9:08:00,Running,Running
+2022-11-17 9:09:00,Running,Running
+2022-11-17 9:10:00,Running,Running
+2022-11-17 9:11:00,Running,Running
+2022-11-17 9:12:00,Running,Running
+2022-11-17 9:13:00,Running,Running
+2022-11-17 9:14:00,Running,Running
+2022-11-17 9:15:00,Running,Running
+2022-11-17 9:16:00,Running,Running
+2022-11-17 9:17:00,Running,Running
+2022-11-17 9:18:00,Running,Running
+2022-11-17 9:19:00,Running,Running
+2022-11-17 9:20:00,Running,Running
+2022-11-17 9:21:00,Running,Running
+2022-11-17 9:22:00,Running,Running
+2022-11-17 9:23:00,Running,Running
+2022-11-17 9:24:00,Running,Running
+2022-11-17 9:25:00,Running,Running
+2022-11-17 9:26:00,Running,Running
+2022-11-17 9:27:00,Running,Running
+2022-11-17 9:28:00,Running,Running
+2022-11-17 9:29:00,Running,Running
+2022-11-17 9:30:00,Running,Running
+2022-11-17 9:31:00,Running,Running
+2022-11-17 9:32:00,Running,Running
+2022-11-17 9:33:00,Running,Running
+2022-11-17 9:34:00,Running,Running
+2022-11-17 9:35:00,Running,Running
+2022-11-17 9:36:00,Running Slow,Running Slow
+2022-11-17 9:37:00,Running,Running
+2022-11-17 9:38:00,Running,Running
+2022-11-17 9:39:00,Running,Running
+2022-11-17 9:40:00,Running,Running
+2022-11-17 9:41:00,Running,Running
+2022-11-17 9:42:00,Running,Running
+2022-11-17 9:43:00,Running,Running
 2022-11-17 9:44:00,Running,Running
+2022-11-17 9:45:00,Running,Running
+2022-11-17 9:46:00,Running,Running
+2022-11-17 9:47:00,Running,Running
+2022-11-17 9:48:00,Running,Running
+2022-11-17 9:49:00,Running,Running
+2022-11-17 9:50:00,Running,Running
+2022-11-17 9:51:00,Running,Running
+2022-11-17 9:52:00,Running,Running
+2022-11-17 9:53:00,Running,Running
+2022-11-17 9:54:00,Running,Running
+2022-11-17 9:55:00,Running,Running
+2022-11-17 9:56:00,Running,Running
+2022-11-17 9:57:00,Running,Running
+2022-11-17 9:58:00,Running,Running
+2022-11-17 9:59:00,Running,Running
+2022-11-17 10:00:00,Running,Running Slow
+2022-11-17 10:01:00,Running Slow,Running Slow
+2022-11-17 10:02:00,Running Slow,Running Slow
+2022-11-17 10:03:00,Running Slow,Running Slow
+2022-11-17 10:04:00,Running Slow,Downtime
+2022-11-17 10:05:00,Downtime,Downtime
+2022-11-17 10:06:00,Downtime,Downtime
+2022-11-17 10:07:00,Downtime,Downtime
+2022-11-17 10:08:00,Downtime,Downtime
+2022-11-17 10:09:00,Downtime,Downtime
+2022-11-17 10:10:00,Downtime,Downtime
+2022-11-17 10:11:00,Downtime,Downtime
+2022-11-17 10:12:00,Downtime,Downtime
+2022-11-17 10:13:00,Downtime,Downtime
+2022-11-17 10:14:00,Downtime,Downtime
+2022-11-17 10:15:00,Downtime,Downtime
+2022-11-17 10:16:00,Downtime,Downtime
+2022-11-17 10:17:00,Downtime,Downtime
+2022-11-17 10:18:00,Downtime,Downtime
+2022-11-17 10:19:00,Downtime,Downtime
+2022-11-17 10:20:00,Running Slow,Running Slow
+2022-11-17 10:21:00,Running Slow,Running Slow
+2022-11-17 10:22:00,Running Slow,Running Slow
+2022-11-17 10:23:00,Running Slow,Running Slow
+2022-11-17 10:24:00,Running Slow,Running Slow
+2022-11-17 10:25:00,Running Slow,Running Slow
+2022-11-17 10:26:00,Running Slow,Running Slow
+2022-11-17 10:27:00,Running Slow,Running Slow
+2022-11-17 10:28:00,Running Slow,Running Slow
+2022-11-17 10:29:00,Running Slow,Running Slow
+2022-11-17 10:30:00,Running Slow,Downtime
+2022-11-17 10:31:00,Downtime,Downtime
+2022-11-17 10:32:00,Downtime,Downtime
+2022-11-17 10:33:00,Running Slow,Running Slow
+2022-11-17 10:34:00,Running Slow,Running Slow
+2022-11-17 10:35:00,Running Slow,Running Slow
+2022-11-17 10:36:00,Running Slow,Running Slow
+2022-11-17 10:37:00,Running Slow,Running Slow
+2022-11-17 10:38:00,Running Slow,Running Slow
+2022-11-17 10:39:00,Running Slow,Running Slow
+2022-11-17 10:40:00,Running Slow,Running Slow
+2022-11-17 10:41:00,Running Slow,Running Slow
+2022-11-17 10:42:00,Running Slow,Running Slow
+2022-11-17 10:43:00,Running Slow,Running Slow
+2022-11-17 10:44:00,Running Slow,Running
+2022-11-17 10:45:00,Running,Running
+2022-11-17 10:46:00,Running,Running
+2022-11-17 10:47:00,Running,Running
+2022-11-17 10:48:00,Running,Running
+2022-11-17 10:49:00,Running,Running
+2022-11-17 10:50:00,Running,Running
+2022-11-17 10:51:00,Running,Running
+2022-11-17 10:52:00,Running,Running
+2022-11-17 10:53:00,Running,Running
+2022-11-17 10:54:00,Running,Running
+2022-11-17 10:55:00,Running,Running
+2022-11-17 10:56:00,Running,Running
+2022-11-17 10:57:00,Running,Running
+2022-11-17 10:58:00,Running,Running
+2022-11-17 10:59:00,Running,Running
+2022-11-17 11:00:00,Running,Running
+2022-11-17 11:01:00,Running,Running
+2022-11-17 11:02:00,Running,Running
+2022-11-17 11:03:00,Running,Running
+2022-11-17 11:04:00,Running,Running
+2022-11-17 11:05:00,Running,Running
+2022-11-17 11:06:00,Running,Running
+2022-11-17 11:07:00,Running,Running
+2022-11-17 11:08:00,Running,Running
+2022-11-17 11:09:00,Running,Running
+2022-11-17 11:10:00,Running,Running
+2022-11-17 11:11:00,Running,Running
+2022-11-17 11:12:00,Running,Running
+2022-11-17 11:13:00,Running,Running
+2022-11-17 11:14:00,Running,Running
+2022-11-17 11:15:00,Running,Running
+2022-11-17 11:16:00,Running,Running
+2022-11-17 11:17:00,Running,Running
+2022-11-17 11:18:00,Running,Running
+2022-11-17 11:19:00,Running,Running
+2022-11-17 11:20:00,Running,Running
+2022-11-17 11:21:00,Running,Running
+2022-11-17 11:22:00,Running,Running
+2022-11-17 11:23:00,Running,Running
+2022-11-17 11:24:00,Running,Running
+2022-11-17 11:25:00,Running,Running
+2022-11-17 11:26:00,Running,Running
+2022-11-17 11:27:00,Running,Running
+2022-11-17 11:28:00,Running,Running
+2022-11-17 11:29:00,Running,Running
+2022-11-17 11:30:00,Running,Running
+2022-11-17 11:31:00,Running,Running
+2022-11-17 11:32:00,Running,Running
+2022-11-17 11:33:00,Running,Running
+2022-11-17 11:34:00,Running,Running
+2022-11-17 11:35:00,Running,Running
+2022-11-17 11:36:00,Running,Running
+2022-11-17 11:37:00,Running,Running
+2022-11-17 11:38:00,Running,Running
+2022-11-17 11:39:00,Running,Running
+2022-11-17 11:40:00,Running,Running
+2022-11-17 11:41:00,Running,Running
+2022-11-17 11:42:00,Running,Running
+2022-11-17 11:43:00,Running,Running
+2022-11-17 11:44:00,Running,Running
+2022-11-17 11:45:00,Running,Running
+2022-11-17 11:46:00,Running,Running
+2022-11-17 11:47:00,Running,Running
+2022-11-17 11:48:00,Running,Running
+2022-11-17 11:49:00,Running,Running
+2022-11-17 11:50:00,Running,Running
+2022-11-17 11:51:00,Running,Running
+2022-11-17 11:52:00,Running,Running
+2022-11-17 11:53:00,Running,Running
+2022-11-17 11:54:00,Running,Running
+2022-11-17 11:55:00,Running,Running
+2022-11-17 11:56:00,Running,Running
+2022-11-17 11:57:00,Running,Running
+2022-11-17 11:58:00,Running,Running
+2022-11-17 11:59:00,Running,Running
+2022-11-17 12:00:00,Running,Running
+2022-11-17 12:01:00,Running,Running
+2022-11-17 12:02:00,Running,Running
+2022-11-17 12:03:00,Running,Running
+2022-11-17 12:04:00,Running,Running
+2022-11-17 12:05:00,Running,Running
+2022-11-17 12:06:00,Running,Running
+2022-11-17 12:07:00,Running,Running
+2022-11-17 12:08:00,Running,Running
+2022-11-17 12:09:00,Running,Running
+2022-11-17 12:10:00,Running,Running
+2022-11-17 12:11:00,Running,Running
+2022-11-17 12:12:00,Running,Running
+2022-11-17 12:13:00,Running,Running
+2022-11-17 12:14:00,Running,Running
+2022-11-17 12:15:00,Running,Running
+2022-11-17 12:16:00,Running,Running
+2022-11-17 12:17:00,Running,Running
+2022-11-17 12:18:00,Running,Running
+2022-11-17 12:19:00,Running,Running
+2022-11-17 12:20:00,Running,Running
+2022-11-17 12:21:00,Running,Running
+2022-11-17 12:22:00,Running,Running
+2022-11-17 12:23:00,Running,Running
+2022-11-17 12:24:00,Running,Running
+2022-11-17 12:25:00,Running,Running
+2022-11-17 12:26:00,Running,Running
+2022-11-17 12:27:00,Running,Running
+2022-11-17 12:28:00,Running,Running
+2022-11-17 12:29:00,Running,Running
+2022-11-17 12:30:00,Running,Running
+2022-11-17 12:31:00,Running,Running
+2022-11-17 12:32:00,Running,Running
+2022-11-17 12:33:00,Running,Running
+2022-11-17 12:34:00,Running,Running
+2022-11-17 12:35:00,Running,Running
+2022-11-17 12:36:00,Running,Running
+2022-11-17 12:37:00,Running,Running
+2022-11-17 12:38:00,Running,Running
+2022-11-17 12:39:00,Running,Running
+2022-11-17 12:40:00,Running,Running
+2022-11-17 12:41:00,Running,Running
+2022-11-17 12:42:00,Running,Running
+2022-11-17 12:43:00,Running,Running
+2022-11-17 12:44:00,Running,Running
+2022-11-17 12:45:00,Running,Running
+2022-11-17 12:46:00,Running,Running
+2022-11-17 12:47:00,Running,Running
+2022-11-17 12:48:00,Running,Running
+2022-11-17 12:49:00,Running,Running
+2022-11-17 12:50:00,Running,Running
+2022-11-17 12:51:00,Running,Running
+2022-11-17 12:52:00,Running,Running
+2022-11-17 12:53:00,Running,Running
+2022-11-17 12:54:00,Running,Running
+2022-11-17 12:55:00,Running,Running
+2022-11-17 12:56:00,Running,Running
+2022-11-17 12:57:00,Running,Running
+2022-11-17 12:58:00,Running,Running
+2022-11-17 12:59:00,Running,Running
+2022-11-17 13:00:00,Running,Running
+2022-11-17 13:01:00,Running,Running
+2022-11-17 13:02:00,Running,Running
+2022-11-17 13:03:00,Running,Running
+2022-11-17 13:04:00,Running,Running
+2022-11-17 13:05:00,Running,Running
+2022-11-17 13:06:00,Running,Running
+2022-11-17 13:07:00,Running,Running
+2022-11-17 13:08:00,Running,Running
+2022-11-17 13:09:00,Running,Running
+2022-11-17 13:10:00,Running,Running
+2022-11-17 13:11:00,Running,Running
+2022-11-17 13:12:00,Running,Running
+2022-11-17 13:13:00,Running,Running
+2022-11-17 13:14:00,Running,Running
+2022-11-17 13:15:00,Running,Running
+2022-11-17 13:16:00,Running,Running
+2022-11-17 13:17:00,Running,Running
+2022-11-17 13:18:00,Running,Running
+2022-11-17 13:19:00,Running,Running
+2022-11-17 13:20:00,Running,Running
+2022-11-17 13:21:00,Running,Running
+2022-11-17 13:22:00,Running,Running
+2022-11-17 13:23:00,Running,Running
+2022-11-17 13:24:00,Running,Running
+2022-11-17 13:25:00,Running,Running
+2022-11-17 13:26:00,Running,Running
+2022-11-17 13:27:00,Running,Running
+2022-11-17 13:28:00,Running,Running
+2022-11-17 13:29:00,Running,Running
+2022-11-17 13:30:00,Running,Running
+2022-11-17 13:31:00,Running,Running
+2022-11-17 13:32:00,Running,Running
+2022-11-17 13:33:00,Running,Running
+2022-11-17 13:34:00,Running,Running
+2022-11-17 13:35:00,Running,Running
+2022-11-17 13:36:00,Running,Running
+2022-11-17 13:37:00,Running,Running
+2022-11-17 13:38:00,Running,Running
+2022-11-17 13:39:00,Running,Running
+2022-11-17 13:40:00,Running,Running
+2022-11-17 13:41:00,Running,Running
+2022-11-17 13:42:00,Running,Running
+2022-11-17 13:43:00,Running,Running
+2022-11-17 13:44:00,Running,Running
+2022-11-17 13:45:00,Running,Running
+2022-11-17 13:46:00,Running,Running
+2022-11-17 13:47:00,Running,Running
+2022-11-17 13:48:00,Running,Running
+2022-11-17 13:49:00,Running,Running
+2022-11-17 13:50:00,Running,Running
+2022-11-17 13:51:00,Running,Running
+2022-11-17 13:52:00,Running,Running
+2022-11-17 13:53:00,Running,Running
+2022-11-17 13:54:00,Running,Running
+2022-11-17 13:55:00,Running,Running
+2022-11-17 13:56:00,Running,Running
+2022-11-17 13:57:00,Running,Running
+2022-11-17 13:58:00,Running,Running
+2022-11-17 13:59:00,Running,Running
+2022-11-17 14:00:00,Running,Running
+2022-11-17 14:01:00,Running,Running
+2022-11-17 14:02:00,Running,Running
+2022-11-17 14:03:00,Running,Running
+2022-11-17 14:04:00,Running,Running
+2022-11-17 14:05:00,Running,Running
+2022-11-17 14:06:00,Running,Running
+2022-11-17 14:07:00,Running,Running
+2022-11-17 14:08:00,Running,Running
+2022-11-17 14:09:00,Running,Running
+2022-11-17 14:10:00,Running,Running
+2022-11-17 14:11:00,Running,Running
+2022-11-17 14:12:00,Running,Running
+2022-11-17 14:13:00,Running,Running
+2022-11-17 14:14:00,Running,Running
+2022-11-17 14:15:00,Running,Running
+2022-11-17 14:16:00,Running,Running
+2022-11-17 14:17:00,Running,Running
+2022-11-17 14:18:00,Running,Running
+2022-11-17 14:19:00,Running,Running
+2022-11-17 14:20:00,Running,Running
+2022-11-17 14:21:00,Running,Running
+2022-11-17 14:22:00,Running,Running
+2022-11-17 14:23:00,Running,Running
+2022-11-17 14:24:00,Running,Running
+2022-11-17 14:25:00,Running,Running
+2022-11-17 14:26:00,Running,Running
+2022-11-17 14:27:00,Running,Running
+2022-11-17 14:28:00,Running,Running
+2022-11-17 14:29:00,Running,Running
+2022-11-17 14:30:00,Running,Running
+2022-11-17 14:31:00,Running,Running
+2022-11-17 14:32:00,Running,Running
+2022-11-17 14:33:00,Running,Running
+2022-11-17 14:34:00,Running,Running
+2022-11-17 14:35:00,Running,Running
+2022-11-17 14:36:00,Running,Running
+2022-11-17 14:37:00,Running,Running
+2022-11-17 14:38:00,Running,Running
+2022-11-17 14:39:00,Running,Running
+2022-11-17 14:40:00,Running,Running
+2022-11-17 14:41:00,Running,Running
+2022-11-17 14:42:00,Running,Running
+2022-11-17 14:43:00,Running,Running
+2022-11-17 14:44:00,Running,Running
+2022-11-17 14:45:00,Running,Running
+2022-11-17 14:46:00,Running,Running
+2022-11-17 14:47:00,Running,Running
+2022-11-17 14:48:00,Running,Running
+2022-11-17 14:49:00,Running,Running
+2022-11-17 14:50:00,Running,Running
+2022-11-17 14:51:00,Running,Running
+2022-11-17 14:52:00,Running,Running
+2022-11-17 14:53:00,Running,Running
+2022-11-17 14:54:00,Running,Running
+2022-11-17 14:55:00,Running,Running
+2022-11-17 14:56:00,Running,Running
+2022-11-17 14:57:00,Running,Running
+2022-11-17 14:58:00,Running,Running
+2022-11-17 14:59:00,Running,Running
+2022-11-17 15:00:00,Running,Running
+2022-11-17 15:01:00,Running,Running
+2022-11-17 15:02:00,Running,Running
+2022-11-17 15:03:00,Running,Running
+2022-11-17 15:04:00,Running,Running
+2022-11-17 15:05:00,Running,Running
+2022-11-17 15:06:00,Running,Running
+2022-11-17 15:07:00,Running,Running
+2022-11-17 15:08:00,Running,Running
+2022-11-17 15:09:00,Running,Running
+2022-11-17 15:10:00,Running,Running
+2022-11-17 15:11:00,Running,Running
+2022-11-17 15:12:00,Running,Running
+2022-11-17 15:13:00,Running,Running
+2022-11-17 15:14:00,Running,Running
+2022-11-17 15:15:00,Running,Running
+2022-11-17 15:16:00,Running,Running
+2022-11-17 15:17:00,Running,Running
+2022-11-17 15:18:00,Running,Running
+2022-11-17 15:19:00,Running,Running
+2022-11-17 15:20:00,Running,Running
+2022-11-17 15:21:00,Running,Running
+2022-11-17 15:22:00,Running,Running
+2022-11-17 15:23:00,Running,Running
+2022-11-17 15:24:00,Running,Running
+2022-11-17 15:25:00,Running,Running
+2022-11-17 15:26:00,Running,Running
+2022-11-17 15:27:00,Running,Running
+2022-11-17 15:28:00,Running,Running
+2022-11-17 15:29:00,Running,Running
+2022-11-17 15:30:00,Running,Running
+2022-11-17 15:31:00,Running,Running
+2022-11-17 15:32:00,Running,Running
+2022-11-17 15:33:00,Running,Running
+2022-11-17 15:34:00,Running,Running
+2022-11-17 15:35:00,Running Slow,Running Slow
+2022-11-17 15:36:00,Running Slow,Running Slow
+2022-11-17 15:37:00,Running Slow,Running Slow
+2022-11-17 15:38:00,Running Slow,Running Slow
+2022-11-17 15:39:00,Running Slow,Running Slow
+2022-11-17 15:40:00,Running Slow,Running Slow
+2022-11-17 15:41:00,Downtime,Downtime
+2022-11-17 15:42:00,Downtime,Downtime
+2022-11-17 15:43:00,Downtime,Downtime
+2022-11-17 15:44:00,Downtime,Downtime
+2022-11-17 15:45:00,Downtime,Downtime
+2022-11-17 15:46:00,Downtime,Downtime
+2022-11-17 15:47:00,Downtime,Downtime
+2022-11-17 15:48:00,Downtime,Downtime
+2022-11-17 15:49:00,Downtime,Downtime
+2022-11-17 15:50:00,Downtime,Downtime
+2022-11-17 15:51:00,Downtime,Downtime
+2022-11-17 15:52:00,Downtime,Running Slow
+2022-11-17 15:53:00,Running Slow,Running Slow
+2022-11-17 15:54:00,Running Slow,Running Slow
+2022-11-17 15:55:00,Running Slow,Running Slow
+2022-11-17 15:56:00,Running Slow,Running Slow
+2022-11-17 15:57:00,Running Slow,Running Slow
+2022-11-17 15:58:00,Running Slow,Running Slow
+2022-11-17 15:59:00,Running Slow,Running Slow
+2022-11-17 16:00:00,Running Slow,Running Slow
+2022-11-17 16:01:00,Running Slow,Running Slow
+2022-11-17 16:02:00,Running Slow,Running Slow
+2022-11-17 16:03:00,Running Slow,Running Slow
+2022-11-17 16:04:00,Running Slow,Running Slow
+2022-11-17 16:05:00,Running Slow,Running Slow
+2022-11-17 16:06:00,Running Slow,Running Slow
+2022-11-17 16:07:00,Running Slow,Running Slow
+2022-11-17 16:08:00,Running Slow,Running Slow
+2022-11-17 16:09:00,Running Slow,Running Slow
+2022-11-17 16:10:00,Running Slow,Running Slow
+2022-11-17 16:11:00,Running Slow,Running Slow
+2022-11-17 16:12:00,Running Slow,Running Slow
+2022-11-17 16:13:00,Running Slow,Running Slow
+2022-11-17 16:14:00,Running Slow,Running Slow
+2022-11-17 16:15:00,Running Slow,Running
+2022-11-17 16:16:00,Running,Running
+2022-11-17 16:17:00,Running,Running
+2022-11-17 16:18:00,Running,Running
+2022-11-17 16:19:00,Running,Running
+2022-11-17 16:20:00,Running,Running
+2022-11-17 16:21:00,Running,Running
+2022-11-17 16:22:00,Running,Running
+2022-11-17 16:23:00,Running,Running
+2022-11-17 16:24:00,Running,Running
+2022-11-17 16:25:00,Running,Running
+2022-11-17 16:26:00,Running,Running
+2022-11-17 16:27:00,Running,Running
+2022-11-17 16:28:00,Running,Running
+2022-11-17 16:29:00,Running,Running
+2022-11-17 16:30:00,Running,Running
+2022-11-17 16:31:00,Running,Running
+2022-11-17 16:32:00,Running,Running
+2022-11-17 16:33:00,Running,Running
+2022-11-17 16:34:00,Running,Running
+2022-11-17 16:35:00,Running,Running
+2022-11-17 16:36:00,Running,Running
+2022-11-17 16:37:00,Running,Running
+2022-11-17 16:38:00,Running,Running
+2022-11-17 16:39:00,Running,Running
+2022-11-17 16:40:00,Running,Running
+2022-11-17 16:41:00,Running,Running
+2022-11-17 16:42:00,Running,Running
+2022-11-17 16:43:00,Running,Running
+2022-11-17 16:44:00,Running,Running
+2022-11-17 16:45:00,Running,Running
+2022-11-17 16:46:00,Running,Running Slow
+2022-11-17 16:47:00,Running Slow,Running Slow
+2022-11-17 16:48:00,Running Slow,Running Slow
+2022-11-17 16:49:00,Running Slow,Running Slow
+2022-11-17 16:50:00,Running Slow,Running Slow
+2022-11-17 16:51:00,Running Slow,Running Slow
+2022-11-17 16:52:00,Running Slow,Running Slow
+2022-11-17 16:53:00,Running Slow,Downtime
+2022-11-17 16:54:00,Downtime,Downtime
+2022-11-17 16:55:00,Downtime,Downtime
+2022-11-17 16:56:00,Downtime,Downtime
+2022-11-17 16:57:00,Running Slow,Running Slow
+2022-11-17 16:58:00,Running Slow,Running Slow
+2022-11-17 16:59:00,Running Slow,Running Slow
+2022-11-17 17:00:00,Running Slow,Running Slow
+2022-11-17 17:01:00,Running Slow,Running Slow
+2022-11-17 17:02:00,Running Slow,Running Slow
+2022-11-17 17:03:00,Running Slow,Running Slow
+2022-11-17 17:04:00,Running Slow,Running Slow
+2022-11-17 17:05:00,Running Slow,Running Slow
+2022-11-17 17:06:00,Running Slow,Running Slow
+2022-11-17 17:07:00,Running Slow,Running Slow
+2022-11-17 17:08:00,Running Slow,Running Slow
+2022-11-17 17:09:00,Running Slow,Running Slow
+2022-11-17 17:10:00,Running Slow,Running Slow
+2022-11-17 17:11:00,Running Slow,Running Slow
+2022-11-17 17:12:00,Running Slow,Running Slow
+2022-11-17 17:13:00,Running Slow,Running Slow
+2022-11-17 17:14:00,Running Slow,Running Slow
+2022-11-17 17:15:00,Running Slow,Running Slow
+2022-11-17 17:16:00,Running Slow,Running Slow
+2022-11-17 17:17:00,Running Slow,Running Slow
+2022-11-17 17:18:00,Running,Running
+2022-11-17 17:19:00,Running,Running
+2022-11-17 17:20:00,Running Slow,Running Slow
+2022-11-17 17:21:00,Running Slow,Running Slow
+2022-11-17 17:22:00,Running Slow,Running Slow
+2022-11-17 17:23:00,Running Slow,Running Slow
+2022-11-17 17:24:00,Running Slow,Running Slow
+2022-11-17 17:25:00,Downtime,Downtime
+2022-11-17 17:26:00,Downtime,Downtime
+2022-11-17 17:27:00,Downtime,Downtime
+2022-11-17 17:28:00,Downtime,Downtime
+2022-11-17 17:29:00,Downtime,Downtime
+2022-11-17 17:30:00,Downtime,Downtime
+2022-11-17 17:31:00,Downtime,Downtime
+2022-11-17 17:32:00,Downtime,Downtime
+2022-11-17 17:33:00,Downtime,Downtime
+2022-11-17 17:34:00,Downtime,Downtime
+2022-11-17 17:35:00,Downtime,Downtime
+2022-11-17 17:36:00,Downtime,Downtime
+2022-11-17 17:37:00,Downtime,Downtime
+2022-11-17 17:38:00,Downtime,Downtime
+2022-11-17 17:39:00,Downtime,Downtime
+2022-11-17 17:40:00,Downtime,Downtime
+2022-11-17 17:41:00,Downtime,Downtime
+2022-11-17 17:42:00,Downtime,Downtime
+2022-11-17 17:43:00,Downtime,Downtime
+2022-11-17 17:44:00,Downtime,Downtime
+2022-11-17 17:45:00,Downtime,Downtime
+2022-11-17 17:46:00,Downtime,Downtime
+2022-11-17 17:47:00,Downtime,Downtime
+2022-11-17 17:48:00,Downtime,Downtime
+2022-11-17 17:49:00,Downtime,Downtime
+2022-11-17 17:50:00,Downtime,Downtime
+2022-11-17 17:51:00,Downtime,Downtime
+2022-11-17 17:52:00,Downtime,Downtime
+2022-11-17 17:53:00,Downtime,Downtime
+2022-11-17 17:54:00,Downtime,Downtime
+2022-11-17 17:55:00,Downtime,Downtime
+2022-11-17 17:56:00,Downtime,Downtime
+2022-11-17 17:57:00,Downtime,Downtime
+2022-11-17 17:58:00,Downtime,Downtime
+2022-11-17 17:59:00,Downtime,Downtime
+2022-11-17 18:00:00,Downtime,Downtime
+2022-11-17 18:01:00,Downtime,Downtime
+2022-11-17 18:02:00,Downtime,Downtime
+2022-11-17 18:03:00,Downtime,Downtime
+2022-11-17 18:04:00,Downtime,Downtime
+2022-11-17 18:05:00,Downtime,Downtime
+2022-11-17 18:06:00,Downtime,Downtime
+2022-11-17 18:07:00,Downtime,Downtime
+2022-11-17 18:08:00,Downtime,Downtime
+2022-11-17 18:09:00,Downtime,Downtime
+2022-11-17 18:10:00,Downtime,Downtime
+2022-11-17 18:11:00,Downtime,Downtime
+2022-11-17 18:12:00,Downtime,Downtime
+2022-11-17 18:13:00,Downtime,Downtime
+2022-11-17 18:14:00,Downtime,Downtime
+2022-11-17 18:15:00,Downtime,Downtime
+2022-11-17 18:16:00,Downtime,Downtime
+2022-11-17 18:17:00,Downtime,Downtime
+2022-11-17 18:18:00,Downtime,Downtime
+2022-11-17 18:19:00,Downtime,Downtime
+2022-11-17 18:20:00,Downtime,Downtime
+2022-11-17 18:21:00,Downtime,Downtime
+2022-11-17 18:22:00,Downtime,Downtime
+2022-11-17 18:23:00,Downtime,Downtime
+2022-11-17 18:24:00,Downtime,Downtime
+2022-11-17 18:25:00,Downtime,Downtime
+2022-11-17 18:26:00,Downtime,Downtime
+2022-11-17 18:27:00,Downtime,Running Slow
+2022-11-17 18:28:00,Running Slow,Running Slow
+2022-11-17 18:29:00,Running Slow,Running Slow
+2022-11-17 18:30:00,Running Slow,Running Slow
+2022-11-17 18:31:00,Running Slow,Running Slow
+2022-11-17 18:32:00,Running Slow,Running Slow
+2022-11-17 18:33:00,Running Slow,Running Slow
+2022-11-17 18:34:00,Running Slow,Running Slow
+2022-11-17 18:35:00,Running Slow,Running Slow
+2022-11-17 18:36:00,Running Slow,Running Slow
+2022-11-17 18:37:00,Running Slow,Running Slow
+2022-11-17 18:38:00,Running Slow,Running Slow
+2022-11-17 18:39:00,Downtime,Downtime
+2022-11-17 18:40:00,Downtime,Downtime
+2022-11-17 18:41:00,Downtime,Downtime
+2022-11-17 18:42:00,Running Slow,Running Slow
+2022-11-17 18:43:00,Running Slow,Running Slow
+2022-11-17 18:44:00,Running Slow,Running Slow
+2022-11-17 18:45:00,Running Slow,Running Slow
+2022-11-17 18:46:00,Running Slow,Running Slow
+2022-11-17 18:47:00,Running Slow,Running Slow
+2022-11-17 18:48:00,Running Slow,Running Slow
+2022-11-17 18:49:00,Running Slow,Running Slow
+2022-11-17 18:50:00,Running Slow,Running Slow
+2022-11-17 18:51:00,Running Slow,Running Slow
+2022-11-17 18:52:00,Running Slow,Running Slow
+2022-11-17 18:53:00,Running Slow,Running
+2022-11-17 18:54:00,Running,Running
+2022-11-17 18:55:00,Running,Running
+2022-11-17 18:56:00,Running,Running
+2022-11-17 18:57:00,Running,Running
+2022-11-17 18:58:00,Running,Running
+2022-11-17 18:59:00,Running,Running
+2022-11-17 19:00:00,Running,Running
+2022-11-17 19:02:00,Running,Running
+2022-11-17 19:03:00,Running,Running
+2022-11-17 19:04:00,Running,Running
+2022-11-17 19:05:00,Running,Running
+2022-11-17 19:06:00,Running,Running
+2022-11-17 19:07:00,Running,Running
+2022-11-17 19:08:00,Running,Running
+2022-11-17 19:09:00,Running,Running
+2022-11-17 19:10:00,Running,Running
+2022-11-17 19:11:00,Running,Running
+2022-11-17 19:12:00,Running,Running
+2022-11-17 19:13:00,Running,Running
+2022-11-17 19:14:00,Running,Running
+2022-11-17 19:15:00,Running,Running
+2022-11-17 19:16:00,Running,Running
+2022-11-17 19:17:00,Running,Running
+2022-11-17 19:18:00,Running,Running
+2022-11-17 19:19:00,Running,Running
+2022-11-17 19:20:00,Running,Running
+2022-11-17 19:21:00,Running,Running
+2022-11-17 19:22:00,Running,Running
+2022-11-17 19:23:00,Running,Running
+2022-11-17 19:24:00,Running,Running
+2022-11-17 19:25:00,Running,Running
+2022-11-17 19:26:00,Running,Running
+2022-11-17 19:27:00,Running,Running
+2022-11-17 19:28:00,Running,Running
+2022-11-17 19:29:00,Running,Running
+2022-11-17 19:30:00,Running,Running
+2022-11-17 19:31:00,Running,Running
+2022-11-17 19:32:00,Running,Running
+2022-11-17 19:33:00,Running,Running
+2022-11-17 19:34:00,Running,Running
+2022-11-17 19:35:00,Running,Running
+2022-11-17 19:36:00,Running,Running
+2022-11-17 19:37:00,Running,Running
+2022-11-17 19:38:00,Running,Running
+2022-11-17 19:39:00,Running,Running
+2022-11-17 19:40:00,Running,Running
+2022-11-17 19:41:00,Running,Running
+2022-11-17 19:42:00,Running,Running
+2022-11-17 19:43:00,Running,Running
+2022-11-17 19:44:00,Running,Running
+2022-11-17 19:45:00,Running,Running
+2022-11-17 19:46:00,Running,Running
+2022-11-17 19:47:00,Running,Running
+2022-11-17 19:48:00,Running,Running
+2022-11-17 19:49:00,Running,Running
+2022-11-17 19:50:00,Running,Running
+2022-11-17 19:51:00,Running,Running
+2022-11-17 19:52:00,Running,Running
+2022-11-17 19:53:00,Running,Running
+2022-11-17 19:54:00,Running,Running
+2022-11-17 19:55:00,Running,Running
+2022-11-17 19:56:00,Running,Running
+2022-11-17 19:57:00,Running,Running
+2022-11-17 19:58:00,Running,Running
+2022-11-17 19:59:00,Running,Running
+2022-11-17 20:00:00,Running,Running
+2022-11-17 20:01:00,Running Slow,Running Slow
+2022-11-17 20:02:00,Running Slow,Running
+2022-11-17 20:03:00,Running Slow,Running
+2022-11-17 20:04:00,Running Slow,Running
+2022-11-17 20:05:00,Running,Running
+2022-11-17 20:06:00,Running,Running
+2022-11-17 20:07:00,Running,Running
+2022-11-17 20:08:00,Running,Running
+2022-11-17 20:09:00,Running,Running
+2022-11-17 20:10:00,Running,Running
+2022-11-17 20:11:00,Running,Running
+2022-11-17 20:12:00,Running,Running
+2022-11-17 20:13:00,Running Slow,Running Slow
+2022-11-17 20:14:00,Running Slow,Running Slow
+2022-11-17 20:15:00,Running Slow,Running Slow
+2022-11-17 20:16:00,Running Slow,Running Slow
+2022-11-17 20:17:00,Running Slow,Running Slow
+2022-11-17 20:18:00,Running Slow,Running
+2022-11-17 20:19:00,Running Slow,Running
+2022-11-17 20:20:00,Running Slow,Running
+2022-11-17 20:21:00,Running Slow,Running
+2022-11-17 20:22:00,Running Slow,Running
+2022-11-17 20:23:00,Running,Running
+2022-11-17 20:24:00,Running,Running
+2022-11-17 20:25:00,Running,Running
+2022-11-17 20:26:00,Running,Running
+2022-11-17 20:27:00,Running,Running
+2022-11-17 20:28:00,Running,Running
+2022-11-17 20:29:00,Running,Running
+2022-11-17 20:30:00,Running,Running
+2022-11-17 20:31:00,Running,Running
+2022-11-17 20:32:00,Running,Running
+2022-11-17 20:33:00,Running,Running
+2022-11-17 20:34:00,Running,Running
+2022-11-17 20:35:00,Running,Running
+2022-11-17 20:36:00,Running,Running
+2022-11-17 20:37:00,Running,Running
+2022-11-17 20:38:00,Running,Running
+2022-11-17 20:39:00,Running,Running
+2022-11-17 20:40:00,Running,Running
+2022-11-17 20:41:00,Running,Running
+2022-11-17 20:42:00,Running,Running
+2022-11-17 20:43:00,Running,Running
+2022-11-17 20:44:00,Running,Running
+2022-11-17 20:45:00,Running,Running
+2022-11-17 20:46:00,Running,Running
+2022-11-17 20:47:00,Running,Running
+2022-11-17 20:48:00,Running,Running
+2022-11-17 20:49:00,Running,Running
+2022-11-17 20:50:00,Running,Running
+2022-11-17 20:51:00,Running,Running
+2022-11-17 20:52:00,Running,Running
+2022-11-17 20:53:00,Running,Running
+2022-11-17 20:54:00,Running,Running
+2022-11-17 20:55:00,Running,Running
+2022-11-17 20:56:00,Running,Running
+2022-11-17 20:57:00,Running,Running
+2022-11-17 20:58:00,Running,Running
+2022-11-17 20:59:00,Running,Running
+2022-11-17 21:00:00,Running,Running
+2022-11-17 21:01:00,Running,Running
+2022-11-17 21:02:00,Running,Running
+2022-11-17 21:03:00,Running,Running
+2022-11-17 21:04:00,Running,Running
+2022-11-17 21:05:00,Running,Running
+2022-11-17 21:06:00,Running,Running
+2022-11-17 21:07:00,Running,Running
+2022-11-17 21:08:00,Running,Running
+2022-11-17 21:09:00,Running,Running
+2022-11-17 21:10:00,Running,Running
+2022-11-17 21:11:00,Running,Running
+2022-11-17 21:12:00,Running,Running
+2022-11-17 21:13:00,Running,Running
+2022-11-17 21:14:00,Running,Running
+2022-11-17 21:15:00,Running,Running
+2022-11-17 21:16:00,Running,Running
+2022-11-17 21:17:00,Running,Running
+2022-11-17 21:18:00,Running,Running
+2022-11-17 21:19:00,Running,Running
+2022-11-17 21:20:00,Running,Running
+2022-11-17 21:21:00,Running,Running
+2022-11-17 21:22:00,Running,Running
+2022-11-17 21:23:00,Running,Running
+2022-11-17 21:24:00,Running,Running
+2022-11-17 21:25:00,Running,Running
+2022-11-17 21:26:00,Running,Running
+2022-11-17 21:27:00,Running,Running
+2022-11-17 21:28:00,Running,Running
+2022-11-17 21:29:00,Running,Running
+2022-11-17 21:30:00,Running,Running
+2022-11-17 21:31:00,Running,Running
+2022-11-17 21:32:00,Running,Running
+2022-11-17 21:33:00,Running,Running
+2022-11-17 21:34:00,Running,Running
+2022-11-17 21:35:00,Running,Running
+2022-11-17 21:36:00,Running,Running
+2022-11-17 21:37:00,Running,Running
+2022-11-17 21:38:00,Running,Running
+2022-11-17 21:39:00,Running,Running
+2022-11-17 21:40:00,Running,Running
+2022-11-17 21:41:00,Running,Running
+2022-11-17 21:42:00,Running,Running
+2022-11-17 21:43:00,Running,Running
+2022-11-17 21:44:00,Running,Running
+2022-11-17 21:45:00,Running,Running
+2022-11-17 21:46:00,Running,Running
+2022-11-17 21:47:00,Running,Running
+2022-11-17 21:48:00,Running,Running
+2022-11-17 21:49:00,Running,Running
+2022-11-17 21:50:00,Running,Running
+2022-11-17 21:51:00,Running,Running
+2022-11-17 21:52:00,Running,Running
+2022-11-17 21:53:00,Running,Running
+2022-11-17 21:54:00,Running,Running
+2022-11-17 21:55:00,Running,Running
+2022-11-17 21:56:00,Running,Running
+2022-11-17 21:57:00,Running,Running
+2022-11-17 21:58:00,Running,Running
+2022-11-17 21:59:00,Running,Running
+2022-11-17 22:00:00,Running,Running
+2022-11-17 22:01:00,Running,Running
+2022-11-17 22:02:00,Running,Running
+2022-11-17 22:03:00,Running,Running
+2022-11-17 22:04:00,Running,Running
+2022-11-17 22:05:00,Running,Running
+2022-11-17 22:06:00,Running,Running
+2022-11-17 22:07:00,Running,Running
+2022-11-17 22:08:00,Running,Running
+2022-11-17 22:09:00,Running,Running
+2022-11-17 22:10:00,Running,Running
+2022-11-17 22:11:00,Running,Running
+2022-11-17 22:12:00,Running,Running
+2022-11-17 22:13:00,Running,Running
+2022-11-17 22:14:00,Running,Running
+2022-11-17 22:15:00,Running,Running
+2022-11-17 22:16:00,Running,Running
+2022-11-17 22:17:00,Running,Running
+2022-11-17 22:18:00,Running,Running
+2022-11-17 22:19:00,Running,Running
+2022-11-17 22:20:00,Running,Running
+2022-11-17 22:21:00,Running,Running
+2022-11-17 22:22:00,Running,Running
+2022-11-17 22:23:00,Running,Running
+2022-11-17 22:24:00,Running,Running
+2022-11-17 22:25:00,Running,Running
+2022-11-17 22:26:00,Running,Running
+2022-11-17 22:27:00,Running,Running
+2022-11-17 22:28:00,Running,Running
+2022-11-17 22:29:00,Running,Running
+2022-11-17 22:30:00,Running,Running
+2022-11-17 22:31:00,Running,Running
+2022-11-17 22:32:00,Running,Running
+2022-11-17 22:33:00,Running,Running
+2022-11-17 22:34:00,Running,Running
+2022-11-17 22:35:00,Running,Running
+2022-11-17 22:36:00,Running,Running
+2022-11-17 22:37:00,Running,Running
+2022-11-17 22:38:00,Running,Running
+2022-11-17 22:39:00,Running,Running
+2022-11-17 22:40:00,Running,Running
+2022-11-17 22:41:00,Running,Running
+2022-11-17 22:42:00,Running,Running
+2022-11-17 22:43:00,Running,Running
+2022-11-17 22:44:00,Running,Running
+2022-11-17 22:45:00,Running,Running
+2022-11-17 22:46:00,Running,Running
+2022-11-17 22:47:00,Running,Running
+2022-11-17 22:48:00,Running,Running
+2022-11-17 22:49:00,Running,Running
+2022-11-17 22:50:00,Running,Running
+2022-11-17 22:51:00,Running,Running
+2022-11-17 22:52:00,Running,Running
+2022-11-17 22:53:00,Running,Running
+2022-11-17 22:54:00,Running,Running
+2022-11-17 22:55:00,Running,Running
+2022-11-17 22:56:00,Running,Running
+2022-11-17 22:57:00,Running,Running
+2022-11-17 22:58:00,Running,Running
+2022-11-17 22:59:00,Running,Running
+2022-11-17 23:00:00,Running,Running
+2022-11-17 23:01:00,Running,Running
+2022-11-17 23:02:00,Running,Running
+2022-11-17 23:03:00,Running,Running
+2022-11-17 23:04:00,Running,Running Slow
+2022-11-17 23:05:00,Running Slow,Running Slow
+2022-11-17 23:06:00,Running Slow,Running Slow
+2022-11-17 23:07:00,Running,Running
+2022-11-17 23:08:00,Running,Running
+2022-11-17 23:09:00,Running,Running
+2022-11-17 23:10:00,Running,Running
+2022-11-17 23:11:00,Running,Running
+2022-11-17 23:12:00,Running,Running
+2022-11-17 23:13:00,Running,Running
+2022-11-17 23:14:00,Running,Running
+2022-11-17 23:15:00,Running,Running
+2022-11-17 23:16:00,Running,Running
+2022-11-17 23:17:00,Running,Running
+2022-11-17 23:18:00,Running,Running
+2022-11-17 23:19:00,Running,Running
+2022-11-17 23:20:00,Running,Running
+2022-11-17 23:21:00,Running,Running
+2022-11-17 23:22:00,Running,Running
+2022-11-17 23:23:00,Running,Running
+2022-11-17 23:24:00,Running,Running
+2022-11-17 23:25:00,Running,Running
+2022-11-17 23:26:00,Running,Running
+2022-11-17 23:27:00,Running,Running
+2022-11-17 23:28:00,Running,Running
+2022-11-17 23:29:00,Running,Running
+2022-11-17 23:30:00,Running,Running
+2022-11-17 23:31:00,Running,Running
+2022-11-17 23:32:00,Running,Running
+2022-11-17 23:33:00,Running,Running
+2022-11-17 23:34:00,Running,Running
+2022-11-17 23:35:00,Running,Running
+2022-11-17 23:36:00,Running,Running
+2022-11-17 23:37:00,Running,Running
+2022-11-17 23:38:00,Running,Running
+2022-11-17 23:39:00,Running,Running
+2022-11-17 23:40:00,Running,Running
+2022-11-17 23:41:00,Running,Running
+2022-11-17 23:42:00,Running,Running
+2022-11-17 23:43:00,Running,Running
+2022-11-17 23:44:00,Running,Running
+2022-11-17 23:45:00,Running,Running
+2022-11-17 23:46:00,Running,Running
+2022-11-17 23:47:00,Running,Running
+2022-11-17 23:48:00,Running,Running
+2022-11-17 23:49:00,Running,Running
+2022-11-17 23:50:00,Running,Running
+2022-11-17 23:51:00,Running,Running
+2022-11-17 23:52:00,Running,Running Slow
+2022-11-17 23:53:00,Running Slow,Running Slow
+2022-11-17 23:54:00,Running Slow,Running Slow
+2022-11-17 23:55:00,Running,Running
+2022-11-17 23:56:00,Running,Running
+2022-11-17 23:57:00,Running,Running
+2022-11-17 23:58:00,Running,Running
+2022-11-17 23:59:00,Running,Running
+2022-11-18 0:00:00,Running,Running

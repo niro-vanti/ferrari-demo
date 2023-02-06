@@ -935,7 +935,10 @@ def si_demo(si_stream):
     st.subheader('event prediction')
     fi = files[2]
     predictions = files[0]
+    predictions.sort_index(ascending=True, inplace=True)
+    predictions.sort_index(ascending=True, inplace=True)
     df = files[1]
+    df.sort_index(ascending=True, inplace=True)
     si_window = 10
     norm = st.checkbox('normalize values?', value=True)
     if norm:
@@ -961,12 +964,22 @@ def si_demo(si_stream):
         [0, 0, 0],
         [0, 0, 0]
     ]
+    pred_cont = st.empty()
+    log_cont = st.empty()
+    log_str = []
+    prev_pred = False
     if si_stream:
         for si_idx in range(n):
             if stop_stream:
                 break
             test = predictions['tusCoatingLine.MES.UtilizationState'].iloc[si_idx]
             pred = predictions['predictions'].iloc[si_idx]
+            if pred in ['Running Slow','Downtime']:
+                if pred != prev_pred:
+                    sns = [np.random.choice(df.columns.to_list()) for i in range(np.random.choice([1,2,3]))]
+                log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
+                prev_pred= pred
+
             if test == 'Running':
                 if pred == 'Running':
                     cm[0][0] = cm[0][0] + 1
@@ -1031,6 +1044,19 @@ def si_demo(si_stream):
                 st.metric(label='', value=cm[2][0])
                 st.metric(label='', value=cm[2][1])
                 st.metric(label='', value=cm[2][2])
+            with log_cont.container():
+                st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(log_str)]))
+            with pred_cont.container():
+
+                temp2 = predictions['predictions'].iloc[:si_idx]
+
+                fig3 = px.line(temp2, markers=True)
+                fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+                fig3.update_xaxes(visible=True, fixedrange=True)
+                fig3.update_yaxes(visible=True, fixedrange=True)
+                fig3.update_layout(annotations=[], overwrite=True)
+                st.write(fig3)
+                # st.line_chart(predictions['predictions'].iloc[:si_idx])
 
 
 def cpc(cpc_stream):
@@ -1122,7 +1148,8 @@ def cpc(cpc_stream):
 
 
 def roadmap():
-    st.components.v1.iframe(src='https://apac-rm.roadmunk.com/publish/ae1d0881e46dea81451714a14a2198675dcd20af',
+    source = 'https://sharing.clickup.com/5712158/b/h/5ea8y-1402/c3da18542cfe989'
+    st.components.v1.iframe(src=source,
                             width=1500,
                             height=900,
                             scrolling=True)
@@ -1235,7 +1262,8 @@ with st.sidebar:
                                                    'real-time sensor anomaly detection',
                                                    'adaptive AI demo',
                                                    'manual assembly with video',
-                                                   'medical device early fault detection'])
+                                                   'medical device early fault detection',
+                                                   'roadmap'])
 
     b1, b2 = st.columns(2)
 
