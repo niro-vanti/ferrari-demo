@@ -940,6 +940,7 @@ def si_demo(si_stream):
     df = files[1]
     si_window = 10
     norm = st.checkbox('normalize values?', value=True)
+    event_log = st.checkbox('show event log?', value=True)
     if norm:
         df = (df - df.min()) / (df.max() - df.min())
 
@@ -967,20 +968,22 @@ def si_demo(si_stream):
     log_cont = st.empty()
     log_str = []
     prev_pred = False
-
+    error_counter= 0
     if si_stream:
         for si_idx in range(n):
             if stop_stream:
                 break
             test = predictions['tusCoatingLine.MES.UtilizationState'].iloc[si_idx]
             pred = predictions['predictions'].iloc[si_idx]
-
-            # st.text(f'{predictions.index[si_idx]} -- {pred}')
+            if pred != test:
+                error_counter = error_counter+1
+                # st.text(f'{predictions.index[si_idx]} -- pred {pred}  test {test}  count {error_counter}')
+                # st.write(cm)
             if pred in ['Running Slow', 'Downtime']:
                 if pred != prev_pred:
                     sns = [np.random.choice(df.columns.to_list(), replace=False) for i in range(np.random.choice([1,2,3]))]
                 log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
-                prev_pred= pred
+                prev_pred = pred
 
             if test == 'Running':
                 if pred == 'Running':
@@ -1008,7 +1011,7 @@ def si_demo(si_stream):
                 if test == pred:
                     st.success(f'{df.index[si_idx]} : the model predicted {pred} -- the real result was also {test}')
                 else:
-                    st.success(f'{df.index[si_idx]} : the model predicted {pred} -- but the real result was  {test}')
+                    st.error(f'{df.index[si_idx]} : the model predicted {pred} -- but the real result was  {test}')
 
                 # st.info(test)
                 # st.success(pred)
@@ -1034,8 +1037,8 @@ def si_demo(si_stream):
             with conf_mat_1.container():
                 st.write('Running')
                 st.metric(label='', value=cm[0][0])
-                st.metric(label='', value=cm[1][0])
-                st.metric(label='', value=cm[2][0])
+                st.metric(label='', value=cm[0][1])
+                st.metric(label='', value=cm[0][2])
             with conf_mat_2.container():
                 st.write('Running Slow')
                 st.metric(label='', value=cm[1][0])
@@ -1046,19 +1049,20 @@ def si_demo(si_stream):
                 st.metric(label='', value=cm[2][0])
                 st.metric(label='', value=cm[2][1])
                 st.metric(label='', value=cm[2][2])
-            with log_cont.container():
-                st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(log_str)]))
-            with pred_cont.container():
-                st.subheader('event log')
-                st.write('---------------------------------------------------------')
-                temp2 = predictions['predictions'].iloc[:si_idx]
-                fig3 = px.line(temp2, markers=True)
-                fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
-                fig3.update_xaxes(visible=True, fixedrange=True)
-                fig3.update_yaxes(visible=True, fixedrange=True)
-                fig3.update_layout(annotations=[], overwrite=True)
-                st.write(fig3)
-                # st.line_chart(predictions['predictions'].iloc[:si_idx])
+            if event_log:
+                with log_cont.container():
+                    st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(log_str)]))
+                with pred_cont.container():
+                    st.subheader('event log')
+                    st.write('---------------------------------------------------------')
+                    temp2 = predictions.iloc[:si_idx]
+                    fig3 = px.line(temp2, markers=True)
+                    fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+                    fig3.update_xaxes(visible=True, fixedrange=True)
+                    fig3.update_yaxes(visible=True, fixedrange=True)
+                    fig3.update_layout(annotations=[], overwrite=True)
+                    st.write(fig3)
+                    # st.line_chart(predictions['predictions'].iloc[:si_idx])
 
 
 def cpc(cpc_stream):
