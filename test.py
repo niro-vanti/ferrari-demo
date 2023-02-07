@@ -941,6 +941,8 @@ def si_demo(si_stream):
     si_window = 10
     norm = st.checkbox('normalize values?', value=True)
     event_log = st.checkbox('show event log?', value=True)
+    supervised = st.checkbox('supervised?', value=True)
+
     if norm:
         df = (df - df.min()) / (df.max() - df.min())
 
@@ -968,101 +970,133 @@ def si_demo(si_stream):
     log_cont = st.empty()
     log_str = []
     prev_pred = False
-    error_counter= 0
+    error_counter = 0
+    # if unsupervised:
+    df_u = pd.concat([df, predictions], axis=1)
+    sct_cont = st.empty()
+
     if si_stream:
         for si_idx in range(n):
             if stop_stream:
                 break
-            test = predictions['tusCoatingLine.MES.UtilizationState'].iloc[si_idx]
-            pred = predictions['predictions'].iloc[si_idx]
-            if pred != test:
-                error_counter = error_counter+1
-                # st.text(f'{predictions.index[si_idx]} -- pred {pred}  test {test}  count {error_counter}')
-                # st.write(cm)
-            if pred in ['Running Slow', 'Downtime']:
-                if pred != prev_pred:
-                    sns = [np.random.choice(df.columns.to_list(), replace=False) for i in range(np.random.choice([1,2,3]))]
-                log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
-                prev_pred = pred
+            if supervised:
+                test = predictions['tusCoatingLine.MES.UtilizationState'].iloc[si_idx]
+                pred = predictions['predictions'].iloc[si_idx]
+                if pred != test:
+                    error_counter = error_counter+1
+                    # st.text(f'{predictions.index[si_idx]} -- pred {pred}  test {test}  count {error_counter}')
+                    # st.write(cm)
+                if pred in ['Running Slow', 'Downtime']:
+                    if pred != prev_pred:
+                        sns = [np.random.choice(df.columns.to_list(), replace=False) for i in range(np.random.choice([1,2,3]))]
+                    log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
+                    prev_pred = pred
 
-            if test == 'Running':
-                if pred == 'Running':
-                    cm[0][0] = cm[0][0] + 1
-                if pred == 'Running Slow':
-                    cm[0][1] = cm[0][1] + 1
-                if pred == 'Downtime':
-                    cm[0][2] = cm[0][2] + 1
-            if test == 'Running Slow':
-                if pred == 'Running':
-                    cm[1][1] = cm[1][0] + 1
-                if pred == 'Running Slow':
-                    cm[1][1] = cm[1][1] + 1
-                if pred == 'Downtime':
-                    cm[1][2] = cm[1][2] + 1
-            if test == 'Downtime':
-                if pred == 'Running':
-                    cm[2][0] = cm[2][0] + 1
-                if pred == 'Running Slow':
-                    cm[2][1] = cm[2][1] + 1
-                if pred == 'Downtime':
-                    cm[2][2] = cm[2][2] + 1
-            # st.write(test, pred)
-            with cm_cont.container():
-                if test == pred:
-                    st.success(f'{df.index[si_idx]} : the model predicted {pred} -- the real result was also {test}')
-                else:
-                    st.error(f'{df.index[si_idx]} : the model predicted {pred} -- but the real result was  {test}')
+                if test == 'Running':
+                    if pred == 'Running':
+                        cm[0][0] = cm[0][0] + 1
+                    if pred == 'Running Slow':
+                        cm[0][1] = cm[0][1] + 1
+                    if pred == 'Downtime':
+                        cm[0][2] = cm[0][2] + 1
+                if test == 'Running Slow':
+                    if pred == 'Running':
+                        cm[1][1] = cm[1][0] + 1
+                    if pred == 'Running Slow':
+                        cm[1][1] = cm[1][1] + 1
+                    if pred == 'Downtime':
+                        cm[1][2] = cm[1][2] + 1
+                if test == 'Downtime':
+                    if pred == 'Running':
+                        cm[2][0] = cm[2][0] + 1
+                    if pred == 'Running Slow':
+                        cm[2][1] = cm[2][1] + 1
+                    if pred == 'Downtime':
+                        cm[2][2] = cm[2][2] + 1
+                # st.write(test, pred)
+                with cm_cont.container():
+                    if test == pred:
+                        st.success(f'{df.index[si_idx]} : the model predicted {pred} -- the real result was also {test}')
+                    else:
+                        st.error(f'{df.index[si_idx]} : the model predicted {pred} -- but the real result was  {test}')
+                st.subheader('')
+                with graph_mat.container():
+                    sss = max(0, si_idx - si_window)
+                    eee = min(df.shape[0], si_idx + 1)
 
-                # st.info(test)
-                # st.success(pred)
-            st.subheader('')
-            with graph_mat.container():
-                sss = max(0, si_idx - si_window)
-                eee = min(df.shape[0], si_idx + 1)
-
-                st.line_chart(df.iloc[sss:eee])
-            with gt.container():
-                st.write('GROUND TRUTH')
-                st.write(' ')
-                st.write(' ')
-                st.write('Running')
-                st.write('')
-                st.write('')
-                st.write('')
-                st.write('Running Slow')
-                st.write('')
-                st.write('')
-                st.write('')
-                st.write('Downtime')
-            with conf_mat_1.container():
-                st.write('Running')
-                st.metric(label='', value=cm[0][0])
-                st.metric(label='', value=cm[0][1])
-                st.metric(label='', value=cm[0][2])
-            with conf_mat_2.container():
-                st.write('Running Slow')
-                st.metric(label='', value=cm[1][0])
-                st.metric(label='', value=cm[1][1])
-                st.metric(label='', value=cm[1][2])
-            with conf_mat_3.container():
-                st.write('Downtime')
-                st.metric(label='', value=cm[2][0])
-                st.metric(label='', value=cm[2][1])
-                st.metric(label='', value=cm[2][2])
-            if event_log:
-                with log_cont.container():
-                    st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(log_str)]))
-                with pred_cont.container():
-                    st.subheader('event log')
-                    st.write('---------------------------------------------------------')
-                    temp2 = predictions.iloc[:si_idx]
-                    fig3 = px.line(temp2, markers=True)
-                    fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
-                    fig3.update_xaxes(visible=True, fixedrange=True)
-                    fig3.update_yaxes(visible=True, fixedrange=True)
-                    fig3.update_layout(annotations=[], overwrite=True)
-                    st.write(fig3)
-                    # st.line_chart(predictions['predictions'].iloc[:si_idx])
+                    st.line_chart(df.iloc[sss:eee])
+                with gt.container():
+                    st.write('GROUND TRUTH')
+                    st.write(' ')
+                    st.write(' ')
+                    st.write('Running')
+                    st.write('')
+                    st.write('')
+                    st.write('')
+                    st.write('Running Slow')
+                    st.write('')
+                    st.write('')
+                    st.write('')
+                    st.write('Downtime')
+                with conf_mat_1.container():
+                    st.write('Running')
+                    st.metric(label='', value=cm[0][0])
+                    st.metric(label='', value=cm[0][1])
+                    st.metric(label='', value=cm[0][2])
+                with conf_mat_2.container():
+                    st.write('Running Slow')
+                    st.metric(label='', value=cm[1][0])
+                    st.metric(label='', value=cm[1][1])
+                    st.metric(label='', value=cm[1][2])
+                with conf_mat_3.container():
+                    st.write('Downtime')
+                    st.metric(label='', value=cm[2][0])
+                    st.metric(label='', value=cm[2][1])
+                    st.metric(label='', value=cm[2][2])
+                if event_log:
+                    with log_cont.container():
+                        st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(log_str)]))
+                    with pred_cont.container():
+                        st.subheader('event log')
+                        st.write('---------------------------------------------------------')
+                        temp2 = predictions.iloc[:si_idx]
+                        fig3 = px.line(temp2, markers=True)
+                        fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+                        fig3.update_xaxes(visible=True, fixedrange=True)
+                        fig3.update_yaxes(visible=True, fixedrange=True)
+                        fig3.update_layout(annotations=[], overwrite=True)
+                        st.write(fig3)
+                        # st.line_chart(predictions['predictions'].iloc[:si_idx])
+            if ~supervised:
+                pred = predictions['predictions'].iloc[si_idx]
+                if pred in ['Running Slow', 'Downtime']:
+                    if pred != prev_pred:
+                        sns = [np.random.choice(df.columns.to_list(), replace=False) for i in range(np.random.choice([1,2,3]))]
+                    log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
+                    prev_pred = pred
+                with cm_cont.container():
+                    st.success(f'{df.index[si_idx]} : the model predicted {pred}')
+                # with cm_cont.container():
+                    sct = px.scatter(df_u.iloc[:si_idx], x=df.columns[0], y=df.columns[1], color='predictions',
+                                     symbol='predictions')
+                    sct.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+                    sct.update_xaxes(visible=True, fixedrange=True)
+                    sct.update_yaxes(visible=True, fixedrange=True)
+                    sct.update_layout(annotations=[], overwrite=True)
+                    st.write(sct)
+                if event_log:
+                    with log_cont.container():
+                        st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(log_str)]))
+                    with pred_cont.container():
+                        st.subheader('event log')
+                        st.write('---------------------------------------------------------')
+                        temp2 = predictions['predictions'].iloc[:si_idx]
+                        fig3 = px.line(temp2, markers=True)
+                        fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+                        fig3.update_xaxes(visible=True, fixedrange=True)
+                        fig3.update_yaxes(visible=True, fixedrange=True)
+                        fig3.update_layout(annotations=[], overwrite=True)
+                        st.write(fig3)
 
 
 def cpc(cpc_stream):
