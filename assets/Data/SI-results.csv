@@ -1,7 +1,7 @@
 Timestamp,tusCoatingLine.MES.UtilizationState,predictions
-2022-11-17 6:01:00,Running Slow,Running Slow
+2022-11-17 6:01:00,Downtime,Downtime
 2022-11-17 6:02:00,Running Slow,Running Slow
-2022-11-17 6:03:00,Running Slow,Running Slow
+2022-11-17 6:03:00,Running,Running
 2022-11-17 6:04:00,Running Slow,Running Slow
 2022-11-17 6:05:00,Running Slow,Running Slow
 2022-11-17 6:06:00,Running Slow,Running Slow

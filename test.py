@@ -933,12 +933,11 @@ def rt_test_reorder(test_order_stream):
 def si_demo(si_stream):
     st.title('Standard Industries Demo')
     st.subheader('event prediction')
+    st.write('---------------------------------------------------------')
+
     fi = files[2]
     predictions = files[0]
-    predictions.sort_index(ascending=True, inplace=True)
-    predictions.sort_index(ascending=True, inplace=True)
     df = files[1]
-    df.sort_index(ascending=True, inplace=True)
     si_window = 10
     norm = st.checkbox('normalize values?', value=True)
     if norm:
@@ -968,15 +967,18 @@ def si_demo(si_stream):
     log_cont = st.empty()
     log_str = []
     prev_pred = False
+
     if si_stream:
         for si_idx in range(n):
             if stop_stream:
                 break
             test = predictions['tusCoatingLine.MES.UtilizationState'].iloc[si_idx]
             pred = predictions['predictions'].iloc[si_idx]
-            if pred in ['Running Slow','Downtime']:
+
+            # st.text(f'{predictions.index[si_idx]} -- {pred}')
+            if pred in ['Running Slow', 'Downtime']:
                 if pred != prev_pred:
-                    sns = [np.random.choice(df.columns.to_list()) for i in range(np.random.choice([1,2,3]))]
+                    sns = [np.random.choice(df.columns.to_list(), replace=False) for i in range(np.random.choice([1,2,3]))]
                 log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
                 prev_pred= pred
 
@@ -1047,9 +1049,9 @@ def si_demo(si_stream):
             with log_cont.container():
                 st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(log_str)]))
             with pred_cont.container():
-
+                st.subheader('event log')
+                st.write('---------------------------------------------------------')
                 temp2 = predictions['predictions'].iloc[:si_idx]
-
                 fig3 = px.line(temp2, markers=True)
                 fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
                 fig3.update_xaxes(visible=True, fixedrange=True)
