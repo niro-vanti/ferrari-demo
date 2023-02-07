@@ -939,9 +939,18 @@ def si_demo(si_stream):
     predictions = files[0]
     df = files[1]
     si_window = 10
-    norm = st.checkbox('normalize values?', value=True)
-    event_log = st.checkbox('show event log?', value=True)
-    supervised = st.checkbox('supervised?', value=True)
+
+    qs, es = st.columns((2,4))
+    norm = qs.checkbox('normalize values?', value=True)
+    event_log = qs.checkbox('show event log?', value=True)
+    supervised = qs.checkbox('supervised?', value=True)
+    with es.expander('what is value normalization?'):
+        st.write('value normalization is taking each feature and scaling its value to 0--1 range')
+    with es.expander('what is event log?'):
+        st.write('the event log is a running log for each non-normal event')
+    with es.expander('what is supervised?'):
+        st.write('a supervised app is when ground truth labels are used to estimate model perfomance in classification')
+        st.write('an unsupervised app does not use ground truth labels and assigns each data point to a cluster')
 
     if norm:
         df = (df - df.min()) / (df.max() - df.min())
@@ -954,6 +963,7 @@ def si_demo(si_stream):
     with st.expander('Driving Factors'):
         st.bar_chart(fi)
     cm_cont = st.empty()
+    sct_cont = st.empty()
     tit, col1, col2, col3, col4 = st.columns((1, 1, 1, 1, 5))
     gt = tit.empty()
     conf_mat_1 = col1.empty()
@@ -973,7 +983,7 @@ def si_demo(si_stream):
     error_counter = 0
     # if unsupervised:
     df_u = pd.concat([df, predictions], axis=1)
-    sct_cont = st.empty()
+
 
     if si_stream:
         for si_idx in range(n):
@@ -991,7 +1001,6 @@ def si_demo(si_stream):
                         sns = [np.random.choice(df.columns.to_list(), replace=False) for i in range(np.random.choice([1,2,3]))]
                     log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
                     prev_pred = pred
-
                 if test == 'Running':
                     if pred == 'Running':
                         cm[0][0] = cm[0][0] + 1
@@ -1067,14 +1076,14 @@ def si_demo(si_stream):
                         fig3.update_layout(annotations=[], overwrite=True)
                         st.write(fig3)
                         # st.line_chart(predictions['predictions'].iloc[:si_idx])
-            if ~supervised:
+            if not supervised:
                 pred = predictions['predictions'].iloc[si_idx]
                 if pred in ['Running Slow', 'Downtime']:
                     if pred != prev_pred:
                         sns = [np.random.choice(df.columns.to_list(), replace=False) for i in range(np.random.choice([1,2,3]))]
                     log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
                     prev_pred = pred
-                with cm_cont.container():
+                with sct_cont.container():
                     st.success(f'{df.index[si_idx]} : the model predicted {pred}')
                 # with cm_cont.container():
                     sct = px.scatter(df_u.iloc[:si_idx], x=df.columns[0], y=df.columns[1], color='predictions',
