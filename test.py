@@ -984,6 +984,7 @@ def si_demo(si_stream):
     error_counter = 0
     # if unsupervised:
     df_u = pd.concat([df, predictions], axis=1)
+    sns = []
 
     if si_stream:
         for si_idx in range(n):
@@ -1000,8 +1001,6 @@ def si_demo(si_stream):
                     if pred != prev_pred:
                         sns = [np.random.choice(df.columns.to_list(), replace=False) for _ in
                                range(np.random.choice([1, 2, 3]))]
-                    else:
-                        sns = []
                     log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
                     prev_pred = pred
                 if test == 'Running':
@@ -1086,8 +1085,7 @@ def si_demo(si_stream):
                     if pred != prev_pred:
                         sns = [np.random.choice(df.columns.to_list(), replace=False) for _ in
                                range(np.random.choice([1, 2, 3]))]
-                    else:
-                        sns = []
+
                     log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
                     prev_pred = pred
                 with sct_cont.container():
