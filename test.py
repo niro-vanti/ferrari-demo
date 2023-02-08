@@ -193,6 +193,8 @@ def run_exp(up_file, dc_file, base_perf, beta, vs):
 # app functions
 def paint_shop_app(ferrari_stream):
     st.title('In-line Paint Shop Defect Detection')
+    st.subheader('image based paint defect detection in automotive assembly')
+    st.write('---------------------------------------------------------')
     st.image('assets/Images/ferrari-cropped.png')
     sbc1, sbc2 = st.columns(2)
     sensitivity = sbc1.slider('model sensitivity', 0, 100, 50)
@@ -274,6 +276,8 @@ def paint_shop_app(ferrari_stream):
 
 def rt_sensors_app(sensor_stream):
     st.title('Real Time Anomaly Detection')
+    st.subheader('sensor based real time anomaly detection')
+    st.write('---------------------------------------------------------')
     df = files[0]
     if 'prog' in df.columns:
         df.drop(columns=['prog'], inplace=True)
@@ -509,6 +513,9 @@ def rt_sensors_app(sensor_stream):
 
 def medical_device_app(medical_stream):
     st.title('Medical Device Early Fault Detection')
+    st.subheader('tabular data based early detection of future faulty units')
+    st.write('---------------------------------------------------------')
+
 
     df = files[0]
     kpi_file = files[1]
@@ -607,7 +614,9 @@ def medical_device_app(medical_stream):
 
 def adaptive_ai_demo():
     st.title('Adaptive AI Demo')
-    st.header('Run Experiment')
+    st.subheader('Run Experiment')
+    st.write('---------------------------------------------------------')
+
     models(vanti_app_url, h2o_app_url)
     uploaded_file = files[0]
     dont_care = files[1]
@@ -649,7 +658,9 @@ def adaptive_ai_demo():
 
 def video_assembly_app(assembly_stream):
     st.title('Defect Detection in Video Assembly')
-    st.write(' ')
+    st.subheader('video based manual assembly defect detection')
+    st.write('---------------------------------------------------------')
+
     col1, col2 = st.columns((1, 4))
 
     with col1:
@@ -741,7 +752,8 @@ def video_assembly_app(assembly_stream):
 
 def pre_paint_app(paint_stream):
     st.title('Pre Paint Metal Defects')
-    st.write(' ')
+    st.subheader('image based visual defect detection on pre paint metal automotive parts')
+    st.write('---------------------------------------------------------')
 
     col1, col2 = st.columns((2, 2))
     image_cont = col1.empty()
@@ -811,7 +823,8 @@ def pre_paint_app(paint_stream):
 
 def textile_app(textile_stream):
     st.title('Textile Defects')
-    st.write(' ')
+    st.subheader('image based visual defect detection in textile')
+    st.write('---------------------------------------------------------')
 
     col1, col2 = st.columns((2, 2))
     image_cont = col1.empty()
@@ -1125,7 +1138,7 @@ def cpc(cpc_stream):
 
     nominal = 60
 
-    random_dict = {i: np.random.choice([1, 2, 3, 4, 5]) for _ in range(df.shape[1])}
+    random_dict = {ii: np.random.choice([1, 2, 3, 4, 5]) for ii in range(df.shape[1])}
     df.replace(random_dict, inplace=True)
 
     col1, dummy, col2 = st.columns((4, 1, 2))
@@ -1305,19 +1318,26 @@ def ask_for_files(app_type_file):
 
 
 # sidebar
+app_list = ['continuous process control demo',
+            'textile defects',
+            'Standard Industries Demo',
+            'real time process optimization',
+            'paint shop defect detection',
+            "pre paint metal defects",
+            'real-time sensor anomaly detection',
+            'adaptive AI demo',
+            'manual assembly with video',
+            'medical device early fault detection',
+            'roadmap']
+
 with st.sidebar:
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
-    app_type = st.selectbox('select application', ['continuous process control demo',
-                                                   'textile defects',
-                                                   'Standard Industries Demo',
-                                                   'real time process optimization',
-                                                   'paint shop defect detection',
-                                                   "pre paint metal defects",
-                                                   'real-time sensor anomaly detection',
-                                                   'adaptive AI demo',
-                                                   'manual assembly with video',
-                                                   'medical device early fault detection',
-                                                   'roadmap'])
+    app_type = st.selectbox('select application', app_list)
+    # app_type = None
+    # for app in app_list:
+    #     if st.button(app):
+    #         app_type = app
+    # st.text(f'Selected app : {app_type}')
 
     b1, b2 = st.columns(2)
 
