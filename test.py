@@ -351,7 +351,7 @@ def rt_sensors_app(sensor_stream):
     graph_cont = graph_col.empty()
     alert_cont = alert_col.empty()
 
-    debug = st.empty()
+    # debug = st.empty()
 
     if sensor_stream:
         for col in range(df.shape[0]):
@@ -940,7 +940,7 @@ def si_demo(si_stream):
     df = files[1]
     si_window = 10
 
-    qs, es = st.columns((2,4))
+    qs, es = st.columns((2, 4))
     norm = qs.checkbox('normalize values?', value=True)
     event_log = qs.checkbox('show event log?', value=True)
     supervised = qs.checkbox('supervised?', value=True)
@@ -949,7 +949,8 @@ def si_demo(si_stream):
     with es.expander('what is event log?'):
         st.write('the event log is a running log for each non-normal event')
     with es.expander('what is supervised?'):
-        st.write('a supervised app is when ground truth labels are used to estimate model perfomance in classification')
+        st.write('a supervised app is when ground truth labels are used to estimate model'
+                 ' performance in classification')
         st.write('an unsupervised app does not use ground truth labels and assigns each data point to a cluster')
 
     if norm:
@@ -984,7 +985,6 @@ def si_demo(si_stream):
     # if unsupervised:
     df_u = pd.concat([df, predictions], axis=1)
 
-
     if si_stream:
         for si_idx in range(n):
             if stop_stream:
@@ -993,12 +993,15 @@ def si_demo(si_stream):
                 test = predictions['tusCoatingLine.MES.UtilizationState'].iloc[si_idx]
                 pred = predictions['predictions'].iloc[si_idx]
                 if pred != test:
-                    error_counter = error_counter+1
+                    error_counter = error_counter + 1
                     # st.text(f'{predictions.index[si_idx]} -- pred {pred}  test {test}  count {error_counter}')
                     # st.write(cm)
                 if pred in ['Running Slow', 'Downtime']:
                     if pred != prev_pred:
-                        sns = [np.random.choice(df.columns.to_list(), replace=False) for i in range(np.random.choice([1,2,3]))]
+                        sns = [np.random.choice(df.columns.to_list(), replace=False) for _ in
+                               range(np.random.choice([1, 2, 3]))]
+                    else:
+                        sns = []
                     log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
                     prev_pred = pred
                 if test == 'Running':
@@ -1025,7 +1028,8 @@ def si_demo(si_stream):
                 # st.write(test, pred)
                 with cm_cont.container():
                     if test == pred:
-                        st.success(f'{df.index[si_idx]} : the model predicted {pred} -- the real result was also {test}')
+                        st.success(
+                            f'{df.index[si_idx]} : the model predicted {pred} -- the real result was also {test}')
                     else:
                         st.error(f'{df.index[si_idx]} : the model predicted {pred} -- but the real result was  {test}')
                 st.subheader('')
@@ -1080,12 +1084,15 @@ def si_demo(si_stream):
                 pred = predictions['predictions'].iloc[si_idx]
                 if pred in ['Running Slow', 'Downtime']:
                     if pred != prev_pred:
-                        sns = [np.random.choice(df.columns.to_list(), replace=False) for i in range(np.random.choice([1,2,3]))]
+                        sns = [np.random.choice(df.columns.to_list(), replace=False) for _ in
+                               range(np.random.choice([1, 2, 3]))]
+                    else:
+                        sns = []
                     log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
                     prev_pred = pred
                 with sct_cont.container():
                     st.success(f'{df.index[si_idx]} : the model predicted {pred}')
-                # with cm_cont.container():
+                    # with cm_cont.container():
                     sct = px.scatter(df_u.iloc[:si_idx], x=df.columns[0], y=df.columns[1], color='predictions',
                                      symbol='predictions')
                     sct.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
@@ -1116,20 +1123,20 @@ def cpc(cpc_stream):
     df.set_index('time', drop=True, inplace=True)
     df = df.astype(np.int8)
     df['Valve 2 control'] = [np.random.choice([1, 2, 3, 4, 5], p=[0.005, 0.05, 1 - 2 * 0.05 - 2 * 0.005, 0.05, 0.005])
-                             for ii in range(df.shape[0])]
+                             for _ in range(df.shape[0])]
 
     nominal = 60
 
-    random_dict = {i: np.random.choice([1, 2, 3, 4, 5]) for i in range(df.shape[1])}
+    random_dict = {i: np.random.choice([1, 2, 3, 4, 5]) for _ in range(df.shape[1])}
     df.replace(random_dict, inplace=True)
 
     col1, dummy, col2 = st.columns((4, 1, 2))
     metrics = dummy.empty()
     data_graph = col1.empty()
     list_cont = col2.empty()
-    tp_cont = st.empty()
+    # tp_cont = st.empty()
     df_tp = pd.DataFrame()
-    df_tp['nominal'] = [nominal for ii in range(df.shape[0])]
+    df_tp['nominal'] = [nominal for _ in range(df.shape[0])]
     df_tp['with Vanti'] = nominal
     df_tp.index = df.index
 
@@ -1143,7 +1150,7 @@ def cpc(cpc_stream):
             if stop_stream:
                 # test_order_stream = False
                 break
-            optimized = nominal - np.random.randint(10, 15)
+            # optimized = nominal - np.random.randint(10, 15)
             optimized = nominal - int(np.random.normal(7, 1, 1)[0])
             tp = int((nominal / optimized - 1) * 100)
             df_tp['with Vanti'].iloc[jj] = tp
@@ -1184,13 +1191,13 @@ def cpc(cpc_stream):
             tp_fig = px.bar(df_tp['with Vanti'].iloc[sss:eee], color_discrete_sequence=["#52de97"])
             tp_fig.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
             tp_fig.update_xaxes(visible=True, fixedrange=True)
-            tp_fig.update_yaxes(visible=True, fixedrange=True, range=[0,50])
+            tp_fig.update_yaxes(visible=True, fixedrange=True, range=[0, 50])
             tp_fig.update_layout(annotations=[], overwrite=True)
             tp_fig.update_layout(
                 xaxis_title="Date", yaxis_title="Gains"
             )
             st.write(tp_fig)
-                # st.line_chart(df_tp)
+            # st.line_chart(df_tp)
         with st.expander('full data'):
             st.line_chart(df)
     return None
@@ -1296,7 +1303,7 @@ def ask_for_files(app_type_file):
     if app_type_file == 'roadmap':
         return
 
-    st.error('app type not supported sdsdf')
+    st.error('app type not supported')
 
 
 # sidebar
