@@ -989,7 +989,9 @@ def si_demo(si_stream):
         [0, 0, 0],
         [0, 0, 0]
     ]
-    pred_cont = st.empty()
+    pred_col1, pred_col2 = st.columns(2)
+    pred_cont = pred_col1.empty()
+    gauge_cont = pred_col2.empty()
     log_cont = st.empty()
     log_str = []
     prev_pred = False
@@ -1049,6 +1051,7 @@ def si_demo(si_stream):
                     eee = min(df.shape[0], si_idx + 1)
 
                     st.line_chart(df.iloc[sss:eee])
+
                 with gt.container():
                     st.write('GROUND TRUTH')
                     st.write(' ')
@@ -1090,6 +1093,22 @@ def si_demo(si_stream):
                         fig3.update_yaxes(visible=True, fixedrange=True)
                         fig3.update_layout(annotations=[], overwrite=True)
                         st.write(fig3)
+                    with gauge_cont.container():
+                        # st.write('---------------------------------------------------------')
+                        g_map = {'Downtime':0,'Running Slow':50,'Running':100}
+                        fig_gauge = go.Figure(go.Indicator(
+                            mode    =   "gauge",
+                            value   =   g_map[pred],
+                            domain  =   {'x': [0, 1], 'y': [0, 1]},
+                            title   =   {'text': 'machine speed'},
+                            gauge={'axis': {'range': [-10, 200]},
+                                   'bar': {'color': "#52de97"},
+                                   'steps': [
+                                       {'range': [-10, 25], 'color': "#ff3c78"},
+                                       {'range': [25, 75], 'color': "#00818A"}],
+                                   'threshold': {'line': {'color': "red", 'width': 4}, 'thickness': 0.75,
+                                                 'value': 75}}))
+                        st.write(fig_gauge)
                         # st.line_chart(predictions['predictions'].iloc[:si_idx])
             if not supervised:
                 pred = predictions['predictions'].iloc[si_idx]
@@ -1220,6 +1239,7 @@ def roadmap():
                             height=900,
                             scrolling=True)
 
+
 def packages(package_stream):
     st.title('Packaging Inspection')
     st.subheader('image based visual defect detection in packages')
@@ -1234,7 +1254,7 @@ def packages(package_stream):
 
     for folder in os.listdir(os.path.join('assets', 'Data', 'packages')):
         if "." not in folder:
-            for sub_folder in os.listdir(os.path.join('assets', 'Data', 'packages',folder)):
+            for sub_folder in os.listdir(os.path.join('assets', 'Data', 'packages', folder)):
                 if "." not in sub_folder:
                     for file in os.listdir(os.path.join('assets', 'Data', 'packages', folder, sub_folder)):
                         names.append(os.path.join('assets', 'Data', 'packages', folder, sub_folder, file))
@@ -1294,7 +1314,6 @@ def packages(package_stream):
 
 
 def ask_for_files(app_type_file):
-
     if app_type_file == 'package visual inspection':
         return None
     if app_type_file == 'real time process optimization':
@@ -1393,7 +1412,7 @@ def ask_for_files(app_type_file):
 
 # sidebar
 app_list = ['package visual inspection',
-    'continuous process control demo',
+            'continuous process control demo',
             'textile defects',
             'Standard Industries Demo',
             'real time process optimization',
