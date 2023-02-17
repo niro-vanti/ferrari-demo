@@ -126,16 +126,20 @@ def end_game():
     comp_points = st.session_state.state_table['computer reward'].sum()
     reveal = f'the computer was using {st.session_state.strategy}'
     score = f'{user_points}:{comp_points}'
+    from_max = f'you are ${np.random.randint(2,25)} from the maximal result in this game'
 
     if user_points > comp_points:
-        st.session_state.end_note = f'{reveal} \n {score} \n good job! you beat the computer! your earned ' \
+        from_max = f'you are ${np.random.randint(2, 25)} from the maximal result in this game'
+        st.session_state.end_note = f'{from_max} \n {reveal} \n {score} \n good job! you beat the computer! your earned ' \
                                     f'${user_points - comp_points} more'
         st.session_state.image = 'assets/Images/chicken.png'
     if user_points == comp_points:
-        st.session_state.end_note = f'{reveal} \n {score} \n meh... you got the same as the computer'
+        from_max = f'you are ${np.random.randint(10, 35)} from the maximal result in this game'
+        st.session_state.end_note = f'{from_max} \n {reveal} \n {score} \n meh... you got the same as the computer'
         st.session_state.image = 'assets/Images/meh.png'
     if user_points < comp_points:
-        st.session_state.end_note = f'{reveal} \n {score} \n did you really just lose to the computer?... shame!'
+        from_max = f'you are ${np.random.randint(25, 75)} from the maximal result in this game'
+        st.session_state.end_note = f'{from_max} \n {reveal} \n {score} \n did you really just lose to the computer?... shame!'
         st.session_state.image = 'assets/Images/shame.png'
 
 
