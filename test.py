@@ -777,6 +777,20 @@ def si_demo(si_stream):
     df_u = pd.concat([df, predictions], axis=1)
     sns = []
 
+    with st.expander('batch results demo'):
+        dfb = pd.read_csv('assets/Data/blind_test_19_2-results.csv', index_col=1)#, usecols=['predict_result'])
+        # print(dfb.shape)
+        # print(dfb.index)
+        # st.line_chart()
+        fig3 = px.line(dfb['predict_result'], markers=True, width=1200)
+        fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+        fig3.update_xaxes(visible=True, fixedrange=True)
+        fig3.update_yaxes(visible=True, fixedrange=True)
+        fig3.update_layout(annotations=[], overwrite=True)
+        st.write(fig3)
+        # st.line_chart(dfb)
+
+
     if si_stream:
         for si_idx in range(n):
             if stop_stream:
