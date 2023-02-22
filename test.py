@@ -192,89 +192,6 @@ def run_exp(up_file, dc_file, base_perf, beta, vs):
 
 
 # app functions
-def paint_shop_app(ferrari_stream):
-    st.title('In-line Paint Shop Defect Detection')
-    st.subheader('image based paint defect detection in automotive assembly')
-    st.write('---------------------------------------------------------')
-    st.image('assets/Images/ferrari-cropped.png')
-    sbc1, sbc2 = st.columns(2)
-    sensitivity = sbc1.slider('model sensitivity', 0, 100, 50)
-    speed = sbc1.slider('select path size', 16, 64, 32)
-    print(sensitivity, speed)
-
-    with sbc2.expander('What is model sensitivity?'):
-        st.write("_sensitivity 100 --> alert me on **everything**_")
-        st.write("_sensitivity 0 --> alert me on **critical things only**_")
-    with sbc2.expander('What is Patch Size?'):
-        st.write(
-            'Patch size is the # of pixels in each dimension that the images is broken down to for defect detections')
-        st.write('a smaller patch will find smaller defects, but will take longer to run')
-        st.write('a bigger patch will find bigger defects, but will take faster to run')
-
-    # image_number = 146
-    # zoom_names = []
-    defect_list = {}
-
-    alerts = pd.DataFrame()
-
-    seen_names, seen_class = [], []
-
-    for file in os.listdir('assets/Images'):
-        if '_zoom' in file:
-            it = file.split('_')[0]
-            dif = file.split('_')[-1].split('.')[0]
-            defect_list[it] = dif
-
-    _, c2 = st.columns(2)
-
-    pl = st.empty()
-    # p2 = st.empty()
-    image_number = 146
-    # is_error = False
-    seen_cont = st.empty()
-
-    if ferrari_stream:
-        for j in range(image_number):
-            if stop_stream:
-                # ferrari_stream = False
-                break
-
-            with pl.container():
-                im_name = 'assets/Images/' + str(j % image_number) + '_rect.png'
-                st.image(im_name)
-
-                defect = defect_list[str(j % image_number)]
-                # print(i, defect)
-
-                seen_names.append('assets/Images/' + str(j % image_number) + '_rect_thumb.png')
-                seen_class.append(defect)
-
-                if defect == 'no-defect':
-                    st.success('no defect!')
-                    is_error = False
-                else:
-                    is_error = True
-                    q = pd.DataFrame({
-                        'section': [j % image_number],
-                        'defect': [defect],
-                    })
-                    alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
-
-            unique_list = (list(set(seen_class)))
-
-            with seen_cont.container():
-                for u in unique_list:
-                    with st.expander(u):
-                        selected = []
-                        for name, cls in zip(seen_names, seen_class):
-                            if cls == u:
-                                selected.append(name)
-                        st.image(selected)
-            if is_error:
-                with st.expander(defect + '  ::  defect-alert zoom-in @ section' + str(j % image_number)):
-                    st.image('assets/Images/' + str(j % image_number) + '_zoom_' + defect + '.png')
-
-
 def rt_sensors_app(sensor_stream):
     st.title('Real Time Anomaly Detection')
     st.subheader('sensor based real time anomaly detection')
@@ -1193,7 +1110,7 @@ def ask_for_files(app_type_file):
         loaded_files = [df]
         return loaded_files
 
-    if app_type_file == 'paint shop defect detection':
+    if app_type_file == 'Ferrari paint shop defect detection':
         # df = pd.read_csv('assets/Data/Images/car-pano.png')
         return None
     if app_type_file == 'real-time sensor anomaly detection':
@@ -1279,7 +1196,7 @@ app_list = ['paint shop visual inspection',
             'textile defects',
             'Standard Industries Demo',
             'real time process optimization',
-            'paint shop defect detection',
+            'Ferrari paint shop defect detection',
             "pre paint metal defects",
             'real-time sensor anomaly detection',
             'adaptive AI demo',
@@ -1332,8 +1249,15 @@ if app_type == 'Standard Industries Demo':
 if app_type == 'real time process optimization':
     rt_test_reorder(stream)
 
-if app_type == 'paint shop defect detection':
-    paint_shop_app(stream)
+if app_type == 'Ferrari paint shop defect detection':
+    # paint_shop_app(stream)
+    visual_inspection_app(stream, stop_stream,
+                          'In-line Paint Shop Defect Detection',
+                          'image based paint defect detection in automotive assembly',
+                          'ferrari',
+                          header_image='assets/Images/ferrari-cropped.png',
+                          moving_thumb=True,
+                          scan_mode=True)
 
 if app_type == 'textile defects':
     # textile_app(stream)
