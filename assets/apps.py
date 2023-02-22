@@ -98,7 +98,8 @@ def visual_inspection_app(stream, stop_stream, title, subheader, folder_name,
     st.subheader(subheader)
     st.write('---------------------------------------------------------')
     if header_image is not None:
-        st.image(header_image)
+        with st.expander('full image'):
+            st.image(header_image)
     if moving_thumb is not None:
         thumb_cont = st.empty()
     col1, col2 = st.columns((2, 2))
