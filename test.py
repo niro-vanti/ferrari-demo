@@ -5,7 +5,7 @@ import streamlit.components.v1 as components
 # import os
 import toml
 # from assets.helpful_stuff.auxFunctions import *
-# import plotly.graph_objects as go
+import plotly.graph_objects as go
 from assets.apps import *
 
 # constants
