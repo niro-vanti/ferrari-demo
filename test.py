@@ -1,11 +1,11 @@
 # from sklearn.metrics import accuracy_score
 import streamlit.components.v1 as components
-import time
-import plotly.express as px
-import os
+# import time
+# import plotly.express as px
+# import os
 import toml
-from assets.helpful_stuff.auxFunctions import *
-import plotly.graph_objects as go
+# from assets.helpful_stuff.auxFunctions import *
+# import plotly.graph_objects as go
 from assets.apps import *
 
 # constants
@@ -192,342 +192,6 @@ def run_exp(up_file, dc_file, base_perf, beta, vs):
 
 
 # app functions
-def rt_sensors_app(sensor_stream):
-    st.title('Real Time Anomaly Detection')
-    st.subheader('sensor based real time anomaly detection')
-    st.write('---------------------------------------------------------')
-    df = files[0]
-    if 'prog' in df.columns:
-        df.drop(columns=['prog'], inplace=True)
-        df = (df - df.mean()) / df.std()
-
-    orig_col_list = df.columns
-    df['sen_alert'] = 0
-    df['sit_alert'] = 0
-
-    col_list = ['All Sensors']
-
-    for col in df.columns.to_list():
-        col_list.append(col)
-    feats = st.multiselect("Select Sensors", col_list)
-
-    st.text("You selected: {}".format(", ".join(feats)))
-    if 'All Sensors' in feats:
-        feats = df.columns.to_list()
-
-    c1, c2 = st.columns(2)
-    mode = c1.radio('select alert mode',
-                    ['alert me only when there''s a situation anomaly',
-                     'alert me only when there''s a sensor anomaly',
-                     'I want all alerts'])
-    normalize = st.checkbox('Scale Sensors', value=True)
-    auto_clean_up = st.checkbox('Automated Data Cleaning', value=True)
-    if auto_clean_up:
-        for col in orig_col_list:
-            df[col][df[col] == 0] = df[col].mean()
-
-    if normalize:
-        df = df / df.max()
-    else:
-        df = df
-
-    max_val = df.max().max() * 1.1
-    # min_val = df.min().min() * 1.1
-    with c2.expander('what are these alerts?'):
-        st.write('a **sensor** anomaly is when a single sensor is tracked by Vanti''s model and the model decides to '
-                 'alert the user')
-        st.write('a **situation** anomaly is when all sensors are tracked together by Vanti''s model and the model '
-                 'decides to alert the user')
-
-    if mode == 'alert me only when there''s a situation anomaly':
-        alert_mode = 0
-    elif mode == 'alert me only when there''s a sensor anomaly':
-        alert_mode = 1
-    elif mode == 'I want all alerts':
-        alert_mode = 2
-    else:
-        alert_mode = 3
-    print(alert_mode)
-
-    sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 50.0)
-    with c2.expander("what is model sensitivity?"):
-        st.write("_sensitivity 100 --> alert me on **everything**_")
-        st.write("_sensitivity 0 --> alert me on **critical things only**_")
-
-    ms = {feat: df[feat].mean() for feat in feats}
-    ss = {feat: df[feat].std() for feat in feats}
-
-    _, c2, c3 = st.columns(3)
-    sensitivity = (100 - sensitivity) / 20
-
-    sensor_window = 50
-    zoom_window = 2
-    # pl = st.empty()
-    pl2 = st.empty()
-    alerts = pd.DataFrame()
-
-    alert_highlights = {}
-    local_count = {}
-    alert_start, alert_end, alert_enable = [], [], []
-    graph_col, alert_col = st.columns((3, 2))
-    graph_cont = graph_col.empty()
-    alert_cont = alert_col.empty()
-
-    # debug = st.empty()
-
-    if sensor_stream:
-        for col in range(df.shape[0]):
-            if stop_stream:
-                break
-
-            start_index = max(0, col - sensor_window)
-            e = min(col, df.shape[0])
-            temp = df[feats].iloc[start_index:e]
-            # temp['sen_alert'] = df['sen_alert'].iloc[start_index:e]
-            # temp['sit_alert'] = df['sit_alert'].iloc[start_index:e]
-            count = 0
-            for f in feats:
-                if np.abs(df[f].iloc[col] - ms[f]) > (ss[f] * sensitivity):
-                    count = count + 1
-                    rr = get_reason('sensor')
-                    q = pd.DataFrame({
-                        'time stamp': [df.index[col]],
-                        'sensor': [f],
-                        'reason': [rr],
-                        'alert type': ['sensor']
-                    })
-
-                    if alert_mode == 1 or alert_mode == 2:
-                        alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
-                        colorh = '#ff3c78'
-                        sss = max(0, col - zoom_window)
-                        eee = min(col + zoom_window, df.shape[0])
-
-                        alert_num = df['sit_alert'].cumsum().max()
-                        alert_start.append(df.index[sss])
-                        alert_end.append(df.index[eee])
-                        alert_enable.append(0)
-                        alert_highlights['alert_' + str(alert_num)] = go.layout.Shape(
-                            type="rect",
-                            x0=df.index[sss],
-                            y0=-0.1,
-                            x1=df.index[eee],
-                            y1=max_val,
-                            fillcolor=colorh,
-                            line=dict(color=colorh, width=3),
-                            opacity=0.25,
-                            layer="below")
-
-                        with pl2.container():
-                            sss = max(0, col - zoom_window)
-                            eee = min(col + zoom_window, df.shape[0])
-                            temp2 = df[f].iloc[sss:eee]
-                            fig3 = px.line(temp2)
-                            fig3.update_layout(plot_bgcolor='#ffffff')
-                        with st.expander('sensor-alert zoom-in @' + str(df.index[col])):
-                            st.write(fig3, title=str(df.index[col]))
-
-            if alert_mode == 0 or alert_mode == 2:
-                if count > 3:
-                    rr = get_reason('situation')
-                    q = pd.DataFrame({
-                        'time stamp': [df.index[col]], 'sensor': ['combination'],
-                        'reason': [rr], 'alert type': ['Situation']})
-                    alerts = pd.concat([alerts, q], axis=0, ignore_index=True)
-                    df['sit_alert'].iloc[col] = 1
-                    colorh = '#00818A'
-                    sss = max(col - sensor_window + 1, col - zoom_window)
-                    eee = min(col + zoom_window, col + sensor_window - 1)
-                    alert_num = df['sit_alert'].cumsum().max()
-                    alert_start.append(df.index[sss])
-                    alert_end.append(df.index[eee])
-                    alert_enable.append(0)
-
-                    alert_highlights['alert_' + str(int(alert_num))] = go.layout.Shape(
-                        type="rect", x0=df.index[sss], y0=-0.1, x1=df.index[eee], y1=max_val,
-                        # type="rect", x0=0, y0=-0.1, x1=4, y1=max_val,
-                        fillcolor=colorh, line=dict(color=colorh, width=3), opacity=0.25, layer="below")
-
-                    with pl2.container():
-                        sss = max(col - sensor_window + 1, col - zoom_window)
-                        eee = min(col + zoom_window, col + sensor_window - 1)
-                        temp2 = df[feats].iloc[sss:eee]
-                        fig3 = px.line(temp2)
-                        fig3.update_layout(plot_bgcolor='#ffffff')
-
-                    with st.expander('situation-alert zoom-in @' + str(df.index[col])):
-                        st.write(fig3, title=str(df.index[col]))
-
-            with alert_cont.container():
-                for idx in range(alerts.shape[0]):
-                    ts = alerts['time stamp'].iloc[idx]
-                    sens = alerts['sensor'].iloc[idx]
-                    reason = alerts['reason'].iloc[idx]
-                    if len(reason) > 20:
-                        reason = reason[:19] + '\n ' + reason[19:]
-                        st.code(f'{ts} :: {sens} : {reason}')  # : {reason[:20]}')
-                    else:
-                        st.code(f'{ts} :: {sens} : {reason}')
-
-            with graph_cont.container():
-                alert_keys = list(alert_highlights.keys())
-                local_alerts = {}
-                local_start, local_end = [], []
-                tries = 5
-                show_count = 40
-                for alert_idx in range(len(alert_start)):
-                    # for each alert see if it's enabled or not
-                    # if not enabled toggle it to enable in next iteration
-                    if alert_enable[alert_idx] <= tries:
-                        alert_enable[alert_idx] = alert_enable[alert_idx] + 1
-                    # if enabled, copy alert details and start to local list
-                    else:
-                        local_alerts[alert_keys[alert_idx]] = alert_highlights[alert_keys[alert_idx]]
-                        local_start.append(alert_start[alert_idx])
-                        local_end.append(alert_end[alert_idx])
-                        if alert_keys[alert_idx] not in local_count.keys():
-                            local_count[alert_keys[alert_idx]] = 0
-
-                    if alert_start[alert_idx] not in temp.index and alert_end[alert_idx] not in temp.index:
-                        del alert_highlights[alert_keys[alert_idx]]
-                        del alert_start[alert_idx]
-                        del alert_end[alert_idx]
-
-                    # for all alerts to shown count the number of times it was shown
-                    local_keys = list(local_alerts.keys())
-                    for local_idx in range(len(local_alerts)):
-                        local_count[local_keys[local_idx]] = local_count[local_keys[local_idx]] + 1
-                        if local_count[local_keys[local_idx]] >= show_count:
-                            del local_alerts[local_keys[local_idx]]
-                            del local_start[local_idx]
-                            del local_end[local_idx]
-
-                if temp.shape[0] < sensor_window:
-                    pad = pd.DataFrame(index=df.index[temp.shape[1]:sensor_window], columns=temp.columns)
-                    temp = pd.concat([temp, pad], axis=0)
-
-                fig = px.line(data_frame=temp)
-                fig.update_layout(plot_bgcolor='#ffffff')
-                fig.update_yaxes(range=[-0.1, 1.1], fixedrange=True)
-
-                # lst_shapes = list(alert_highlights.values())
-                lst_shapes = list(local_alerts.values())
-                fig.update_layout(shapes=lst_shapes)
-                st.write(fig)
-
-            # with debug.container():
-            #     st.write(alert_highlights)
-            #     st.write(local_count)
-            #     st.write(local_alerts)
-            #     st.write(pad.shape)
-            #     # for alert_idx in range(len(alert_start_end)):
-            #     #     if alert_start_end[alert_idx] in temp.index:
-            #     #         st.write(alert_start_end[alert_idx])
-            #     st.write(alert_highlights)
-
-    with st.expander('see training data'):
-        st.dataframe(df)
-
-
-def medical_device_app(medical_stream):
-    st.title('Medical Device Early Fault Detection')
-    st.subheader('tabular data based early detection of future faulty units')
-    st.write('---------------------------------------------------------')
-
-    df = files[0]
-    kpi_file = files[1]
-    fi = files[2]
-    # --------------------------------------
-    fi['Feature Importance'] = fi['Feature Importance'].apply(lambda x: float(x.split('%')[0]))
-    fi.sort_values(by=['Feature Importance'], ascending=False, inplace=True)
-
-    # --------------------------------------
-    col_list = ['All Measurements']
-
-    for col in df.columns.to_list():
-        col_list.append(col)
-    feats = st.multiselect("Select Data", col_list)
-
-    st.text("You selected: {}".format(", ".join(feats)))
-    if 'All Measurements' in feats:
-        feats = df.columns.to_list()
-
-    c1, c2 = st.columns(2)
-    mode = c1.radio('select alert mode',
-                    ['alert me only when there''s a situation anomaly',
-                     'alert me only when there''s a sensor anomaly',
-                     'I want all alerts'])
-    with c2.expander('what are these alerts?'):
-        st.write('a **sensor** anomaly is when a single sensor is tracked by Vanti''s model and the model decides to '
-                 'alert the user')
-        st.write('a **situation** anomaly is when all sensors are tracked together by Vanti''s model and the model '
-                 'decides to alert the user')
-
-    if mode == 'alert me only when there''s a situation anomaly':
-        selected_mode = 0
-    elif mode == 'alert me only when there''s a sensor anomaly':
-        selected_mode = 1
-    elif mode == 'I want all alerts':
-        selected_mode = 2
-    else:
-        selected_mode = 3
-    print(selected_mode)
-
-    sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 50.0)
-    print(sensitivity)
-
-    with c2.expander("what is model sensitivity?"):
-        st.write("_sensitivity 100 --> alert me on **everything**_")
-        st.write("_sensitivity 0 --> alert me on **critical things only**_")
-
-    with st.expander('Driving Factors'):
-        st.bar_chart(fi)
-    _, sbc2 = st.columns(2)
-
-    ms = {feat: df[feat].mean() for feat in feats}
-    ss = {feat: df[feat].std() for feat in feats}
-
-    data_graph = st.empty()
-    error_inv = st.empty()
-    metrics = st.empty()
-    if medical_stream:
-
-        feed1, feed2 = st.columns([1, 4])
-        fail_counter = 0
-
-        for col in range(df.shape[0]):
-            if stop_stream:
-                # medical_stream = False
-                break
-            if kpi_file[col] == 1:
-                fail_counter = fail_counter + 1
-            start_index = 0
-            e = min(col, df.shape[0])
-            temp = df[feats].iloc[start_index:e]
-
-            with data_graph.container():
-                # sss = max(0, col - 10)
-                # eee = min(col, df.shape[0])
-                # temp2 = df.iloc[sss:eee]
-
-                fig3 = px.line(temp, markers=True)
-                fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
-                # hide and lock down axes
-                fig3.update_xaxes(visible=True, fixedrange=True)
-                fig3.update_yaxes(visible=True, fixedrange=True)
-                # remove facet/subplot labels
-                fig3.update_layout(annotations=[], overwrite=True)
-                st.write(fig3)
-                with metrics.container():
-                    st.metric(label="Predictions", value=col)
-                    st.metric(label="Fails", value=fail_counter)
-                    st.metric(label="Ratio", value=str(np.round(fail_counter / (col + 1) * 100, 1)) + "%")
-            with error_inv.container():
-                if kpi_file[col] == 1:
-                    feed1.error('FAIL @SN = ' + str(df.index[col]))
-                    # feed2.error('@index :: ' + str(i))
-                    feed2.info(get_reason_medical(df, ms, ss))
-
 
 def adaptive_ai_demo():
     st.title('Adaptive AI Demo')
@@ -582,12 +246,8 @@ def video_assembly_app(assembly_stream):
 
     with col1:
         st.write(' ')
-
     with col2:
         st.image('assets/Data/assembly-movie-small.gif', caption='assembly video')
-
-    # with col3:
-    #     st.write(' ')
 
     df = files[0]
     kpi_file = files[1]
@@ -612,7 +272,6 @@ def video_assembly_app(assembly_stream):
     v = v.reset_index(level=0)
     v.columns = ['reason', 'train_count']
     v['predict_count'] = 0
-    # st.write(v)
 
     if assembly_stream:
         feed1, feed2 = st.columns([1, 4])
@@ -621,7 +280,6 @@ def video_assembly_app(assembly_stream):
 
         for j in range(df.shape[0] * 5):
             if stop_stream:
-                # assembly_stream = False
                 break
             time.sleep(0.2)
             if kpi_file[j % video_num] == 'Fail':
@@ -638,9 +296,6 @@ def video_assembly_app(assembly_stream):
                 if kpi_file[j % video_num] == 'Fail':
                     feed1.error('FAIL @' + str(df.index[j % video_num]))
                     feed2.info(df['reason'].iloc[j % video_num])
-                    # if df['reason'].iloc[i % N] == 'General Error':
-                    #     new_reason = st.text_input(str(i%N)+'_what was the reason?')
-                    #     df['reason'].iloc[i % N] = new_reason
             with graph_inv.container():
                 q = v.copy()
                 q['predict_count'] = q['predict_count'] / fail_counter * 100
@@ -773,23 +428,17 @@ def si_demo(si_stream):
     log_str = []
     prev_pred = False
     error_counter = 0
-    # if unsupervised:
     df_u = pd.concat([df, predictions], axis=1)
     sns = []
 
     with st.expander('batch results demo'):
-        dfb = pd.read_csv('assets/Data/blind_test_19_2-results.csv', index_col=1)#, usecols=['predict_result'])
-        # print(dfb.shape)
-        # print(dfb.index)
-        # st.line_chart()
+        dfb = pd.read_csv('assets/Data/blind_test_19_2-results.csv', index_col=1)
         fig3 = px.line(dfb['predict_result'], markers=True, width=1200)
         fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
         fig3.update_xaxes(visible=True, fixedrange=True)
         fig3.update_yaxes(visible=True, fixedrange=True)
         fig3.update_layout(annotations=[], overwrite=True)
         st.write(fig3)
-        # st.line_chart(dfb)
-
 
     if si_stream:
         for si_idx in range(n):
@@ -800,8 +449,6 @@ def si_demo(si_stream):
                 pred = predictions['predictions'].iloc[si_idx]
                 if pred != test:
                     error_counter = error_counter + 1
-                    # st.text(f'{predictions.index[si_idx]} -- pred {pred}  test {test}  count {error_counter}')
-                    # st.write(cm)
                 if pred in ['Running Slow', 'Downtime']:
                     if pred != prev_pred:
                         sns = [np.random.choice(df.columns.to_list(), replace=False) for _ in
@@ -886,12 +533,12 @@ def si_demo(si_stream):
                         st.write(fig3)
                     with gauge_cont.container():
                         # st.write('---------------------------------------------------------')
-                        g_map = {'Downtime':0,'Running Slow':50,'Running':100}
+                        g_map = {'Downtime': 0, 'Running Slow': 50, 'Running': 100}
                         fig_gauge = go.Figure(go.Indicator(
-                            mode    =   "gauge",
-                            value   =   g_map[pred],
-                            domain  =   {'x': [0, 1], 'y': [0, 1]},
-                            title   =   {'text': 'machine speed'},
+                            mode="gauge",
+                            value=g_map[pred],
+                            domain={'x': [0, 1], 'y': [0, 1]},
+                            title={'text': 'machine speed'},
                             gauge={'axis': {'range': [-10, 200]},
                                    'bar': {'color': "#52de97"},
                                    'steps': [
@@ -1221,11 +868,6 @@ app_list = ['paint shop visual inspection',
 with st.sidebar:
     st.image('assets/Images/Vanti - Main Logo@4x copy.png')
     app_type = st.selectbox('select application', app_list)
-    # app_type = None
-    # for app in app_list:
-    #     if st.button(app):
-    #         app_type = app
-    # st.text(f'Selected app : {app_type}')
 
     b1, b2 = st.columns(2)
 
@@ -1281,7 +923,10 @@ if app_type == 'textile defects':
                           'textile-data')
 
 if app_type == 'real-time sensor anomaly detection':
-    rt_sensors_app(stream)
+    # rt_sensors_app(stream)
+    ts_app(stream, stop_stream, files,
+           'Real Time Anomaly Detection',
+           'sensor based real time anomaly detection')
 
 if app_type == 'adaptive AI demo':
     adaptive_ai_demo()
@@ -1290,7 +935,11 @@ if app_type == 'manual assembly with video':
     video_assembly_app(stream)
 
 if app_type == 'medical device early fault detection':
-    medical_device_app(stream)
+    # medical_device_app(stream)
+    ts_app(stream, stop_stream, files,
+           'Real Time Early Fault Detection',
+           'tabular based real time early fault detection',
+           classification=True)
 
 if app_type == 'pre paint metal defects':
     # pre_paint_app(stream)
