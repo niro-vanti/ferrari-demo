@@ -378,16 +378,32 @@ def si_demo(si_stream):
     st.title('Standard Industries Demo')
     st.subheader('event prediction')
     st.write('---------------------------------------------------------')
-
+    kpi = 'tusCoatingLine.MES.UtilizationState'
     fi = files[2]
     predictions = files[0]
+    predictions  = pd.read_csv('assets/Data/standard-inds/shift_6.csv', index_col=0)
+    predictions.drop(columns=['predict_result'], inplace=True)
+    predictions.index = pd.to_datetime(predictions.index)
+
     df = files[1]
+    df = pd.read_csv('assets/Data/standard-inds/train_batch_w_results_take_2.csv', usecols=df.columns)
+    df = df.iloc[2892:]
+    df.index = predictions.index
+    valid_locations = predictions[kpi] != 'Unknown'
+    predictions = predictions.loc[valid_locations]
+    df = df.loc[valid_locations]
+
     si_window = 10
 
     qs, es = st.columns((2, 4))
     norm = qs.checkbox('normalize values?', value=True)
     event_log = qs.checkbox('show event log?', value=True)
     supervised = qs.checkbox('supervised?', value=True)
+    skip_rows = qs.checkbox('skip first predictions?', value=True)
+    if skip_rows:
+        start_loop = 870
+    else:
+        start_loop = 0
     with es.expander('what is value normalization?'):
         st.write('value normalization is taking each feature and scaling its value to 0--1 range')
     with es.expander('what is event log?'):
@@ -417,7 +433,7 @@ def si_demo(si_stream):
     graph_mat = col4.empty()
     n = predictions.shape[0]
     cm = [
-        [0, 0, 0],
+        [start_loop, 0, 0],
         [0, 0, 0],
         [0, 0, 0]
     ]
@@ -427,21 +443,33 @@ def si_demo(si_stream):
     log_cont = st.empty()
     log_str = []
     prev_pred = False
+
     error_counter = 0
     df_u = pd.concat([df, predictions], axis=1)
     sns = []
 
     with st.expander('batch results demo'):
-        dfb = pd.read_csv('assets/Data/blind_test_19_2-results.csv', index_col=1)
-        fig3 = px.line(dfb['predict_result'], markers=True, width=1200)
+        dfb = pd.read_csv('assets/Data/standard-inds/blind_test_19_2-results.csv', index_col=1)
+        dfb = pd.read_csv('assets/Data/standard-inds/shift_6.csv', index_col=0)
+        valid_locations = dfb[kpi]!='Unknown'
+        # fig3 = px.line(dfb['predict_result'], markers=True, width=1200)
+        fig3 = px.line(dfb[['predictions',kpi]].loc[valid_locations], markers=True, width=1200)
         fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+        fig3['data'][0]['line']['color'] = '#394253'
+        fig3['data'][1]['line']['color'] = '#52de97'
+        fig3['data'][1]['line']['dash'] = 'dot'
+        fig3['data'][0]['mode'] = 'markers'
+        fig3['data'][0]['marker']['symbol'] = "x-thin-open"
+        fig3['data'][1]['marker']['symbol'] = "octagon-open"
+        fig3['data'][1]['marker']['size'] = 12
+        # fig3['data'][0]['line']['width'] = 5
         fig3.update_xaxes(visible=True, fixedrange=True)
         fig3.update_yaxes(visible=True, fixedrange=True)
         fig3.update_layout(annotations=[], overwrite=True)
         st.write(fig3)
 
     if si_stream:
-        for si_idx in range(n):
+        for si_idx in range(start_loop,n):
             if stop_stream:
                 break
             if supervised:
@@ -525,12 +553,12 @@ def si_demo(si_stream):
                         st.subheader('event log')
                         st.write('---------------------------------------------------------')
                         temp2 = predictions.iloc[:si_idx]
-                        fig3 = px.line(temp2, markers=True)
-                        fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
-                        fig3.update_xaxes(visible=True, fixedrange=True)
-                        fig3.update_yaxes(visible=True, fixedrange=True)
-                        fig3.update_layout(annotations=[], overwrite=True)
-                        st.write(fig3)
+                        fig_running = px.line(temp2, markers=True)
+                        fig_running.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
+                        fig_running.update_xaxes(visible=True, fixedrange=True)
+                        fig_running.update_yaxes(visible=True, fixedrange=True)
+                        fig_running.update_layout(annotations=[], overwrite=True)
+                        st.write(fig_running)
                     with gauge_cont.container():
                         # st.write('---------------------------------------------------------')
                         g_map = {'Downtime': 0, 'Running Slow': 50, 'Running': 100}
@@ -841,10 +869,10 @@ def ask_for_files(app_type_file):
         if batch is not None:
             raw = pd.read_csv(batch)
         else:
-            raw = pd.read_csv('assets/Data/SI-results.csv', index_col=0)
+            raw = pd.read_csv('assets/Data/standard-inds/SI-results.csv', index_col=0)
         loaded_files = [raw,
-                        pd.read_csv('assets/Data/top-10-feats.csv', index_col=0),
-                        pd.read_csv('assets/Data/SI_feat_imp.csv', index_col=0)]
+                        pd.read_csv('assets/Data/standard-inds/top-10-feats.csv', index_col=0),
+                        pd.read_csv('assets/Data/standard-inds/SI_feat_imp.csv', index_col=0)]
         return loaded_files
     if app_type_file == 'roadmap':
         return

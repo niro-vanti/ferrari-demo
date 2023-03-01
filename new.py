@@ -1213,10 +1213,10 @@ def ask_for_files(app_type_file):
         if batch is not None:
             raw = pd.read_csv(batch)
         else:
-            raw = pd.read_csv('assets/Data/SI-results.csv', index_col=0)
+            raw = pd.read_csv('assets/Data/standard-inds/SI-results.csv', index_col=0)
         loaded_files = [raw,
-                        pd.read_csv('assets/Data/top-10-feats.csv', index_col=0),
-                        pd.read_csv('assets/Data/SI_feat_imp.csv', index_col=0)]
+                        pd.read_csv('assets/Data/standard-inds/top-10-feats.csv', index_col=0),
+                        pd.read_csv('assets/Data/standard-inds/SI_feat_imp.csv', index_col=0)]
         return loaded_files
     if app_type_file == 'roadmap':
         return
