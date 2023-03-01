@@ -424,6 +424,11 @@ def si_demo(si_stream):
     # st.write(fi)
     with st.expander('Driving Factors'):
         st.bar_chart(fi)
+    pred_col1, pred_col2 = st.columns(2)
+    pred_cont = pred_col1.empty()
+    gauge_cont = pred_col2.empty()
+    log_cont = st.empty()
+
     cm_cont = st.empty()
     sct_cont = st.empty()
     tit, col1, col2, col3, col4 = st.columns((1, 1, 1, 1, 5))
@@ -438,10 +443,7 @@ def si_demo(si_stream):
         [0, 0, 0],
         [0, 0, 0]
     ]
-    pred_col1, pred_col2 = st.columns(2)
-    pred_cont = pred_col1.empty()
-    gauge_cont = pred_col2.empty()
-    log_cont = st.empty()
+
     log_str = []
     prev_pred = False
 
