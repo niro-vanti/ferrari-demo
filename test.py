@@ -386,7 +386,8 @@ def si_demo(si_stream):
     predictions.index = pd.to_datetime(predictions.index)
 
     df = files[1]
-    df = pd.read_csv('assets/Data/standard-inds/train_batch_w_results_take_2.csv', usecols=df.columns)
+    df = pd.read_csv('assets/Data/standard-inds/cols.csv', usecols=df.columns)
+    # df.to_csv('assets/Data/standard-inds/cols.csv')
     df = df.iloc[2892:]
     df.index = predictions.index
     valid_locations = predictions[kpi] != 'Unknown'
