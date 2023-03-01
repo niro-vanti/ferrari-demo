@@ -460,11 +460,12 @@ def si_demo(si_stream):
         fig3.update_layout(plot_bgcolor='#ffffff', margin=dict(t=10, l=10, b=10, r=10))
         fig3['data'][0]['line']['color'] = '#394253'
         fig3['data'][1]['line']['color'] = '#52de97'
-        fig3['data'][1]['line']['dash'] = 'dot'
+        # fig3['data'][1]['line']['dash'] = 'dot'
         fig3['data'][0]['mode'] = 'markers'
+        fig3['data'][1]['mode'] = 'markers'
         fig3['data'][0]['marker']['symbol'] = "x-thin-open"
         fig3['data'][1]['marker']['symbol'] = "octagon-open"
-        fig3['data'][1]['marker']['size'] = 12
+        fig3['data'][1]['marker']['size'] = 5
         # fig3['data'][0]['line']['width'] = 5
         fig3.update_xaxes(visible=True, fixedrange=True)
         fig3.update_yaxes(visible=True, fixedrange=True)
