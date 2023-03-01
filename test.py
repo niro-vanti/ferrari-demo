@@ -449,8 +449,10 @@ def si_demo(si_stream):
     df_u = pd.concat([df, predictions], axis=1)
     sns = []
 
+    prev_update = None
+
     with st.expander('batch results demo'):
-        dfb = pd.read_csv('assets/Data/standard-inds/blind_test_19_2-results.csv', index_col=1)
+        # dfb = pd.read_csv('assets/Data/standard-inds/blind_test_19_2-results.csv', index_col=1)
         dfb = pd.read_csv('assets/Data/standard-inds/shift_6.csv', index_col=0)
         valid_locations = dfb[kpi]!='Unknown'
         # fig3 = px.line(dfb['predict_result'], markers=True, width=1200)
@@ -482,7 +484,7 @@ def si_demo(si_stream):
                     if pred != prev_pred:
                         sns = [np.random.choice(df.columns.to_list(), replace=False) for _ in
                                range(np.random.choice([1, 2, 3]))]
-                    log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
+                        log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
                     prev_pred = pred
                 if test == 'Running':
                     if pred == 'Running':
@@ -512,6 +514,7 @@ def si_demo(si_stream):
                             f'{df.index[si_idx]} : the model predicted {pred} -- the real result was also {test}')
                     else:
                         st.error(f'{df.index[si_idx]} : the model predicted {pred} -- but the real result was  {test}')
+                    # st.subheader(f'Accuracy = {np.round((cm[0][0] + cm[1][1] + cm[2][2]) / np.sum(cm)*100,2)} %')
                 st.subheader('')
                 with graph_mat.container():
                     sss = max(0, si_idx - si_window)
@@ -549,7 +552,10 @@ def si_demo(si_stream):
                     st.metric(label='', value=cm[2][2])
                 if event_log:
                     with log_cont.container():
-                        st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(log_str)]))
+                        new_update = pred
+                        if new_update != prev_update:
+                            st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(log_str)]))
+                            prev_update = new_update
                     with pred_cont.container():
                         st.subheader('event log')
                         st.write('---------------------------------------------------------')
@@ -584,7 +590,7 @@ def si_demo(si_stream):
                         sns = [np.random.choice(df.columns.to_list(), replace=False) for _ in
                                range(np.random.choice([1, 2, 3]))]
 
-                    log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
+                        log_str.append(f'{df.index[si_idx]} : the model predicted {pred} -- check {sns}')
                     prev_pred = pred
                 with sct_cont.container():
                     st.success(f'{df.index[si_idx]} : the model predicted {pred}')
