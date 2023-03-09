@@ -32,25 +32,23 @@ def ask_for_files(app_type_file):
     if app_type_file == 'package visual inspection':
         return None
     if app_type_file == 'real time process optimization':
-        df = pd.read_csv('assets/Data/test-reorder-data.csv')
+        df = pd.read_csv('assets/Data/test_reorder/test-reorder-data.csv')
         loaded_files = [df]
         return loaded_files
     if app_type_file == 'pre paint metal defects':
         return None
     if app_type_file == 'textile defects':
         return None
-
     if app_type_file == 'continuous process control demo':
-        df = pd.read_csv('assets/Data/test-reorder-data.csv')
+        df = pd.read_csv('assets/Data/test_reorder/test-reorder-data.csv')
         df.columns = ['time', 'Env Temperature', 'H1 Pressure', 'H2 Pressure', 'M1 motor velocity', 'Valve Release']
         loaded_files = [df]
         return loaded_files
-
     if app_type_file == 'Ferrari paint shop defect detection':
         # df = pd.read_csv('assets/Data/Images/car-pano.png')
         return None
     if app_type_file == 'real-time sensor anomaly detection':
-        df = pd.read_csv('assets/Data/anomaly.csv', index_col=0)
+        df = pd.read_csv('assets/Data/rt_sensors/anomaly.csv', index_col=0)
         batch = st.file_uploader("upload batch file")
         st.write(batch)
         if batch is not None:
@@ -70,11 +68,11 @@ def ask_for_files(app_type_file):
         if data_file is not None:
             uploaded_file_int = pd.read_csv(data_file)
         else:
-            uploaded_file_int = pd.read_csv('assets/Data/adaptive-ai-demo-data.csv')
+            uploaded_file_int = pd.read_csv('assets/Data/adaptive_ai/adaptive-ai-demo-data.csv')
         if dont_file is not None:
             dont_care_int = pd.read_csv(dont_file)
         else:
-            dont_care_int = pd.read_csv('assets/Data/adaptive-ai-demo-drifted.csv')
+            dont_care_int = pd.read_csv('assets/Data/adaptive_ai/adaptive-ai-demo-drifted.csv')
 
         loaded_files = [uploaded_file_int, dont_care_int]
         st.write(loaded_files)
@@ -85,8 +83,8 @@ def ask_for_files(app_type_file):
         if batch is not None:
             raw = pd.read_csv(batch)
         else:
-            raw = pd.read_csv('assets/Data/medical-data.csv')
-            fe = pd.read_csv('assets/Data/medical_device_feature_importance.csv', index_col=0)
+            raw = pd.read_csv('assets/Data/medical_data/medical-data.csv')
+            fe = pd.read_csv('assets/Data/medical_data/medical_device_feature_importance.csv', index_col=0)
 
         raw = raw.sample(frac=1).reset_index(drop=True)
         kpi = 'S_Scrap'
@@ -101,7 +99,7 @@ def ask_for_files(app_type_file):
         if batch is not None:
             raw = pd.read_csv(batch)
         else:
-            raw = pd.read_csv('assets/Data/flex-results.csv', index_col=0)
+            raw = pd.read_csv('assets/Data/video_assembly/flex-results.csv', index_col=0)
 
         df = raw.copy()
         kpi_col = df['result'].copy()

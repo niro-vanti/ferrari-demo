@@ -16,7 +16,7 @@ def video_assembly_app(assembly_stream, stop_stream, files):
     with col1:
         st.write(' ')
     with col2:
-        st.image('assets/Data/assembly-movie-small.gif', caption='assembly video')
+        st.image('assets/Data/video_assembly/assembly-movie-small.gif', caption='assembly video')
 
     df = files[0]
     kpi_file = files[1]
