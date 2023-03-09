@@ -1,10 +1,5 @@
-# from sklearn.metrics import accuracy_score
 import streamlit.components.v1 as components
-# import time
-# import plotly.express as px
-# import os
 import toml
-# from assets.helpful_stuff.auxFunctions import *
 import plotly.graph_objects as go
 from assets.apps import *
 from assets.specific_demos.cpc_demo import cpc
@@ -203,6 +198,7 @@ def ask_for_files(app_type_file):
     st.error('app type not supported')
 
 
+
 # sidebar
 app_list = ['paint shop visual inspection',
             'package visual inspection',
@@ -247,7 +243,11 @@ if app_type == 'paint shop visual inspection':
                           'paint_photos')
 
 if app_type == 'package visual inspection':
-    packages(stream)
+    # packages(stream)
+    visual_inspection_app(stream, stop_stream,
+                          title='Packages',
+                          sub_header='Image based visual defect detection in medicine packages',
+                          folder_name='packages')
 
 if app_type == 'continuous process control demo':
     cpc(stream, stop_stream, files)
