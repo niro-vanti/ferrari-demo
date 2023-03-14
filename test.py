@@ -16,12 +16,12 @@ st.set_page_config(page_title=page_title, page_icon=page_icon, layout="wide")
 
 primaryColor = toml.load(".streamlit/config.toml")['theme']['primaryColor']
 style_description = f"""
-<style>
-div.stButton > button:first-child {{ border: 2px solid {primaryColor}; border-radius:10px 10px 10px 10px; }}
-div.stButton > button:hover {{ background-color: {primaryColor}; color:#000000;}}
-footer {{ visibility: hidden;}}
-# header {{ visibility: hidden;}}
-<style>
+    <style>
+        div.stButton > button:first-child {{ border: 2px solid {primaryColor}; border-radius:10px 10px 10px 10px; }}
+        div.stButton > button:hover {{ background-color: {primaryColor}; color:#000000;}}
+        footer {{ visibility: hidden;}}
+        # header {{ visibility: hidden;}}
+    <style>
 """
 st.markdown(style_description, unsafe_allow_html=True)
 
@@ -165,23 +165,18 @@ if app_type == 'paint shop visual inspection':
                           'Automotive Paint Shop',
                           'image based visual defect detection in paint',
                           'paint_photos')
-
 if app_type == 'package visual inspection':
     # packages(stream)
     visual_inspection_app(stream, stop_stream,
                           title='Packages',
                           sub_header='Image based visual defect detection in medicine packages',
                           folder_name='packages')
-
 if app_type == 'continuous process control demo':
     cpc(stream, stop_stream, files)
-
 if app_type == 'Standard Industries Demo':
     si_demo(stream, stop_stream, files)
-
 if app_type == 'real time process optimization':
     rt_test_reorder(stream, stop_stream, files)
-
 if app_type == 'Ferrari paint shop defect detection':
     # paint_shop_app(stream)
     visual_inspection_app(stream, stop_stream,
@@ -191,39 +186,32 @@ if app_type == 'Ferrari paint shop defect detection':
                           header_image='assets/Images/ferrari-cropped.png',
                           moving_thumb=True,
                           scan_mode=True)
-
 if app_type == 'textile defects':
     # textile_app(stream)
     visual_inspection_app(stream, stop_stream,
                           'Textile Defects',
                           'image based visual defect detection in textile',
                           'textile-data')
-
 if app_type == 'real-time sensor anomaly detection':
     # rt_sensors_app(stream)
     ts_app(stream, stop_stream, files,
            'Real Time Anomaly Detection',
            'sensor based real time anomaly detection')
-
 if app_type == 'adaptive AI demo':
     adaptive_ai_demo(files)
-
 if app_type == 'manual assembly with video':
     video_assembly_app(stream, stop_stream, files)
-
 if app_type == 'medical device early fault detection':
     # medical_device_app(stream)
     ts_app(stream, stop_stream, files,
            'Real Time Early Fault Detection',
            'tabular based real time early fault detection',
            classification=True)
-
 if app_type == 'pre paint metal defects':
     # pre_paint_app(stream)
     visual_inspection_app(stream, stop_stream,
                           'Pre Paint Metal Defects',
                           'image based visual defect detection on pre paint metal automotive parts',
                           'paint-data')
-
 if app_type == 'roadmap':
     roadmap()

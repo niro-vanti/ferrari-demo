@@ -106,7 +106,8 @@ def ts_app(sensor_stream, stop_stream, files, header, sub_header, classification
     alert_start, alert_end, alert_enable = [], [], []
     graph_col, alert_col = st.columns((3, 2))
     graph_cont = graph_col.empty()
-    alert_cont = alert_col.empty()
+    # st.subheader('asdfsdf')
+    alert_cont = st.empty()
 
     # debug = st.empty()
 
@@ -210,6 +211,7 @@ def ts_app(sensor_stream, stop_stream, files, header, sub_header, classification
                     reason = alerts['reason'].iloc[idx]
                     detailed_reason = alerts['detailed_reason'].iloc[idx]
                     a = '\n and'.join(detailed_reason.split('and'))
+                    a = ' and'.join(detailed_reason.split('and'))
                     if len(reason) > 20:
                         reason = reason[:19] + '\n ' + reason[19:]  # + '\n' + a[0] + '\n' + 'and ' + a[1]
                         st.code(f'{ts} :: {sens} : {reason} : \n {a}')
