@@ -106,7 +106,7 @@ def ts_app(sensor_stream, stop_stream, files, header, sub_header, classification
     alert_start, alert_end, alert_enable = [], [], []
     graph_col, alert_col = st.columns((3, 2))
     graph_cont = graph_col.empty()
-    st.subheader('asdfsdf')
+    # st.subheader('asdfsdf')
     alert_cont = st.empty()
 
     # debug = st.empty()
