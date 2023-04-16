@@ -13,10 +13,17 @@ def harmonic_demo(stream, stop_stream, files):
     st.write('---------------------------------------------------------')
 
     df = files[0]
+    raw = files[1]
+
+    uni = pd.concat([raw, df], axis=1)
+    uni = raw
 
     calib_cont = st.empty()
     log_cont = st.empty()
     events = []
+
+    with st.expander('raw_data'):
+        st.dataframe(uni)
 
     with st.expander('all plots'):
         st.line_chart(df.T)
@@ -34,7 +41,9 @@ def harmonic_demo(stream, stop_stream, files):
                 up = so_far.mean(axis=0)+so_far.std(axis=0)
                 down = so_far.mean(axis=0)-so_far.std(axis=0)
                 fig = go.Figure()
-
+                fig.update_layout(
+                    xaxis_title="Freq [MHz]",
+                    yaxis_title="Return Loss [dB]",)
                 fig.add_trace(go.Scatter(
                     x=x, y=y1,
                     line_color='#52de97',
