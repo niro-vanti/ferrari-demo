@@ -7,6 +7,7 @@ from assets.specific_demos.standard_industries_demo import si_demo
 from assets.specific_demos.adaptive_ai_demo import adaptive_ai_demo
 from assets.specific_demos.video_assembly import video_assembly_app
 from assets.specific_demos.test_reorder import rt_test_reorder
+from assets.specific_demos.harmonic_demo import harmonic_demo
 
 
 page_title = "Vanti Apps"
@@ -117,6 +118,10 @@ def ask_for_files(app_type_file):
                         pd.read_csv('assets/Data/standard-inds/top-10-feats.csv', index_col=0),
                         pd.read_csv('assets/Data/standard-inds/SI_feat_imp.csv', index_col=0)]
         return loaded_files
+    if app_type_file == 'Process Calibration':
+        batch = pd.read_csv('assets/Data/Calibration/harmonic_data_2023.csv', index_col=0)
+        loaded_files = [batch]
+        return loaded_files
     if app_type_file == 'roadmap':
         return
 
@@ -136,6 +141,7 @@ app_list = ['paint shop visual inspection',
             'adaptive AI demo',
             'manual assembly with video',
             'medical device early fault detection',
+            'Process Calibration',
             'roadmap']
 
 with st.sidebar:
@@ -213,5 +219,7 @@ if app_type == 'pre paint metal defects':
                           'Pre Paint Metal Defects',
                           'image based visual defect detection on pre paint metal automotive parts',
                           'paint-data')
+if app_type == 'Process Calibration':
+    harmonic_demo(stream, stop_stream, files)
 if app_type == 'roadmap':
     roadmap()
