@@ -18,6 +18,9 @@ def harmonic_demo(stream, stop_stream, files):
     log_cont = st.empty()
     events = []
 
+    with st.expander('all plots'):
+        st.line_chart(df.T)
+
     if stream:
         for idx in range(df.shape[0]):
             time.sleep(1)
@@ -48,6 +51,12 @@ def harmonic_demo(stream, stop_stream, files):
                     line=dict(color="#00818A", dash='dot'),
                     # line_color = '#00818A',
                     name='typical lower value'
+                ))
+                fig.add_trace(go.Scatter(
+                    x=x,
+                    y=so_far.mean(axis=0),
+                    line=dict(color='#ff3c78', dash='dot', width=1),
+                    name='the optimal value'
                 ))
                 # fig.add_trace(go.Scatter(
                 #     x=x,
