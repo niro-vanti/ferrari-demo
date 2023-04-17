@@ -121,7 +121,8 @@ def ask_for_files(app_type_file):
     if app_type_file == 'Process Calibration':
         batch = pd.read_csv('assets/Data/Calibration/harmonic_data_2023.csv', index_col=0)
         raw = pd.read_csv('assets/Data/Calibration/harmonic_raw_data.csv', index_col=0)
-        loaded_files = [batch, raw]
+        joint = pd.read_csv('assets/Data/Calibration/harmonic_jointed_2023.csv', index_col=0)
+        loaded_files = [batch, raw, joint]
         return loaded_files
     if app_type_file == 'roadmap':
         return

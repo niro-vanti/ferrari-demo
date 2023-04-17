@@ -14,25 +14,29 @@ def harmonic_demo(stream, stop_stream, files):
 
     df = files[0]
     raw = files[1]
+    raw.drop(columns=['kpi'], inplace=True)
+    joint = files[2]
 
-    uni = pd.concat([raw, df], axis=1)
-    uni = raw
-
+    data_cont = st.empty()
     calib_cont = st.empty()
     log_cont = st.empty()
     events = []
 
     with st.expander('raw_data'):
-        st.dataframe(uni)
+        st.dataframe(joint)
 
     with st.expander('all plots'):
-        st.line_chart(df.T)
+        st.line_chart(df)
 
     if stream:
         for idx in range(df.shape[0]):
             time.sleep(1)
             if stop_stream:
                 break
+            with data_cont.container():
+                a = pd.DataFrame(raw.iloc[idx])
+                st.dataframe(a.T)
+                # st.table(raw.iloc[idx])
             with calib_cont.container():
                 st.text(f'calibrating unit #{df.index[idx]}')
                 y1 = df.iloc[idx]
