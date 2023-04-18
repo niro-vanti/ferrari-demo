@@ -76,7 +76,7 @@ def ask_for_files(app_type_file):
             dont_care_int = pd.read_csv('assets/Data/adaptive_ai/adaptive-ai-demo-drifted.csv')
 
         loaded_files = [uploaded_file_int, dont_care_int]
-        st.write(loaded_files)
+        # st.write(loaded_files)
         return loaded_files
     if app_type_file == 'medical device early fault detection':
         batch = st.file_uploader('upload medical device data', accept_multiple_files=False)
