@@ -50,8 +50,10 @@ def harmonic_demo(stream, stop_stream, files):
                     yaxis_title="Return Loss [dB]",)
                 fig.add_trace(go.Scatter(
                     x=x, y=y1,
-                    line_color='#52de97',
+                    line = dict(color='#52DE97', width=6),
+                    # line_color='#52de97',
                     name='Unit Calibration',
+                    # width=5
                 ))
                 fig.add_trace(go.Scatter(
                     x=x, y=up,
