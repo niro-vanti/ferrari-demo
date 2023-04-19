@@ -305,6 +305,16 @@ def visual_inspection_app(stream, stop_stream, title, sub_header, folder_name,
 
     names_len = len(names)
 
+    with st.expander('OK/NG UI'):
+        # st.text('asdfasdf')
+        unique_classes = (list(set(classes)))
+        q_sign = {}
+        for idx, q in enumerate(unique_classes):
+            # ans[idx] = 
+            # q_sign.append(st.radio(q, ('OK','NG'), horizontal=True, key=idx))
+            q_sign[q] = st.radio(q, ('OK','NG'), horizontal=True, key=idx)
+        st.write(q_sign)
+
     if stream:
 
         for j in range(names_len * 10):
@@ -334,7 +344,13 @@ def visual_inspection_app(stream, stop_stream, title, sub_header, folder_name,
                 seen_class.append(classes[k % names_len])
             with class_cont.container():
                 conf = np.random.randint(85, 100, 1)[0]
-                st.info(classes[k % names_len] + ' with ' + str(conf) + '% confidence')
+                this_class = classes[k % names_len]
+                if q_sign[this_class] == 'OK':
+                    st.success(classes[k % names_len] + ' with ' + str(conf) + '% confidence')
+                elif q_sign[this_class] == 'NG':
+                    st.error(classes[k % names_len] + ' with ' + str(conf) + '% confidence')
+                else:
+                    st.info(classes[k % names_len] + ' with ' + str(conf) + '% confidence')
                 fig = px.bar(v, y='class', x='count',
                              color='count',
                              color_discrete_sequence=['#00818A', '#52DE97', '#395243', '#ff3c78', '#f3f4d1',
