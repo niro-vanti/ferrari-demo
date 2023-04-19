@@ -312,7 +312,7 @@ def visual_inspection_app(stream, stop_stream, title, sub_header, folder_name,
         for idx, q in enumerate(unique_classes):
             # ans[idx] = 
             # q_sign.append(st.radio(q, ('OK','NG'), horizontal=True, key=idx))
-            q_sign[q] = st.radio(q, ('OK','NG'), horizontal=True, key=idx)
+            q_sign[q] = st.radio(q, ('OK','NG','Other'), horizontal=True, key=idx, index=2)
         st.write(q_sign)
 
     if stream:
