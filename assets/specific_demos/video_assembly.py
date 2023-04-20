@@ -10,7 +10,7 @@ def video_assembly_app(assembly_stream, stop_stream, files):
     st.title('Defect Detection in Video Assembly')
     st.subheader('video based manual assembly defect detection')
     st.write('---------------------------------------------------------')
-
+    event_log = []
     col1, col2 = st.columns((1, 4))
 
     with col1:
@@ -22,7 +22,7 @@ def video_assembly_app(assembly_stream, stop_stream, files):
     kpi_file = files[1]
     video_num = df.shape[0]
     metrics = col1.empty()
-    error_inv = st.empty()
+    # error_inv = st.empty()
     with st.expander('Operator Annotation'):
         with st.form("what was the error?"):
             ui1, ui2 = st.columns(2)
@@ -36,6 +36,7 @@ def video_assembly_app(assembly_stream, stop_stream, files):
     graph_inv = st.empty()
 
     st.subheader('Root Cause per Unit')
+    error_inv = st.empty()
 
     v = df['reason'].value_counts(normalize=True) * 100
     v = v.reset_index(level=0)
@@ -63,8 +64,12 @@ def video_assembly_app(assembly_stream, stop_stream, files):
                 st.metric(label="Ratio", value=str(np.round(fail_counter / (j + 1) * 100, 1)) + "%")
             with error_inv.container():
                 if kpi_file[j % video_num] == 'Fail':
-                    feed1.error('FAIL @' + str(df.index[j % video_num]))
-                    feed2.info(df['reason'].iloc[j % video_num])
+                    event_log.append(f'Fail @ {str(df.index[j % video_num])} -- {df["reason"].iloc[j % video_num]}')
+                    # st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(event_log)]))
+                    # feed1.error('FAIL @' + str(df.index[j % video_num]))
+                    # feed2.info(df['reason'].iloc[j % video_num])
+                st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(event_log)]))
+
             with graph_inv.container():
                 q = v.copy()
                 q['predict_count'] = q['predict_count'] / fail_counter * 100
