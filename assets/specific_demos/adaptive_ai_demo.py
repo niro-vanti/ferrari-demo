@@ -13,18 +13,12 @@ window = 30
 BASE_PERF = [0.88, 0.89]
 GAMMA = BASE_PERF[0] - 0.25
 BETA = 1 - GAMMA / (BASE_PERF[0])
-# gamma = ()
 VS = 0.01
-# stream = False
 nodes = ['anomaly remover', 'formatter', 'mini decision tree', 'local regression', 'local classifier', 'SVM',
          'perceptron', 'nan filler', 'normalizer', 'encoder', 'balancer']
 
 
 def run_exp(up_file, dc_file, base_perf, beta, vs):
-    # pl = st.empty()
-    # pl2 = st.empty()
-    # pca_plot = st.empty()
-
     event_log = []
 
     recovery = False
@@ -144,20 +138,10 @@ def run_exp(up_file, dc_file, base_perf, beta, vs):
                 # st.write(sct)
                 st.code(''.join(['* ' + q + '\n' for idx, q in enumerate(event_log)]))
                 if j == 1:
-                    # feed1.success('@index :: ' + str(j))
-                    # feed2.success('all is good!')
-
                     event_log.append('@index :: ' + str(j))
                     event_log.append('all is good!')
                     event_log.append(' ')
                 if not drop and h20_val < 0.7 and j > 100:
-                    # feed1.success('@index :: ' + str(j))
-                    # feed1.error('alert')
-                    # feed1.info('notice')
-                    # feed2.error('drift detected! - 3 missing columns')
-                    # feed2.error('standard model accuracy -->  50%')
-                    # feed2.info('Vanti: analyzing affected nodes')
-                    # st.info('This is a purely informational message', icon="ℹ️")
                     drop = True
                     recovery = True
                     event_log.append('@index :: ' + str(j))
@@ -172,12 +156,7 @@ def run_exp(up_file, dc_file, base_perf, beta, vs):
                     new_node = np.random.randint(0, 10, 1)[0]
                     new_node = nodes[new_node]
                     layer = np.random.randint(0, 10, 1)
-                    # feed1.success('@index :: ' + str(j))
-                    # feed1.info('notice')
-                    # feed1.info('notice')
-                    # feed2.success('updating Vanti')
-                    # feed2.info('replacing node ' + str(node) + ' in layer ' + str(layer) + ' with ' + str(new_node))
-                    # feed2.info('Vanti: accuracy restored to ' + str(np.round(vanti_val * 100)) + '%')
+
                     event_log.append('@index :: ' + str(j))
                     event_log.append('notice - updating Vanti')
                     event_log.append('replacing node ' + str(node) + ' in layer ' + str(layer) + ' with ' + str(new_node))
@@ -206,24 +185,3 @@ def adaptive_ai_demo(files):
             'that is '
             'a result of modern data architectures. Data drift breaks processes and corrupts data, but can also reveal '
             'new opportunities for data use.')
-
-    # with st.expander('6 easy steps'):
-    #     st.title('6 easy steps')
-    #     # st.image('as6 easy step copy.png')
-    #     st.image('assets/helpful_stuff/6 easy step copy.png')
-
-    # with st.expander('reach out to our CTO'):
-    #     ro1, ro2 = st.columns(2)
-    #     st.title('Reach out!')
-    #     ro1.write("sub: [ADAPTIVE-AI DEMO] →")
-    #     ro2.write("niro@vanti.ai")
-    #     ro1.write('vanti.ai')
-    #     ro2.write('app.vanti.ai')
-
-    # with st.expander('How does adaptive AI work?'):
-    #     st.title('Self Wiring Networks')
-    #     st.image('assets/Images/ezgif.com-gif-maker (3).gif')
-    #     st.image('assets/Images/ezgif.com-gif-maker (2).gif')
-
-    # with st.expander('Visit Vanti.AI'):
-    #     components.iframe('http://vanti.ai', height=900)
