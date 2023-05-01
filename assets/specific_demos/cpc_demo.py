@@ -16,7 +16,7 @@ def cpc(cpc_stream, stop_stream, files):
                              for _ in range(df.shape[0])]
 
     nominal = 60
-
+    window = 50
     random_dict = {ii: np.random.choice([1, 2, 3, 4, 5]) for ii in range(df.shape[1])}
     df.replace(random_dict, inplace=True)
 
@@ -51,7 +51,9 @@ def cpc(cpc_stream, stop_stream, files):
 
             with data_graph.container():
                 sss = 0
+                
                 eee = min(j, df.shape[0] * repeat_factor)
+                sss = max(0, eee-window)
                 temp2 = df.iloc[sss:eee]
 
                 fig3 = px.line(temp2, markers=True)
