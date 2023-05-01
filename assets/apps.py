@@ -29,6 +29,9 @@ def ts_app(sensor_stream, stop_stream, files, header, sub_header, classification
         df = (df - df.mean()) / df.std()
     orig_col_list = df.columns
 
+    if len(files)==4:
+        jnj_file = files[3]
+
     if classification:
         kpi_file = files[1]
         fi = files[2]

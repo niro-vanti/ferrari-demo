@@ -87,12 +87,15 @@ def ask_for_files(app_type_file):
             raw = pd.read_csv('assets/Data/medical_data/medical-data.csv')
             fe = pd.read_csv('assets/Data/medical_data/medical_device_feature_importance.csv', index_col=0)
 
+
+
+        jnj_data = pd.read_csv('assets/Data/medical_data/jnj_full_data_snippet.csv', index_col=0)
         raw = raw.sample(frac=1).reset_index(drop=True)
         kpi = 'S_Scrap'
         kpi_col = raw[kpi].copy()
         df = raw.copy()
         df.drop(columns=[kpi], inplace=True)
-        loaded_files = [df, kpi_col, fe]
+        loaded_files = [df, kpi_col, fe, jnj_data]
         st.write(loaded_files)
         return loaded_files
     if app_type_file == 'manual assembly with video':
