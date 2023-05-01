@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 
 def si_demo(si_stream, stop_stream, files):
-    st.title('Machine Speed 3 minute prediction Demo')
+    st.title('Continuous Process: Slow-time 3 Minute Forecast')
     st.subheader('event prediction')
     st.write('---------------------------------------------------------')
     kpi = 'tusCoatingLine.MES.UtilizationState'

@@ -111,7 +111,7 @@ def ask_for_files(app_type_file):
         loaded_files = [df, kpi_col]
         st.write(loaded_files)
         return loaded_files
-    if app_type_file == 'Machine Speed 3 minute prediction Demo':
+    if app_type_file == 'Continuous Process: Slow-time 3 Minute Forecast':
         batch = st.file_uploader('upload data file', accept_multiple_files=False)
         if batch is not None:
             raw = pd.read_csv(batch)
@@ -138,7 +138,7 @@ app_list = ['paint shop visual inspection',
             'package visual inspection',
             'continuous process control demo',
             'textile defects',
-            'Machine Speed 3 minute prediction Demo',
+            'Continuous Process: Slow-time 3 Minute Forecast',
             'real time process optimization',
             'Ferrari paint shop defect detection',
             "pre paint metal defects",
@@ -184,7 +184,7 @@ if app_type == 'package visual inspection':
                           folder_name='packages')
 if app_type == 'continuous process control demo':
     cpc(stream, stop_stream, files)
-if app_type == 'Machine Speed 3 minute prediction Demo':
+if app_type == 'Continuous Process: Slow-time 3 Minute Forecast':
     si_demo(stream, stop_stream, files)
 if app_type == 'real time process optimization':
     rt_test_reorder(stream, stop_stream, files)
