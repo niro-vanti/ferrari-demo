@@ -16,7 +16,7 @@ def cpc(cpc_stream, stop_stream, files):
                              for _ in range(df.shape[0])]
 
     nominal = 60
-    window = 50
+    window = 20
     random_dict = {ii: np.random.choice([1, 2, 3, 4, 5]) for ii in range(df.shape[1])}
     df.replace(random_dict, inplace=True)
 
