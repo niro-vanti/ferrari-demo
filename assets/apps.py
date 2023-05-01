@@ -344,7 +344,7 @@ def visual_inspection_app(stream, stop_stream, title, sub_header, folder_name,
 
             with image_cont.container():
                 time.sleep(1)
-                st.image(names[k % names_len], use_column_width='auto')  # , caption = names[i%N])
+                st.image(names[k % names_len], width=300')  # , caption = names[i%N])
                 seen_names.append(names[k % names_len])
                 seen_class.append(classes[k % names_len])
             with class_cont.container():
