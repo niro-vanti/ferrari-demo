@@ -129,7 +129,7 @@ def ask_for_files(app_type_file):
         return loaded_files
     
     if app_type_file == 'Video based object detection':
-        oranges_video = 'assets/Data/conveyor/oranges.mp4'
+        oranges_video = 'assets/Data/conveyor/oranges_comp.mp4'
         return [oranges_video]
     if app_type_file == 'roadmap':
         return
@@ -232,7 +232,7 @@ if app_type == 'pre paint metal defects':
 if app_type == 'Process Calibration':
     harmonic_demo(stream, stop_stream, files)
 if app_type == 'Video based object detection':
+    st.title('Comming soon 😁')
     # cb_demo(stream, stop_stream, files)
-    a=1
 if app_type == 'roadmap':
     roadmap()
