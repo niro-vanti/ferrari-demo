@@ -7,7 +7,7 @@ from assets.specific_demos.adaptive_ai_demo import adaptive_ai_demo
 from assets.specific_demos.video_assembly import video_assembly_app
 from assets.specific_demos.test_reorder import rt_test_reorder
 from assets.specific_demos.harmonic_demo import harmonic_demo
-# from assets.specific_demos.conveyor_belt_demo import cb_demo
+from assets.specific_demos.conveyor_belt_demo import cb_demo
 
 
 page_title = "Vanti Apps"
@@ -151,7 +151,7 @@ app_list = ['paint shop visual inspection',
             'manual assembly with video',
             'medical device early fault detection',
             'Process Calibration',
-            # 'Video based object detection',
+            'Video based object detection',
             'roadmap']
 
 with st.sidebar:
@@ -232,7 +232,6 @@ if app_type == 'pre paint metal defects':
 if app_type == 'Process Calibration':
     harmonic_demo(stream, stop_stream, files)
 if app_type == 'Video based object detection':
-    # cb_demo(stream, stop_stream, files)
-    a=1
+    cb_demo(stream, stop_stream, files)
 if app_type == 'roadmap':
     roadmap()
