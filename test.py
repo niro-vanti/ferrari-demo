@@ -1,6 +1,5 @@
 import streamlit.components.v1 as components
 import toml
-import plotly.graph_objects as go
 from assets.apps import *
 from assets.specific_demos.cpc_demo import cpc
 from assets.specific_demos.standard_industries_demo import si_demo
