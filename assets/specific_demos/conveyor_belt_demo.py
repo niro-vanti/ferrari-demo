@@ -7,10 +7,10 @@ from PIL import Image, ImageEnhance
 import numpy as np
 import os
 import time ,sys
-from streamlit_embedcode import github_gist
+#from streamlit_embedcode import github_gist
 import urllib.request
 import urllib
-import moviepy.editor as moviepy
+#import moviepy.editor as moviepy
 # from ..convenience import is_cv3
 
 
@@ -67,8 +67,8 @@ def cb_demo(si_stream, stop_stream, files):
 
 
 
-    fourcc = cv2.VideoWriter_fourcc(*'mpv4')
-    out = cv2.VideoWriter("detected_video.mp4", fourcc, 20.0, (w, h))
+    # fourcc = cv2.VideoWriter_fourcc(*'mpv4')
+    # out = cv2.VideoWriter("detected_video.mp4", fourcc, 20.0, (w, h))
     count = 0
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     st.text(f'# of frames in video {total}')
@@ -149,7 +149,7 @@ def cb_demo(si_stream, stop_stream, files):
                     cv2.putText(image, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=font_scale, color=(0, 0, 0), thickness=thickness)
 
-            out.write(image)
+            # out.write(image)
             with frame_viewer.container():
                 st.text(f'frame {idx} out of {total}')
             with orig_cont.container():
