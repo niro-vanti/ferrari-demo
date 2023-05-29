@@ -7,6 +7,7 @@ from assets.specific_demos.adaptive_ai_demo import adaptive_ai_demo
 from assets.specific_demos.video_assembly import video_assembly_app
 from assets.specific_demos.test_reorder import rt_test_reorder
 from assets.specific_demos.harmonic_demo import harmonic_demo
+from assets.specific_demos.diego import diego
 # from assets.specific_demos.conveyor_belt_demo import cb_demo
 
 
@@ -131,6 +132,9 @@ def ask_for_files(app_type_file):
     if app_type_file == 'Video based object detection':
         oranges_video = 'assets/Data/conveyor/oranges_comp.mp4'
         return [oranges_video]
+    if app_type_file == 'Vendor Yield':
+        data = pd.read_csv('assets/Data/yield/philips_cr_yields.csv', index_col=0)
+        return [data]
     if app_type_file == 'roadmap':
         return
 
@@ -138,7 +142,8 @@ def ask_for_files(app_type_file):
 
 
 # sidebar
-app_list = ['paint shop visual inspection',
+app_list = ['Vendor Yield',
+            'paint shop visual inspection',
             'package visual inspection',
             'continuous process control demo',
             'textile defects',
@@ -175,6 +180,8 @@ with st.sidebar:
 # main loop
 
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
+if app_type == 'Vendor Yield':
+    diego(stream, stop_stream,files)
 if app_type == 'paint shop visual inspection':
     # paint_defects(stream)
     visual_inspection_app(stream, stop_stream,
