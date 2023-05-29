@@ -37,7 +37,7 @@ def diego(diego_strem, stop_stream, files):
             df['model'].fillna(0, inplace=True)
             q = pd.DataFrame(df[[y,'model']])
             q.index = df[x_col]
-            fig = px.scatter(df, x=y_col, y=['model'], width = 1000, trendline='ols')
+            fig = px.scatter(df, x=y_col, y=['model'], width = 1000) #, trendline='ols')
             # y_max = df[y_col].max()
             y_min = df[y_col].min() - 0.1
             fig.update_yaxes(range=[y_min, 1], fixedrange=True)
