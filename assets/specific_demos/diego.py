@@ -33,18 +33,25 @@ def diego(diego_strem, stop_stream, files):
             y = y_col
             temp = df[y_col].copy()
             temp.fillna(0, inplace=True)
-            df['model'] = [i+np.random.randn()/100 for i in df[y]]
+            s = df[y_col].std()
+            # st.text(s)
+            df['model'] = [i+np.random.randn()*s/3 for i in df[y]]
             df['model'].fillna(0, inplace=True)
             q = pd.DataFrame(df[[y,'model']])
             q.index = df[x_col]
+            st.write('Values')
+            st.line_chart(q, use_container_width=True)
+
+
             fig = px.scatter(df, x=y_col, y=['model'], width = 1000) #, trendline='ols')
-            # y_max = df[y_col].max()
+            y_max = df[y_col].max() + 0.1
             y_min = df[y_col].min() - 0.1
-            fig.update_yaxes(range=[y_min, 1], fixedrange=True)
+            fig.update_yaxes(range=[y_min, y_max], fixedrange=True)
     
             fig.update_layout(plot_bgcolor='#ffffff')
+            st.write('Visual Regression - Model prediction vs true values')
             st.write(fig)
-            st.line_chart(q, use_container_width=True)
+            
 
             r2 = np.round(r2_score(temp, df['model']),3)
             st.code(f'R2 score: {r2}\nThere\'s a high positive correlation between {y_col} and {x_col}')
