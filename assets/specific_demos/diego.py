@@ -58,6 +58,9 @@ def diego(diego_strem, stop_stream, files):
 
     with st.expander('Calculate unit requirements'):
         if len(y_col)>0:
-            target = st.number_input(f'In order to produce', value=100)
-            st.code(f'units at station \"{y_col}\" \nyou will need {int(target / 0.9 + np.random.rand())} in start of the production line')
+            if r2 > 0.7:
+                target = st.number_input(f'In order to produce', value=100)
+                st.code(f'units at station \"{y_col}\" \nyou will need {int(target / 0.9 + np.random.rand())} in start of the production line')
+            else:
+                st.code(f'The model has an R2 score of {r2} which is not high enough to be able to answer this question \nThe R2 limit is 0.7')
      
