@@ -107,15 +107,15 @@ def diego(diego_strem, stop_stream, files):
                 try: 
                     df_feats.iloc[i] == float(df_feats.iloc[i])
                     if col_index == 0:
-                        v = col0.number_input(f'enter {df_feats.index[i]}')
+                        v = col0.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
                     if col_index == 1:
-                        v = col1.number_input(f'enter {df_feats.index[i]}')
+                        v = col1.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
                     if col_index == 2:
-                        v = col2.number_input(f'enter {df_feats.index[i]}')
+                        v = col2.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
                     if col_index == 3:
-                        v = col3.number_input(f'enter {df_feats.index[i]}')
+                        v = col3.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
                     if col_index == 4:
-                        v = col4.number_input(f'enter {df_feats.index[i]}')
+                        v = col4.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
                     new_data[df_feats.index[i]] = v
                     col_index += 1 
                     col_index = col_index % max_cols
