@@ -40,7 +40,7 @@ def diego(diego_strem, stop_stream, files):
         col_list = []
         for col in df.columns.to_list():
             col_list.append(col)
-        y_list = [i for i in col_list[1:]]
+        y_list = [i for i in col_list[1:] if type(df[i].iloc[0])==np.float64]
         x_label, y_label, type_select = st.columns(3)
         x_col = x_label.selectbox("Select X axis", col_list)
         y_col = y_label.selectbox("Select Y axis", y_list)
