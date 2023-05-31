@@ -88,7 +88,7 @@ def diego(diego_strem, stop_stream, files):
             if r2 >0.6:
                 st.code(f'R2 score: {r2}\nThere\'s a high positive correlation between {y_col} and {x_col}')
             else:
-                st.code(f'R2 score: {r2}\nThere correlation between {y_col} and {x_col} is not significant enough to train an effective model')
+                st.code(f'R2 score: {r2}\nThere correlation between {y_col} and {x_col} is not significant enough to ask further questions')
 
     with st.expander('Calculator'):
         # st.text(len(y_col))
