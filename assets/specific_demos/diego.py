@@ -37,10 +37,13 @@ def diego(diego_strem, stop_stream, files):
         st.dataframe(df)
         st.code(f'# of joint files: 4\n# of records: {df.shape[0]}\n# of columns: {df.shape[1]}')
     with st.expander('Relationship exploration'):
+        numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+
+        tt = df.select_dtypes(include=numerics)
         col_list = []
-        for col in df.columns.to_list():
+        for col in tt.columns.to_list():
             col_list.append(col)
-        y_list = [i for i in col_list[1:] if type(df[i].iloc[0])==np.float64]
+        y_list = [i for i in col_list[1:]]
         x_label, y_label, type_select = st.columns(3)
         x_col = x_label.selectbox("Select X axis", col_list)
         y_col = y_label.selectbox("Select Y axis", y_list)
