@@ -84,7 +84,7 @@ def diego(diego_strem, stop_stream, files):
     
             fig.update_layout(plot_bgcolor='#ffffff')
             st.write('Visual Regression - Model prediction vs true values')
-            st.write(fig)
+            st.write(fig) 
             
 
             r2 = np.round(r2_score(temp, df['model']),3)
