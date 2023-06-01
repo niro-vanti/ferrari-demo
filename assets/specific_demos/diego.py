@@ -28,9 +28,10 @@ def diego(diego_strem, stop_stream, files):
     r2_limit = 0.6
 
 
-
     df = files[0]
     df.index.name='Vendor Batch'
+
+
     with st.expander('Data preview'):
         data_source = st.radio('Select data source',['Use application data','Upload my own'])
         if data_source == 'Use application data':
