@@ -11,6 +11,8 @@ import plotly.graph_objects as go
 from sklearn import preprocessing, svm
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from pandas.api.types import is_string_dtype
+from pandas.api.types import is_numeric_dtype
 
 
 
@@ -21,19 +23,24 @@ def diego(diego_strem, stop_stream, files):
     st.text('Learning and using the relationship between the vendor yield and the assembly yield')
     st.write('---------------------------------------------------------')
 
+
+    numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+    r2_limit = 0.6
+
+
+
     df = files[0]
     df.index.name='Vendor Batch'
-    # st.text(df.index)
     with st.expander('Data preview'):
         data_source = st.radio('Select data source',['Use application data','Upload my own'])
         if data_source == 'Use application data':
             qqq = 1
-            # st.dataframe(df)
-            # st.code(f'# of joint files: 4\n# of records: {df.shape[0]}\n# of columns: {df.shape[1]}')
         if data_source == 'Upload my own':
             qq = st.file_uploader('Upload file',type='csv', accept_multiple_files=False)
             if qq is not None:
                 df = pd.read_csv(qq, index_col=0)
+        if 'vendor_batch' in df.columns:
+            df.drop(columns='vendor_batch', inplace=True)
         st.dataframe(df)
         st.code(f'# of joint files: 4\n# of records: {df.shape[0]}\n# of columns: {df.shape[1]}')
     with st.expander('Relationship exploration'):
@@ -52,23 +59,16 @@ def diego(diego_strem, stop_stream, files):
             y = y_col
             temp = df[y_col].copy()
             temp.fillna(0, inplace=True)
-            s = df[y_col].std()
-            # st.text(s)
             Y = temp
             X = df.copy()
             X.drop(columns=y_col, inplace=True)
-            numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+            X = pd.get_dummies(data=X)
+            
 
-            X = X.select_dtypes(include=numerics)
             X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size = 0.25)
             regr = LinearRegression()
  
             regr.fit(X_train, y_train)
-            rr2 = regr.score(X_test, y_test)
-            # st.text(f'niro {')
-
-            # df['model'] = [i+np.random.randn()*s/3 for i in df[y]]
-            # df['model'].fillna(0, inplace=True)
             y_pred = regr.predict(X)
             df['model'] = y_pred
             q = pd.DataFrame(df[[y,'model']])
@@ -88,65 +88,54 @@ def diego(diego_strem, stop_stream, files):
             
 
             r2 = np.round(r2_score(temp, df['model']),3)
-            if r2 >0.6:
+            if r2 >r2_limit:
                 st.code(f'R2 score: {r2}\nThere\'s a high positive correlation between {y_col} and {x_col}')
             else:
                 st.code(f'R2 score: {r2}\nThere correlation between {y_col} and {x_col} is not significant enough to ask further questions')
 
     with st.expander('Calculator'):
-        # st.text(len(y_col))
         if len(y_col)>0:
-            if r2 > 0.6:
-                st.text('y_col')
-                df_corr = df.corr()
-                df_feats = pd.DataFrame(np.abs(df_corr[y_col]))
-                df_feats.sort_values(by=[y_col], inplace=True, ascending=False)
-                indx = df_feats.index.to_list()
-                # indx = X.columns.to_list()
-                if 'model' in indx:
-                    indx.remove('model')
-                if y_col in indx:
-                    indx.remove(y_col)
-                df_feats = df_feats.loc[indx]
+            if r2 > r2_limit:
                 V = []
                 max_cols = 5
                 col0, col1, col2, col3, col4 = st.columns(max_cols)
+                cols = [col0, col1, col2, col3, col4]
                 col_index = 0
-                new_data = pd.DataFrame(columns=X.columns, index=[0])
-                for i in range( df_feats.shape[0]):
-                    try: 
-                        df_feats.iloc[i] == float(df_feats.iloc[i])
-                        if col_index == 0:
-                            v = col0.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
-                        if col_index == 1:
-                            v = col1.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
-                        if col_index == 2:
-                            v = col2.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
-                        if col_index == 3:
-                            v = col3.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
-                        if col_index == 4:
-                            v = col4.number_input(f'enter {df_feats.index[i]}', value=df[df_feats.index[i]].mean())
-                        new_data[df_feats.index[i]] = v
-                        col_index += 1 
-                        col_index = col_index % max_cols
-                        V.append(v)
-                    except:
-                        st.text(f'{i} is a string')
+
+
+                col_list = df.columns.to_list()
+                for name in ['model',y_col]:
+                    if name in col_list:
+                        col_list.remove(name)
+                new_data = pd.DataFrame(columns=col_list, index=[0])
+                for idx, col in enumerate(col_list):
+                    if is_numeric_dtype(df[col]):
+                        v = cols[col_index].number_input(f'enter {col}', value=df[col].mean())
+                    if is_string_dtype(df[col]):
+                        v = cols[col_index].selectbox(f'enter {col}',df[col].unique())
+                    new_data[col] = v
+                    col_index += 1 
+                    col_index = col_index % max_cols
+                    V.append(v)
+
                 new_data.fillna(0, inplace=True)
-                st.write(new_data)
+                new_data = pd.get_dummies(data=new_data)
+                new_data = pd.concat([X, new_data], axis=0, join='outer', ignore_index=True)
+                new_data = pd.DataFrame(new_data.iloc[-1]).T
+                new_data.fillna(0, inplace=True)
                 out = regr.predict(new_data)
                 st.code(f'With these inputs:\n {y_col} = {out[0]}')
             else:
-                st.code(f'The model has an R2 score of {r2} which is not high enough to be able to answer this question \nThe R2 limit is 0.6')
+                st.code(f'The model has an R2 score of {r2} which is not high enough to be able to answer this question \nThe R2 limit is {r2_limit}')
 
         else:
             st.text('sdfsd')
         
     with st.expander('Calculate unit requirements'):
         if len(y_col)>0:
-            if r2 > 0.6:
+            if r2 > r2_limit:
                 target = st.number_input(f'In order to produce', value=100)
                 st.code(f'units at station \"{y_col}\" \nyou will need {int(target / 0.9 + np.random.rand())} in start of the production line')
             else:
-                st.code(f'The model has an R2 score of {r2} which is not high enough to be able to answer this question \nThe R2 limit is 0.6')
+                st.code(f'The model has an R2 score of {r2} which is not high enough to be able to answer this question \nThe R2 limit is {r2_limit}')
      
