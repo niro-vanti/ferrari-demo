@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score 
 import plotly.graph_objects as go
 # import numpy as np
 # import pandas as pd
@@ -11,8 +11,11 @@ import plotly.graph_objects as go
 from sklearn import preprocessing, svm
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from pandas.api.types import is_string_dtype
+from pandas.api.types import is_string_dtype 
 from pandas.api.types import is_numeric_dtype
+import plotly.figure_factory as ff
+
+# from assets.specific_demos.bot import vanti_gpt
 
 
 
@@ -23,38 +26,75 @@ def diego(diego_strem, stop_stream, files):
     st.text('Learning and using the relationship between the vendor yield and the assembly yield')
     st.write('---------------------------------------------------------')
 
-
+    suplier = st.radio('Choose Supplier to analyze',['Amphenol','Ergo','Upload my own'], horizontal=True)
     numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
     r2_limit = 0.6
 
-
-    df = files[0]
+    if suplier == 'Amphenol':
+        df = files[1]
+    if suplier == 'Ergo':
+        df = files[0]
+    if suplier == 'Upload my own':
+        qq = st.file_uploader('Upload file',type='csv', accept_multiple_files=False)
+        if qq is not None:
+            df = pd.read_csv(qq, index_col=0)
     df.index.name='Vendor Batch'
-
+    df.sort_index(ascending=True, inplace=True)
+    # with st.expander('GPT'):
+    #     vanti_gpt
 
     with st.expander('Data preview'):
-        data_source = st.radio('Select data source',['Use application data','Upload my own'])
-        if data_source == 'Use application data':
-            qqq = 1
-        if data_source == 'Upload my own':
-            qq = st.file_uploader('Upload file',type='csv', accept_multiple_files=False)
-            if qq is not None:
-                df = pd.read_csv(qq, index_col=0)
         if 'vendor_batch' in df.columns:
             df.drop(columns='vendor_batch', inplace=True)
         st.dataframe(df)
         st.code(f'# of joint files: 4\n# of records: {df.shape[0]}\n# of columns: {df.shape[1]}')
+    
+    
+    with st.expander('Value anlyzer'):
+        numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+        tt = df.select_dtypes(include=numerics)
+        target = st.selectbox('Select value to analyze',tt.columns.to_list(), index=0)
+        st.code(f'{target} statistics:\nmean - {np.round(df[target].mean(),2)}\nstd - {np.round(df[target].std(),2)}\nmaximal value - {np.round(df[target].max(),2)}\nminimal value - {np.round(df[target].min(),2)}\nmissing values - {np.round(df[target].isna().sum(),2)}')
+        target_min = df[target].min()
+        target_max = df[target].max()
+        target_mean = df[target].mean()
+        # st.write(f'{target_min}  {target_max}')
+        show_range = st.slider(f'Select {target} range', min_value=0.0, value = (0.0,1.0), step=0.01)
+        local = df.copy()
+        local = local[local[target]<=show_range[1]]
+        local = local[local[target]>=show_range[0]]
+
+        # st.write(show_range)
+        if local.shape[0] > 0:
+            s1, s2  = st.columns(2)
+            fig2 = px.line(local, y=target,x=local.index)
+            fig2.update_traces(line_color='#00818A')
+            fig2.update_layout(plot_bgcolor="white")
+            s1.write(fig2)
+            fig33 = ff.create_distplot([local[target]], [target], bin_size=.05,
+                                    curve_type='kde', # override default 'kde'
+                                    colors=['#52DE97'])
+
+            # Add title
+            fig33.update_layout(title_text=f'Distribution of {target}')
+            fig33.update_layout(plot_bgcolor="white")
+            s2.write(fig33)
+            st.code(f'# of rows: {local.shape[0]}')
+            local.sort_values(by=[target], ascending=False, inplace=True)
+            st.dataframe(local)
+        else:
+            st.write('There are no results in your selection')
+        # df_hist = pd.DataFrame({'bins':bins,'vals':hist_values})
+        # hist = df[target].hist(bins=50)
+        # s2.bar_chart(df_hist, x='bins', y='vals')
+    
     with st.expander('Relationship exploration'):
         numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-
         tt = df.select_dtypes(include=numerics)
-        col_list = []
-        for col in tt.columns.to_list():
-            col_list.append(col)
-        y_list = [i for i in col_list[1:]]
+
         x_label, y_label, type_select = st.columns(3)
-        x_col = x_label.selectbox("Select X axis", col_list)
-        y_col = y_label.selectbox("Select Y axis", y_list)
+        x_col = x_label.selectbox("Select X axis", tt.columns.to_list(), index=0)
+        y_col = y_label.selectbox("Select Y axis", tt.columns.to_list(), index=1)
 
         if len(x_col)>0  and len(y_col)>0:
             y = y_col
@@ -93,7 +133,7 @@ def diego(diego_strem, stop_stream, files):
                 st.code(f'R2 score: {r2}\nThere\'s a high positive correlation between {y_col} and {x_col}')
             else:
                 st.code(f'R2 score: {r2}\nThere correlation between {y_col} and {x_col} is not significant enough to ask further questions')
-
+    
     with st.expander('Calculator'):
         if len(y_col)>0:
             if r2 > r2_limit:
