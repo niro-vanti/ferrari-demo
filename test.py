@@ -135,9 +135,11 @@ def ask_for_files(app_type_file):
         return [oranges_video]
     if app_type_file == 'Vendor Yield':
         # data = pd.read_csv('assets/Data/yield/philips_cr_yields.csv', index_col=0)
-        data = pd.read_csv('assets/Data/yield/data_preview_2.csv', index_col=0)
+        # data = pd.read_csv('assets/Data/yield/data_preview.csv', index_col=1)
+        # data.drop(columns=['Unnamed: 0'], inplace=True)
+        ergo = pd.read_csv('assets/Data/yield/final_report_ergo.csv', index_col=0)
         amp = pd.read_csv('assets/Data/yield/final_report_Amphenol.csv', index_col=0)
-        return [data, amp]
+        return [ergo, amp]
     if app_type_file == 'Kafrit':
         data = [None]
         return data

@@ -89,7 +89,7 @@ def diego(diego_strem, stop_stream, files):
             
 
             # st.write(show_range)
-            if local.shape[0] > 0:
+            if local.shape[0] > 1:
                 s1, s2  = st.columns(2)
                 fig2 = px.line(local, y=target,x=local.index)
                 fig2.update_traces(line_color='#00818A')
@@ -123,14 +123,18 @@ def diego(diego_strem, stop_stream, files):
             x_label, y_label, type_select = st.columns(3)
             x_col = x_label.selectbox("Select X axis", tt.columns.to_list(), index=0)
             y_col = y_label.selectbox("Select Y axis", tt.columns.to_list(), index=1)
+            model_type = type_select.radio('Select Model Type',['1 to 1','Many to 1'], index=0, horizontal=True)
 
             if len(x_col)>0  and len(y_col)>0:
                 y = y_col
                 temp = df[y_col].copy()
                 temp.fillna(0, inplace=True)
                 Y = temp
-                X = df.copy()
-                X.drop(columns=y_col, inplace=True)
+                if model_type == 'Many to 1':
+                    X = df.copy()
+                    X.drop(columns=y_col, inplace=True)
+                else:
+                    X = df[x_col].copy()
                 X = pd.get_dummies(data=X)
                 
 
@@ -145,8 +149,8 @@ def diego(diego_strem, stop_stream, files):
                 st.write('Values')
                 st.line_chart(q, use_container_width=True)
 
-
-                fig = px.scatter(df, x=y_col, y=['model'], width = 1000) #, trendline='ols')
+                res = pd.DataFrame({y_col:y_test, 'model':regr.predict(X_test)})
+                fig = px.scatter(res, x=y_col, y=['model'], width = 1000) #, trendline='ols')
                 y_max = df[y_col].max() + 0.1
                 y_min = df[y_col].min() - 0.1
                 fig.update_yaxes(range=[y_min, y_max], fixedrange=True)
@@ -156,7 +160,8 @@ def diego(diego_strem, stop_stream, files):
                 st.write(fig) 
                 
 
-                r2 = np.round(r2_score(temp, df['model']),3)
+                # r2 = np.round(r2_score(temp, df['model']),3)
+                r2 = np.round(r2_score(y_test, regr.predict(X_test)))
                 if r2 >r2_limit:
                     st.code(f'R2 score: {r2}\nThere\'s a high positive correlation between {y_col} and {x_col}')
                 else:
@@ -172,7 +177,8 @@ def diego(diego_strem, stop_stream, files):
                     col_index = 0
 
 
-                    col_list = df.columns.to_list()
+                    # col_list = df.columns.to_list()
+                    col_list = X.columns.to_list()
                     for name in ['model',y_col]:
                         if name in col_list:
                             col_list.remove(name)
