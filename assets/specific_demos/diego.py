@@ -54,12 +54,13 @@ def diego(diego_strem, stop_stream, files):
         numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
         tt = df.select_dtypes(include=numerics)
         target = st.selectbox('Select value to analyze',tt.columns.to_list(), index=0)
-        st.code(f'{target} statistics:\nmean - {np.round(df[target].mean(),2)}\nstd - {np.round(df[target].std(),2)}\nmaximal value - {np.round(df[target].max(),2)}\nminimal value - {np.round(df[target].min(),2)}\nmissing values - {np.round(df[target].isna().sum(),2)}')
+        ss1, dc, ss2, dc2 = st.columns([4,1,4,1])
+        ss1.code(f'{target} statistics:\nmean - {np.round(df[target].mean(),2)}\nstd - {np.round(df[target].std(),2)}\nmaximal value - {np.round(df[target].max(),2)}\nminimal value - {np.round(df[target].min(),2)}\nmissing values - {np.round(df[target].isna().sum(),2)}')
         target_min = df[target].min()
         target_max = df[target].max()
         target_mean = df[target].mean()
         # st.write(f'{target_min}  {target_max}')
-        show_range = st.slider(f'Select {target} range', min_value=0.0, value = (0.0,1.0), step=0.01)
+        show_range = ss2.slider(f'Select {target} range', min_value=0.0, value = (0.0,1.0), step=0.01)
         local = df.copy()
         local = local[local[target]<=show_range[1]]
         local = local[local[target]>=show_range[0]]
@@ -70,6 +71,8 @@ def diego(diego_strem, stop_stream, files):
             fig2 = px.line(local, y=target,x=local.index)
             fig2.update_traces(line_color='#00818A')
             fig2.update_layout(plot_bgcolor="white")
+            fig2.update_yaxes(automargin=True)
+            fig2.update_xaxes(automargin=True)
             s1.write(fig2)
             fig33 = ff.create_distplot([local[target]], [target], bin_size=.05,
                                     curve_type='kde', # override default 'kde'
@@ -78,6 +81,8 @@ def diego(diego_strem, stop_stream, files):
             # Add title
             fig33.update_layout(title_text=f'Distribution of {target}')
             fig33.update_layout(plot_bgcolor="white")
+            fig33.update_yaxes(automargin=True)
+            fig33.update_xaxes(automargin=True)
             s2.write(fig33)
             st.code(f'# of rows: {local.shape[0]}')
             local.sort_values(by=[target], ascending=False, inplace=True)
