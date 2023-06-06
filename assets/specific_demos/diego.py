@@ -30,6 +30,7 @@ def diego(diego_strem, stop_stream, files):
     numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
     r2_limit = 0.6
     enable = False
+    comp_enable = False
 
     if suplier == 'Amphenol':
         df = files[1]
@@ -65,38 +66,63 @@ def diego(diego_strem, stop_stream, files):
             numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
             tt = df.select_dtypes(include=numerics)
             target = st.selectbox('Select value to analyze',tt.columns.to_list(), index=0)
+
+            compare = st.file_uploader('Choose file for comparison',type='csv', accept_multiple_files=False)
+            if compare is not None:
+                df_comp = pd.read_csv(compare, index_col=0)
+                cc = df_comp.select_dtypes(include=numerics)
+                target_comp = st.selectbox('Select value to compare', cc.columns.to_list(), index=0)
+                local_comp = df_comp.copy()
+                comp_enable=True
+
             ss1, dc, ss2, dc2 = st.columns([4,1,4,1])
             ss1.code(f'{target} statistics:\nmean - {np.round(df[target].mean(),2)}\nstd - {np.round(df[target].std(),2)}\nmaximal value - {np.round(df[target].max(),2)}\nminimal value - {np.round(df[target].min(),2)}\nmissing values - {np.round(df[target].isna().sum(),2)}')
-            target_min = df[target].min()
-            target_max = df[target].max()
-            target_mean = df[target].mean()
+            # target_min = df[target].min()
+            # target_max = df[target].max()
+            # target_mean = df[target].mean()
             local = df.copy()
+            
             
             filter_type = ss2.radio('Select filter method',['Range','Cut Off'], index=0, horizontal=True)
             if filter_type == 'Range':
                 show_range = ss2.slider(f'Select {target} range', min_value=0.0, value = (0.0,1.0), step=0.01)
                 local = local[local[target]<=show_range[1]]
                 local = local[local[target]>=show_range[0]]
+                if comp_enable:
+                    local_comp = local_comp[local_comp[target_comp]<=show_range[1]]
+                    local_comp = local_comp[local_comp[target_comp]>=show_range[0]]
+
             if filter_type == 'Cut Off':
                 cut_off = ss2.number_input('Enter cut off', min_value=0)
                 sort_direction = ss2.radio('Select range',['Top','Bottom'], index=0, horizontal=True)
                 if sort_direction == 'Top':
                     local.sort_values(by=target, ascending=False, inplace=True)
+                    if comp_enable:
+                        local_comp.sort_values(by=target_comp, ascending=False, inplace=True)
                 if sort_direction == 'Bottom':
                     local.sort_values(by=target, ascending=True, inplace=True)
+                    local_comp.sort_values(by=target_comp, ascending=True, inplace=True)
                 local = local.iloc[:cut_off]
-            
+                if comp_enable:
+                    local_comp = local_comp.iloc[:cut_off]
             
 
             # st.write(show_range)
             if local.shape[0] > 1:
+
+                # regular value plots
                 s1, s2  = st.columns(2)
                 fig2 = px.line(local, y=target,x=local.index)
                 fig2.update_traces(line_color='#00818A')
                 fig2.update_layout(plot_bgcolor="white")
                 fig2.update_yaxes(automargin=True)
                 fig2.update_xaxes(automargin=True)
+                if comp_enable: 
+                    fig2.add_scatter(x=local_comp.index, y=local_comp[target_comp])
                 s1.write(fig2)
+
+
+                # histogram plots
                 fig33 = ff.create_distplot([local[target]], [target], bin_size=.01,
                                         curve_type='kde', # override default 'kde'
                                         colors=['#52DE97'])
@@ -106,15 +132,27 @@ def diego(diego_strem, stop_stream, files):
                 fig33.update_layout(plot_bgcolor="white")
                 fig33.update_yaxes(automargin=True)
                 fig33.update_xaxes(automargin=True)
+
+                if comp_enable:
+                    x0 = local[target]
+                    x1 = local_comp[target_comp]
+                    hist_data = [x0,x1]
+                    fig33 = ff.create_distplot(hist_data, [target, target_comp], bin_size=0.01,
+                                               curve_type='kde',colors=['#52de97','#ff3c78'])
                 s2.write(fig33)
-                st.code(f'# of rows: {local.shape[0]}')
-                # local.sort_values(by=[target], ascending=False, inplace=True)
-                st.dataframe(local[target])
+
+                # info data frames
+                if comp_enable:
+                    cdf1, cdf2 = st.columns(2)
+                    cdf1.write('original file')
+                    cdf1.code(f'# of rows: {local.shape[0]}')
+                    cdf1.dataframe(local[target])
+                    cdf2.write('compared file')
+                    cdf2.code(f'# of rows: {local_comp.shape[0]}')
+                    cdf2.dataframe(local_comp[target_comp])
             else:
                 st.write('There are no results in your selection')
-            # df_hist = pd.DataFrame({'bins':bins,'vals':hist_values})
-            # hist = df[target].hist(bins=50)
-            # s2.bar_chart(df_hist, x='bins', y='vals')
+
         
         with st.expander('Relationship exploration'):
             numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
