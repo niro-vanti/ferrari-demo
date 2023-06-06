@@ -190,7 +190,7 @@ with st.sidebar:
 
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
 if app_type == 'Vendor Yield':
-    diego(stream, stop_stream,files)
+    philips_costa_rica(stream, stop_stream,files)
 if app_type == 'kafrit':
     kafrit(stream, stop_stream, files)
 if app_type == 'paint shop visual inspection':
