@@ -119,7 +119,7 @@ def philips_costa_rica(diego_strem, stop_stream, files):
                     local_comp = local_comp[local_comp[target_comp]>=show_range[0]]
 
             if filter_type == 'Cut Off':
-                cut_off = ss2.number_input('Enter cut off', min_value=0)
+                cut_off = ss2.number_input('Enter cut off', min_value=0, value=10)
                 sort_direction = ss2.radio('Select range',['Top','Bottom'], index=0, horizontal=True)
                 if sort_direction == 'Top':
                     local.sort_values(by=target, ascending=False, inplace=True)
@@ -127,7 +127,8 @@ def philips_costa_rica(diego_strem, stop_stream, files):
                         local_comp.sort_values(by=target_comp, ascending=False, inplace=True)
                 if sort_direction == 'Bottom':
                     local.sort_values(by=target, ascending=True, inplace=True)
-                    local_comp.sort_values(by=target_comp, ascending=True, inplace=True)
+                    if comp_enable:
+                        local_comp.sort_values(by=target_comp, ascending=True, inplace=True)
                 local = local.iloc[:cut_off]
                 if comp_enable:
                     local_comp = local_comp.iloc[:cut_off]
