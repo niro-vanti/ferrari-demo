@@ -23,7 +23,7 @@ style_description = f"""
         div.stButton > button:first-child {{ border: 2px solid {primaryColor}; border-radius:10px 10px 10px 10px; }}
         div.stButton > button:hover {{ background-color: {primaryColor}; color:#000000;}}
         footer {{ visibility: hidden;}}
-        # header {{ visibility: hidden;}}
+        header {{ visibility: hidden;}}
     <style>
 """
 st.markdown(style_description, unsafe_allow_html=True)
