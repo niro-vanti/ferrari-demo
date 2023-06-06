@@ -7,7 +7,7 @@ from assets.specific_demos.adaptive_ai_demo import adaptive_ai_demo
 from assets.specific_demos.video_assembly import video_assembly_app
 from assets.specific_demos.test_reorder import rt_test_reorder
 from assets.specific_demos.harmonic_demo import harmonic_demo
-from assets.specific_demos.diego import diego
+from assets.specific_demos.diego import philips_costa_rica
 from assets.specific_demos.kafrit import kafrit
 # from assets.specific_demos.conveyor_belt_demo import cb_demo
 

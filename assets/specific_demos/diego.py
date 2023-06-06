@@ -46,7 +46,7 @@ def stats_block(df, t, title=None):
     return out
 
 
-def diego(diego_strem, stop_stream, files):
+def philips_costa_rica(diego_strem, stop_stream, files):
     st.title('Vendor_Philips yield')
     st.subheader('Curated Data')
     st.text('Learning and using the relationship between the vendor yield and the assembly yield')
