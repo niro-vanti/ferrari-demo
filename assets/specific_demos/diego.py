@@ -25,13 +25,14 @@ def stats_block(df, t, title=None):
     v = str(np.round(df[t].isna().sum(),2))
     if title is not None:
         lines = [
-            '**'+title+'**',
+            '*** '+title+' ***',
             'mean - '+a,
             'std - '+s, 
             'maximal value - '+M,
             'minimal value - '+m,
             'missing values - '+v
         ]
+
 
     else:
         lines = [
