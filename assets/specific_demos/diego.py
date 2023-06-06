@@ -17,7 +17,32 @@ import plotly.figure_factory as ff
 
 # from assets.specific_demos.bot import vanti_gpt
 
+def stats_block(df, t, title=None):
+    a = str(np.round(df[t].mean(),2))
+    s = str(np.round(df[t].std(),2))
+    m = str(np.round(df[t].min(),2))
+    M = str(np.round(df[t].max(),2))
+    v = str(np.round(df[t].isna().sum(),2))
+    if title is not None:
+        lines = [
+            '**'+title+'**',
+            'mean - '+a,
+            'std - '+s, 
+            'maximal value - '+M,
+            'minimal value - '+m,
+            'missing values - '+v
+        ]
 
+    else:
+        lines = [
+            'mean - '+a,
+            'std - '+s, 
+            'maximal value - '+M,
+            'minimal value - '+m,
+            'missing values - '+v
+        ]
+    out = '\n'.join(lines)
+    return out
 
 
 def diego(diego_strem, stop_stream, files):
@@ -75,11 +100,11 @@ def diego(diego_strem, stop_stream, files):
                 local_comp = df_comp.copy()
                 comp_enable=True
 
-            ss1, dc, ss2, dc2 = st.columns([4,1,4,1])
-            ss1.code(f'{target} statistics:\nmean - {np.round(df[target].mean(),2)}\nstd - {np.round(df[target].std(),2)}\nmaximal value - {np.round(df[target].max(),2)}\nminimal value - {np.round(df[target].min(),2)}\nmissing values - {np.round(df[target].isna().sum(),2)}')
-            # target_min = df[target].min()
-            # target_max = df[target].max()
-            # target_mean = df[target].mean()
+            ss1, sb2, dc, ss2, dc2 = st.columns([2,2,1,4,1])
+            if comp_enable:
+                sb2.code(stats_block(df_comp,target_comp, title='Compared file'))
+            ss1.code(stats_block(df,target, title='Original'))
+                
             local = df.copy()
             
             
