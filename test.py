@@ -23,7 +23,7 @@ style_description = f"""
         div.stButton > button:first-child {{ border: 2px solid {primaryColor}; border-radius:10px 10px 10px 10px; }}
         div.stButton > button:hover {{ background-color: {primaryColor}; color:#000000;}}
         footer {{ visibility: hidden;}}
-        header {{ visibility: hidden;}}
+        # header {{ visibility: hidden;}}
     <style>
 """
 st.markdown(style_description, unsafe_allow_html=True)
@@ -141,7 +141,7 @@ def ask_for_files(app_type_file):
         amp = pd.read_csv('assets/Data/yield/final_report_Amphenol.csv', index_col=0)
         return [ergo, amp]
     if app_type_file == 'Kafrit':
-        data = [None]
+        data = pd.read_csv('assets/Data/kafrit/kafrit_demo.csv',index_col=0)
         return data
     if app_type_file == 'roadmap':
         return

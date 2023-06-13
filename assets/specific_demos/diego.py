@@ -4,6 +4,10 @@ import numpy as np
 import plotly.express as px
 from sklearn.metrics import r2_score 
 import plotly.graph_objects as go
+import datetime as dt
+from dateutil.relativedelta import relativedelta # to add days or years
+
+
 # import numpy as np
 # import pandas as pd
 # import seaborn as sns
@@ -14,8 +18,28 @@ from sklearn.linear_model import LinearRegression
 from pandas.api.types import is_string_dtype 
 from pandas.api.types import is_numeric_dtype
 import plotly.figure_factory as ff
+from xgboost import XGBRegressor
 
 # from assets.specific_demos.bot import vanti_gpt
+
+def get_date_columns(df):
+    l = df.select_dtypes(include=['datetime64'])
+    if l.shape[1] == 0:
+        # st.write('niro')
+        # st.write(df.index.dtype)
+        try:
+            
+            vals = [i for i in df.index]
+            v = pd.DataFrame(vals, columns=['date'])
+            v['date'] = pd.to_datetime(v['date'])
+            return v, 'index'
+        except:
+            print('fail date time')
+            return l, None
+    elif l.shape[1] == 1:
+        return l, l.columns
+    else: 
+        return False, None
 
 def stats_block(df, t, title=None):
     a = str(np.round(df[t].mean(),2))
@@ -82,11 +106,12 @@ def philips_costa_rica(diego_strem, stop_stream, files):
         df.index = df.index.astype('str')
         df.sort_index(ascending=True, inplace=True)
         with st.expander('Data preview'):
+            df_time, col_time = get_date_columns(df)
+            # st.write(df_time)
             if 'vendor_batch' in df.columns:
                 df.drop(columns='vendor_batch', inplace=True)
             st.dataframe(df)
-            st.code(f'# of joint files: 4\n# of records: {df.shape[0]}\n# of columns: {df.shape[1]}')
-        
+            st.code(f'# of joint files: 4\n# of records: {df.shape[0]}\n# of columns: {df.shape[1]}')   
         
         with st.expander('Value anlyzer'):
             numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
@@ -111,7 +136,9 @@ def philips_costa_rica(diego_strem, stop_stream, files):
             
             filter_type = ss2.radio('Select filter method',['Range','Cut Off'], index=0, horizontal=True)
             if filter_type == 'Range':
-                show_range = ss2.slider(f'Select {target} range', min_value=0.0, value = (0.0,1.0), step=0.01)
+                min_val = float(local[target].min())
+                max_val = float(local[target].max())
+                show_range = ss2.slider(f'Select {target} range', min_value=0.0, value = (min_val,max_val), step=0.01)
                 local = local[local[target]<=show_range[1]]
                 local = local[local[target]>=show_range[0]]
                 if comp_enable:
@@ -132,6 +159,42 @@ def philips_costa_rica(diego_strem, stop_stream, files):
                 local = local.iloc[:cut_off]
                 if comp_enable:
                     local_comp = local_comp.iloc[:cut_off]
+            # if filter_type == 'Dates':
+            #     # st.write(df_time)
+            #     if len(df_time) == 0:
+            #         ss2.error('No dates in data')
+            #     else:
+            #         min_date = str(df_time.min()[0])
+            #         max_date = str(df_time.max()[0])
+                    
+
+            #         format = 'MMM DD, YYYY'  # format output
+            #         sy = int(min_date.split('-')[0])
+            #         sm = int(min_date.split('-')[1])
+            #         sd = int(min_date.split('-')[2].split(' ')[0])
+            #         ey = int(max_date.split('-')[0])
+            #         em = int(max_date.split('-')[1])
+            #         ed = int(max_date.split('-')[2].split(' ')[0])
+            #         start_date = dt.date(year=sy,month=sm,day=sd) #  I need some range in the past
+            #         end_date = dt.date(year=ey,month=em,day=ed)
+            #         max_days = end_date-start_date
+                    
+            #         date_range = ss2.slider(f'Select {target} date range', min_value=start_date, value=(start_date, end_date) ,
+            #                                 max_value=end_date, format=format)
+                    
+            #         if col_time == 'index':
+            #             local = local[local.index<=date_range[1]]
+            #             local = local[local.index>=date_range[0]]
+            #             # if comp_enable:
+            #             #     local_comp = local_comp[local_comp[target_comp]<=date_range[1]]
+            #             #     local_comp = local_comp[local_comp[target_comp]>=date_range[0]]
+
+            #         ## Sanity check
+            #         # local = local[local[target]<=show_range[1]]
+            #         # local = local[local[target]>=show_range[0]]
+            #         # if comp_enable:
+            #         #     local_comp = local_comp[local_comp[target_comp]<=show_range[1]]
+            #         #     local_comp = local_comp[local_comp[target_comp]>=show_range[0]]
             
 
             # st.write(show_range)
@@ -179,7 +242,6 @@ def philips_costa_rica(diego_strem, stop_stream, files):
                     cdf2.dataframe(local_comp[target_comp])
             else:
                 st.write('There are no results in your selection')
-
         
         with st.expander('Relationship exploration'):
             numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
@@ -200,14 +262,12 @@ def philips_costa_rica(diego_strem, stop_stream, files):
                     X.drop(columns=y_col, inplace=True)
                 else:
                     X = df[x_col].copy()
-                X = pd.get_dummies(data=X)
-                
-
+                # X = pd.get_dummies(data=X)
                 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size = 0.25)
-                regr = LinearRegression()
-    
+                regr = XGBRegressor()
                 regr.fit(X_train, y_train)
                 y_pred = regr.predict(X)
+
                 df['model'] = y_pred
                 q = pd.DataFrame(df[[y,'model']])
                 q.index = df[x_col]
