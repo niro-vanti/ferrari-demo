@@ -141,8 +141,8 @@ def ask_for_files(app_type_file):
         amp = pd.read_csv('assets/Data/yield/final_report_Amphenol.csv', index_col=0)
         return [ergo, amp]
     if app_type_file == 'Kafrit':
-        data = pd.read_csv('assets/Data/kafrit/kafrit_demo.csv',index_col=0)
-        return data
+        data = pd.read_csv('assets/Data/kafrit/kafrit_demo.csv', index_col=0)
+        return [data]
     if app_type_file == 'roadmap':
         return
 
@@ -191,7 +191,7 @@ with st.sidebar:
 # tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
 if app_type == 'Vendor Yield':
     philips_costa_rica(stream, stop_stream,files)
-if app_type == 'kafrit':
+if app_type == 'Kafrit':
     kafrit(stream, stop_stream, files)
 if app_type == 'paint shop visual inspection':
     # paint_defects(stream)
