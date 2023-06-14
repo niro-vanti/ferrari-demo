@@ -108,14 +108,14 @@ def find_max(df, model, N=3):
             for v2 in f_range[2]:
                     for v3 in f_range[3]:
                         for v4 in f_range[4]:
-                            for v5 in f_range[5]:
+                            # for v5 in f_range[5]:
                                 local = df_mean.copy()
                                 local[top_feats[0]] = v0
                                 local[top_feats[1]] = v1
                                 local[top_feats[2]] = v2
                                 local[top_feats[3]] = v3
                                 local[top_feats[4]] = v4
-                                local[top_feats[5]] = v5
+                                # local[top_feats[5]] = v5
                                 pred = model.predict(local)
                                 val = pred[0]
                                 if val > max_val:
