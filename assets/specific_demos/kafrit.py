@@ -307,15 +307,15 @@ def kafrit(diego_strem, stop_stream, files):
                 temp.fillna(0, inplace=True)
                 Y = temp
                 if model_type == 'Many to 1':
-                    X = df.copy()
+                    X = tt.copy()
                     X.drop(columns=y_col, inplace=True)
                 else:
-                    X = df[x_col].copy()
+                    X = tt[x_col].copy()
                 # X = pd.get_dummies(data=X)
                 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size = 0.25)
-                regr = XGBRegressor()
-                regr.fit(X_train, y_train)
-                y_pred = regr.predict(X)
+                regr_rel = XGBRegressor()
+                regr_rel.fit(X_train, y_train)
+                y_pred = regr_rel.predict(X)
 
                 df['model'] = y_pred
                 q = pd.DataFrame(df[[y,'model']])
@@ -323,7 +323,7 @@ def kafrit(diego_strem, stop_stream, files):
                 st.write('Values')
                 st.line_chart(q, use_container_width=True)
 
-                res = pd.DataFrame({y_col:y_test, 'model':regr.predict(X_test)})
+                res = pd.DataFrame({y_col:y_test, 'model':regr_rel.predict(X_test)})
                 fig = px.scatter(res, x=y_col, y=['model'], width = 1000) #, trendline='ols')
                 y_max = df[y_col].max() + 0.1
                 y_min = df[y_col].min() - 0.1
@@ -335,7 +335,7 @@ def kafrit(diego_strem, stop_stream, files):
                 
 
                 # r2 = np.round(r2_score(temp, df['model']),3)
-                r2 = np.round(r2_score(y_test, regr.predict(X_test)))
+                r2 = np.round(r2_score(y_test, regr_rel.predict(X_test)))
                 if r2 >r2_limit:
                     st.code(f'R2 score: {r2}\nThere\'s a high positive correlation between {y_col} and {x_col}')
                 else:
@@ -372,7 +372,7 @@ def kafrit(diego_strem, stop_stream, files):
                     new_data = pd.concat([X, new_data], axis=0, join='outer', ignore_index=True)
                     new_data = pd.DataFrame(new_data.iloc[-1]).T
                     new_data.fillna(0, inplace=True)
-                    out = regr.predict(new_data)
+                    out = regr_rel.predict(new_data)
                     st.code(f'With these inputs:\n {y_col} = {out[0]}')
                 else:
                     st.code(f'The model has an R2 score of {r2} which is not high enough to be able to answer this question \nThe R2 limit is {r2_limit}')
