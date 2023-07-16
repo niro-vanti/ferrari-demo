@@ -247,6 +247,7 @@ def kafrit(diego_strem, stop_stream, files):
                     r2 = np.round(r2_score(y_pred, y_test),2)
                     # st.write(r2)
                     res_max = pd.DataFrame(data={'original':local[target],'predicitons':y_pred}, index=x_test.index)
+                    res_max.sort_index(ascending=True, inplace=True)
                     fig_max = px.line(res_max)
                     s1.code(f'We can use your data to predict {target} with R2 = {r2}')
                     s1.write(fig_max)
